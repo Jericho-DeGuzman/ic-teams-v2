@@ -21,10 +21,6 @@ export default async function CommissionLevel() {
 
     return (
         <section className="w-full min-h-screen p-6 text-[12px]">
-            <button className="bg-blue-500 p-2 flex items-center fixed z-[1] rounded-full bottom-8 right-8
-                hover:bg-blue-700 duration-300">
-                <FontAwesomeIcon icon={faPlus} className="w-6 h-6 text-white" />
-            </button>
             <header className='flex w-full gap-2 items-center text-gray-400'>
                 <span className='text-[14px]'>Filter:</span>
                 <div className='w-3/12 flex border-[1px] border-gray-300 p-1 rounded-md gap-1 

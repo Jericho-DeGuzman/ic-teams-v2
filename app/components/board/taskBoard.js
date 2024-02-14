@@ -10,15 +10,18 @@ export default async function TaskBoard({ id, type, name, tasks }) {
                 ${type == 'doing' && 'bg-green-400'}
                 ${type == 'review' && 'bg-purple-400'}
                 ${type == 'done' && 'bg-green-500'}
-                ${type == 'revise' && 'bg-green-400'}`}>
-                {name}
+                ${type == 'revise' && 'bg-green-400'} 
+                flex items-center w-full justify-center gap-1`}>
+                <span>{name}</span>
+                <span>{`(${tasks.length})`}</span>
             </header>
+
             <main className='w-full p-2 bg-gray-100 min-h-screen rounded-b-md'>
-                <TaskDropArea />
-                {tasks.map((task) => (
+                <TaskDropArea type={type} index={0} />
+                {tasks.map((task, index) => (
                     <React.Fragment key={task.uuid}>
                         <TaskCard uuid={task.uuid} title={task.title} />
-                        <TaskDropArea />
+                        <TaskDropArea type={type} index={index + 1} />
                     </React.Fragment>
                 ))}
             </main>

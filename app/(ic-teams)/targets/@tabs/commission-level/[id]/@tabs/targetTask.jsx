@@ -16,6 +16,7 @@ export default function TargetTask({uuid}) {
     const [cards, setCards] = useState(null);
 
     // TODO: try to create better solution.
+    // TODO: add try catch block for error handling.
     useEffect(() => {
         const loadTasks = async () => {
             const response = await fetch(`http://localhost:3000/api/tasks?id=${uuid}`, {
@@ -28,6 +29,7 @@ export default function TargetTask({uuid}) {
         loadTasks();
     }, [])
 
+    // TODO: create better UI for empty folder
     if (!cards) {
         return (
             <div className='w-full min-h-screen flex items-center justify-center text-gray-400'>
