@@ -1,4 +1,6 @@
+import React from "react";
 import TaskCard from "../card/taskCard";
+import TaskDropArea from "./taskDropArea";
 
 export default async function TaskBoard({ id, type, name, tasks }) {
     return (
@@ -11,9 +13,13 @@ export default async function TaskBoard({ id, type, name, tasks }) {
                 ${type == 'revise' && 'bg-green-400'}`}>
                 {name}
             </header>
-            <main className='w-full space-y-2 p-2 bg-gray-200 min-h-screen rounded-b-md'>
+            <main className='w-full p-2 bg-gray-100 min-h-screen rounded-b-md'>
+                <TaskDropArea />
                 {tasks.map((task) => (
-                    <TaskCard key={task.uuid} uuid={task.uuid} title={task.title} />
+                    <React.Fragment key={task.uuid}>
+                        <TaskCard uuid={task.uuid} title={task.title} />
+                        <TaskDropArea />
+                    </React.Fragment>
                 ))}
             </main>
         </section>
