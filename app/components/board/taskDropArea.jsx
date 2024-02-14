@@ -16,7 +16,7 @@ export default function TaskDropArea({type, index}) {
     }
 
     const onDropCard = () => {
-        console.log(`drop on ${type} board`)
+        console.log(`${draggingCard} card drop on ${type} board`)
         hideArea();
     }
 

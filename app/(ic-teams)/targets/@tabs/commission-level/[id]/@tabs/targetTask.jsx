@@ -47,8 +47,7 @@ export default function TargetTask({uuid}) {
             <main className='min-h-screen w-full flex gap-2' >
                 {boards.map((board) => (
                     <TaskBoard key={board.id} id={board.id} uuid={uuid} type={board.type} name={board.name}
-                        tasks={cards.tasks.filter((task) => task.status == board.type)}
-                    />
+                        tasks={cards.tasks.filter((task) => task.status == board.type)}/>
                 ))}
             </main>
         </section>

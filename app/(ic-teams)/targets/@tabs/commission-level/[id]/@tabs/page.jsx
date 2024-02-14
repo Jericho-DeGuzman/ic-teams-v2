@@ -1,18 +1,24 @@
 'use client'
-import { useState } from "react"
+import { Suspense, useState } from "react"
 import TargetTask from "./targetTask"
 import TargetActivity from "./targetActivity"
 import TargetMember from "./targetMember"
+import TaskLoading from "@/app/components/loading/taskLoading"
 
 export default function CommissionTargetTabs({ params }) {
     const [active, setActive] = useState('task')
 
     const renderComponent = () => {
-        if (active == 'task') return <TargetTask uuid={ params.id} />
-        if (active == 'activity') return <TargetActivity uuid={ params.id} />
-        if (active == 'member') return <TargetMember uuid={ params.id} />
+        if (active == 'task') {
+            return (
+                <Suspense fallback={<TaskLoading />}>
+                    <TargetTask uuid={params.id}/>
+                </Suspense>
+            )
+        }
+        if (active == 'activity') return <TargetActivity uuid={params.id} />
+        if (active == 'member') return <TargetMember uuid={params.id} />
     }
-
 
     return (
         <section className="w-full">

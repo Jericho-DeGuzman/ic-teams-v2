@@ -8,8 +8,8 @@ export const grabbingCardSlice = createSlice({
     name: 'grabbingCard',
     initialState,
     reducers: {
-        setGrabbingCard: (state, payload) => {
-            state.value = payload.payload;
+        setGrabbingCard: (state, action) => {
+            state.value = action.payload
         }
     }
 })

@@ -7,7 +7,7 @@ import { usePathname } from "next/navigation";
 export default function TargetTabsLayout({ children }) {
     // TODO: create separate component for add target button.
     const pathname = usePathname();
-
+    // TODO: make the add target button not visible inside specific targets.
     return (
         <section className="w-full min-h-screen">
             <button className="bg-blue-500 p-2 flex items-center fixed z-[1] rounded-full bottom-8 right-8

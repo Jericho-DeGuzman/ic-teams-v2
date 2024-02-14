@@ -24,6 +24,13 @@ export default function TasksDummy() {
                     due: '01/29/2024',
                     subtask: []
                 },
+                {
+                    uuid: 'asdsacasdcawwwsasbb',
+                    title: 'Lorem ipsum dolor sit amet, consectetur incididunt ut labore et dolore magna aliqua.',
+                    status: 'revise',
+                    due: '01/29/2024',
+                    subtask: []
+                },
             ]
         }
     ]
