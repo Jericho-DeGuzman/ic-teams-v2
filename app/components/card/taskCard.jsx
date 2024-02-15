@@ -1,8 +1,7 @@
 'use client'
 import { setGrabbingCard } from '@/app/redux/features/grabbingCard';
 import { useAppDispatch } from '@/app/redux/hooks'
-import { motion } from 'framer-motion'
-import { useRef, useState } from 'react'
+import { useState } from 'react'
 
 export default function TaskCard({ uuid, title, due, }) {
     const dispatch = useAppDispatch();

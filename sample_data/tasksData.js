@@ -15,7 +15,7 @@ export default function TasksDummy() {
                     title: 'Documentation',
                     status: 'doing',
                     due: '12/29/2023',
-                    subtask: []
+                    subtask: [] 
                 },
                 {
                     uuid: 'asdsacbw2hn,w',
@@ -32,6 +32,18 @@ export default function TasksDummy() {
                     subtask: []
                 },
             ]
-        }
+        },
+        {
+            uuid: '1dahfscas',
+            tasks: [],
+        },
+        {
+            uuid: '1qwetgnfa',
+            tasks: []
+        },
+        {
+            uuid: 'adaduancmacma',
+            tasks: []
+        },
     ]
 }

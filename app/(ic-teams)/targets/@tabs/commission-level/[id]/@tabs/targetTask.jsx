@@ -1,7 +1,10 @@
 'use client'
 import Select from 'react-select'
 import TaskBoard from '@/app/components/board/taskBoard'
-import { useEffect, useState } from 'react'
+import { Suspense, useEffect, useState } from 'react'
+import { useAppDispatch, useAppSelector } from '@/app/redux/hooks'
+import { setCardTask } from '@/app/redux/features/cardPositions'
+import TaskLoading from '@/app/components/loading/taskLoading'
 
 // list on kanban board.
 const boards = [
@@ -12,25 +15,10 @@ const boards = [
     { id: 4, type: 'revise', name: 'For Revise' }
 ]
 
-export default function TargetTask({uuid}) {
-    const [cards, setCards] = useState(null);
-
-    // TODO: try to create better solution.
-    // TODO: add try catch block for error handling.
-    useEffect(() => {
-        const loadTasks = async () => {
-            const response = await fetch(`http://localhost:3000/api/tasks?id=${uuid}`, {
-                method: 'get'
-            })
-
-            const result = await response.json();
-            if (result.status == 200) setCards(result?.tasks);
-        }
-        loadTasks();
-    }, [])
-
+export default function TargetTask() {
+    const cards = useAppSelector(state => state.cardPositionSlice.tasks);
     // TODO: create better UI for empty folder
-    if (!cards) {
+    if (!cards.length) {
         return (
             <div className='w-full min-h-screen flex items-center justify-center text-gray-400'>
                 No available task.
@@ -46,8 +34,11 @@ export default function TargetTask({uuid}) {
             </header>
             <main className='min-h-screen w-full flex gap-2' >
                 {boards.map((board) => (
-                    <TaskBoard key={board.id} id={board.id} uuid={uuid} type={board.type} name={board.name}
-                        tasks={cards.tasks.filter((task) => task.status == board.type)}/>
+                    <Suspense key={board.id} fallback={<TaskLoading />}>
+                        <TaskBoard key={board.id} id={board.id} type={board.type} name={board.name}
+                            cards={cards.filter((task) => board.type == task.status)}
+                        />
+                    </Suspense>
                 ))}
             </main>
         </section>

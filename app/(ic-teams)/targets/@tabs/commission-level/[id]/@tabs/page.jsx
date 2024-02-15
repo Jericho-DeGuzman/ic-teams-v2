@@ -1,21 +1,34 @@
 'use client'
-import { Suspense, useState } from "react"
+import { Suspense, useEffect, useState } from "react"
 import TargetTask from "./targetTask"
 import TargetActivity from "./targetActivity"
 import TargetMember from "./targetMember"
 import TaskLoading from "@/app/components/loading/taskLoading"
+import { useAppDispatch } from "@/app/redux/hooks"
+import { setCardTask } from "@/app/redux/features/cardPositions"
 
 export default function CommissionTargetTabs({ params }) {
-    const [active, setActive] = useState('task')
+    // to set active tab.
+    const [active, setActive] = useState('task');
+    const dispatch = useAppDispatch();
 
-    const renderComponent = () => {
-        if (active == 'task') {
-            return (
-                <Suspense fallback={<TaskLoading />}>
-                    <TargetTask uuid={params.id}/>
-                </Suspense>
-            )
+
+    // get target task & store to redux to render on kanban board.
+    useEffect(() => {
+        const loadTasks = async () => {
+            const response = await fetch(`http://localhost:3000/api/tasks?id=${params.id}`, {
+                method: 'get'
+            })
+
+            const result = await response.json();
+            if (result.status == 200) dispatch(setCardTask(result?.tasks.tasks));
         }
+        loadTasks();
+    }, [])
+
+    // to render which tab is selected
+    const renderComponent = () => {
+        if (active == 'task') return <TargetTask />
         if (active == 'activity') return <TargetActivity uuid={params.id} />
         if (active == 'member') return <TargetMember uuid={params.id} />
     }

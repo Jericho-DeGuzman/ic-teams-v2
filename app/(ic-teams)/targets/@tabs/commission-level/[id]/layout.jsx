@@ -1,4 +1,5 @@
 export default function CommissionTargetLayout({ children, title, overview, comments, tabs }) {
+    
     return (
         <section className="w-full min-h-screen p-4 space-y-2">
             <header className="w-full">
