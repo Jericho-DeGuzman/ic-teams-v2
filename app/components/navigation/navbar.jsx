@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { usePathname } from "next/navigation";
 
 export default function Navbar() {
-    const expand = useAppSelector((state) => state.sidebarSlice .value);
+    const expand = useAppSelector((state) => state.sidebarSlice.value);
     const dispatch = useAppDispatch();
     const pathname = usePathname();
     let pagename = '';

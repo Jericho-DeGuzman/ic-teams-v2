@@ -4,8 +4,8 @@ const initialState = {
     value: null
 }
 
-export const draggingCard = createSlice({
-    name: 'dragggingCard',
+export const draggingCardSlice = createSlice({
+    name: 'draggingCard',
     initialState,
     reducers: {
         setDraggingCard: (state, action) => {
@@ -14,5 +14,5 @@ export const draggingCard = createSlice({
     }
 })
 
-export const { setDraggingCard } = draggingCard.actions;
-export default draggingCard.reducer;
+export const { setDraggingCard } = draggingCardSlice.actions;
+export default draggingCardSlice.reducer;

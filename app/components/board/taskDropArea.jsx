@@ -1,14 +1,10 @@
 'use client'
-import { moveCard } from "@/app/redux/features/cardPositions";
-import { useAppDispatch, useAppSelector } from "@/app/redux/hooks"
 import { useState } from "react"
 
 //TODO: make a function that can drag card to another kanban board.
 
-export default function TaskDropArea({index}) {
-    const [visible, setVisible] = useState(false)
-    const draggingCard = useAppSelector((state) => state.grabbingCardSlice.value); // current dragging task that holds the task uuid.
-    const dispatch = useAppDispatch();
+export default function TaskDropArea({ onDrop }) {
+    const [visible, setVisible] = useState(false);
 
     const showArea = () => {
         setVisible(true);
@@ -22,9 +18,8 @@ export default function TaskDropArea({index}) {
         e.preventDefault();
     }
 
-    const onDropCard = (e) => {
-        e.preventDefault();
-        dispatch(moveCard({taskId: draggingCard, status: type}));
+    const onDropCard = () => {
+        onDrop();
         hideArea();
     }
 

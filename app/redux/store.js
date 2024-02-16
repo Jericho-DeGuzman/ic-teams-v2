@@ -1,12 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit';
 import sidebarSlice from './features/sidebar';
-import grabbingCardSlice from './features/draggingCard';
-import cardPositionSlice from './features/cardPositions';
+import draggingCardSlice from './features/draggingCard';
 
 export const store = configureStore({
     reducer: {
         sidebarSlice,
-        grabbingCardSlice,
-        cardPositionSlice,
+        draggingCardSlice,
     }
 })

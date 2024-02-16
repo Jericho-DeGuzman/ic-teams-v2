@@ -1,5 +1,9 @@
-export default function CommissionTargetLayout({ children, title, overview, comments, tabs }) {
-    
+'use client'
+import { useState } from "react"
+
+export default function CommissionTargetLayout({ children, title, overview, comments, task, activity, member }) {
+    const [activeTabs, setActiveTabs] = useState('task')
+
     return (
         <section className="w-full min-h-screen p-4 space-y-2">
             <header className="w-full">
@@ -14,8 +18,26 @@ export default function CommissionTargetLayout({ children, title, overview, comm
                         {comments}
                     </div>
                 </aside>
-                <main className="min-h-screen flex-1">
-                    {tabs}
+                <main className="min-h-screen w-9/12">
+                    <header className="w-full text-gray-400 flex">
+                        <button className={`py-2 px-4 ${activeTabs == 'task' && 'border-x-[1px] border-t-[1px] border-gray-400 bg-white top-[1px] relative'}
+                    hover:text-blue-500 duration-300`} onClick={() => setActiveTabs('task')}>
+                            Task
+                        </button>
+                        <button className={`py-2 px-4 ${activeTabs == 'activity' && 'border-x-[1px] border-t-[1px] border-gray-400 bg-white top-[1px] relative'}
+                    hover:text-blue-500 duration-300`} onClick={() => setActiveTabs('activity')}>
+                            Activity
+                        </button>
+                        <button className={`py-2 px-4 ${activeTabs == 'member' && ' border-x-[1px] border-t-[1px] border-gray-400 bg-white top-[1px] relative'}
+                    hover:text-blue-500 duration-300`} onClick={() => setActiveTabs('member')}>
+                            Member
+                        </button>
+                    </header>
+                    <main className="min-h-screen border-[1px] border-gray-400">
+                        {activeTabs == 'task' && task}
+                        {activeTabs == 'activity' && activity}
+                        {activeTabs == 'member' && member}
+                    </main>
                 </main>
             </div>
         </section>

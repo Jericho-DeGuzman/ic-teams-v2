@@ -1,8 +1,7 @@
 'use client'
-import React, { useState } from "react";
+import React from "react";
 import TaskCard from "../card/taskCard";
 import TaskDropArea from "./taskDropArea";
-import { useAppSelector } from "@/app/redux/hooks";
 
 export default async function TaskBoard({ title, id, cards, onDrop }) {
     return (
@@ -11,13 +10,12 @@ export default async function TaskBoard({ title, id, cards, onDrop }) {
                 <span>{title}</span>
                 <span>{`(${cards.length})`}</span>
             </header>
-
             <main className='w-full p-2 bg-gray-100 min-h-screen rounded-b-md'>
-                <TaskDropArea index={0}/>
+                <TaskDropArea onDrop={() => onDrop(id, 0)}/>
                 {cards.map((task, index) => (
                     <React.Fragment key={task.uuid}>
                         <TaskCard uuid={task.uuid} title={task.title} />
-                        <TaskDropArea index={index + 1}/>
+                        <TaskDropArea onDrop={() => onDrop(id, index + 1)}/>
                     </React.Fragment>
                 ))}
             </main>
