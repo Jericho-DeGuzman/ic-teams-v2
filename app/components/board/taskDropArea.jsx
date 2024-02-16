@@ -5,11 +5,10 @@ import { useState } from "react"
 
 //TODO: make a function that can drag card to another kanban board.
 
-export default function TaskDropArea({type, index}) {
+export default function TaskDropArea({index}) {
     const [visible, setVisible] = useState(false)
     const draggingCard = useAppSelector((state) => state.grabbingCardSlice.value); // current dragging task that holds the task uuid.
     const dispatch = useAppDispatch();
-    const cards = useAppSelector(state => state.cardPositionSlice.tasks);
 
     const showArea = () => {
         setVisible(true);
@@ -19,13 +18,14 @@ export default function TaskDropArea({type, index}) {
         setVisible(false);
     }
 
-    const onDropCard = (e) => {
-        dispatch(moveCard({taskId: draggingCard, status: type}));
-        hideArea();
-    }
-
     const onDragOver = (e) => {
         e.preventDefault();
+    }
+
+    const onDropCard = (e) => {
+        e.preventDefault();
+        dispatch(moveCard({taskId: draggingCard, status: type}));
+        hideArea();
     }
 
     return (

@@ -20,12 +20,19 @@ export default function TasksDummy() {
                 {
                     uuid: 'asdsacbw2hn,w',
                     title: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-                    status: 'pending',
+                    status: 'review',
                     due: '01/29/2024',
                     subtask: []
                 },
                 {
                     uuid: 'asdsacasdcawwwsasbb',
+                    title: 'Lorem ipsum dolor sit amet, consectetur incididunt ut labore et dolore magna aliqua.',
+                    status: 'done',
+                    due: '01/29/2024',
+                    subtask: []
+                },
+                {
+                    uuid: 'asdsacasacaswwgba',
                     title: 'Lorem ipsum dolor sit amet, consectetur incididunt ut labore et dolore magna aliqua.',
                     status: 'revise',
                     due: '01/29/2024',
