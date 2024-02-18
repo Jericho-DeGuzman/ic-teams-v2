@@ -14,19 +14,16 @@ export default function TaskDropArea({ onDrop }) {
         setVisible(false);
     }
 
-    const onDragOver = (e) => {
-        e.preventDefault();
-    }
-
-    const onDropCard = () => {
-        onDrop();
-        hideArea();
-    }
-
     return (
         <div className={`${visible ? 'opacity-100 py-12' : 'opacity-0'}
             h-2 bg-gray-300 rounded-md border-2 border-dashed duration-300 border-gray-400`}
-            onDrop={onDropCard} onDragOver={onDragOver}
+            onDrop={(e) => {
+                onDrop();
+                hideArea();
+            }}
+            onDragOver={(e) => {
+                e.preventDefault();
+            }}
             onDragEnter={showArea} onDragLeave={hideArea}>
         </div>
     )

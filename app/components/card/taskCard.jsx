@@ -1,8 +1,8 @@
 'use client'
 import { useKanbanStore } from '@/app/zustand/kanban-store';
-import { useState } from 'react';
+import { memo, useState } from 'react';
 
-export default function TaskCard({ uuid, title, due }) {
+const TaskCard = memo(({ uuid, title, due }) => {
     const setDraggingCard = useKanbanStore((state) => state.setDraggingCard);
     const [visible, setVisible] = useState(false);
 
@@ -24,4 +24,7 @@ export default function TaskCard({ uuid, title, due }) {
             </main>
         </section>
     )
-}
+})
+
+TaskCard.displayName = 'TaskCard';
+export default TaskCard;

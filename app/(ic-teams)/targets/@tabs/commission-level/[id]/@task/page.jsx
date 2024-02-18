@@ -8,11 +8,6 @@ import { moveCardTask } from '@/utils/moveCardTaks'
 import { useAppSelector } from '@/app/redux/hooks'
 import { useKanbanStore } from '@/app/zustand/kanban-store'
 
-// new solution.
-// fetch task -> store in different array by status but in one object.
-// render kanban board and task.
-// drag and drop card.
-
 // list on kanban board.
 const boards = [
     { id: 'pending', title: 'Pending' },
@@ -61,6 +56,7 @@ export default function TaskPage({ params }) {
     }, [])
 
     // function when cards is drop and move.
+    // TODO: add a function that also update the task on microservice.
     const onDrop = (board, index) => {
         if (!draggingCard) return;
         const newCards = moveCardTask({
