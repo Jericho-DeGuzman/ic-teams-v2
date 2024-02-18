@@ -7,6 +7,7 @@ import { EmptyFolder } from '@/utils/imageUtils'
 import { moveCardTask } from '@/utils/moveCardTaks'
 import { useAppSelector } from '@/app/redux/hooks'
 import { useKanbanStore } from '@/app/zustand/kanban-store'
+import { baseUrl } from '@/app/constant/url'
 
 // list on kanban board.
 const boards = [
@@ -30,7 +31,7 @@ export default function TaskPage({ params }) {
             const sorted = {};
             try {
                 // fetch task.
-                const response = await fetch(`http://localhost:3000/api/tasks?id=${id}`, {
+                const response = await fetch(`${baseUrl}/api/tasks?id=${id}`, {
                     method: 'get',
                 })
                 const result = await response.json();

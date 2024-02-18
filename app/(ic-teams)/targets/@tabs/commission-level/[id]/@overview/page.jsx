@@ -2,10 +2,11 @@ import TargetStatusLabel from "@/app/components/label/targetStatus";
 import formatDate from "@/utils/formatDate";
 import { faFileAlt } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { baseUrl } from "@/app/constant/url";
 
 //TODO: Create a better data fetching and connect to IC microservice.
 async function loadTarget(uuid) {
-    const response = await fetch(`http://localhost:3000/api/targets?id=${uuid}`, {
+    const response = await fetch(`${baseUrl}/api/targets?id=${uuid}`, {
         method: 'get'
     })
     const result = await response.json();

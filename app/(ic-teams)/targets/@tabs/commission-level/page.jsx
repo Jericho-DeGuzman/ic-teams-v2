@@ -4,10 +4,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Select from 'react-select'
 import TargetCard from '@/app/components/card/targetCard'
 import style from './target.module.css'
+import { baseUrl } from '@/app/constant/url'
+import AddTargetButton from '@/app/components/button/targetButton'
 
 
 async function loadTargets() {
-    const response = await fetch('http://localhost:3000/api/targets?level=commission', {
+    const response = await fetch(`${baseUrl}/api/targets?level=commission`, {
         method: 'GET',
     })
 
@@ -21,6 +23,7 @@ export default async function CommissionLevel() {
 
     return (
         <section className="w-full min-h-screen p-6 text-[12px]">
+            <AddTargetButton />
             <header className='flex w-full gap-2 items-center text-gray-400'>
                 <span className='text-[14px]'>Filter:</span>
                 <div className='w-3/12 flex border-[1px] border-gray-300 p-1 rounded-md gap-1 
