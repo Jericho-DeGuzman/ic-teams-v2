@@ -2,16 +2,16 @@
 import { useEffect, useState } from "react";
 import Modal from "./modal";
 import { AnimatePresence, motion } from "framer-motion";
-import InternalTargetForm from "../form/internalForm";
 import { useAppDispatch } from "@/app/redux/hooks";
-import { openInternalForm } from "@/app/redux/features/targetForms";
+import { openExternalForm } from "@/app/redux/features/targetForms";
+import ExternalTargetForm from "../form/externalForm";
 
-export default function InternalTargetModal() {
+export default function ExternalTargetModal() {
     const [activeTab, setActiveTab] = useState('new');
     const dispatch = useAppDispatch();
 
     const onCancel = () => {
-        dispatch(openInternalForm(false));
+        dispatch(openExternalForm(false));
     }
 
     return (
@@ -55,7 +55,7 @@ export default function InternalTargetModal() {
                         <div className="w-full">
                             {activeTab == 'new' ? (
                                 <AnimatePresence>
-                                    <InternalTargetForm onCancel={onCancel} />
+                                    <ExternalTargetForm onCancel={onCancel} />
                                 </AnimatePresence>
                             ) : (
                                 <div className="min-h-96 flex justify-center items-center italic">

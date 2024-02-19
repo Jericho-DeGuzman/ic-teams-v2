@@ -1,4 +1,5 @@
 'use client'
+import ExternalTargetModal from "@/app/components/modal/externalModal";
 import InternalTargetModal from "@/app/components/modal/internalModal";
 import OptionModal from "@/app/components/modal/optionModal";
 import { openOptionForm } from "@/app/redux/features/targetForms";
@@ -11,6 +12,8 @@ export default function TargetTabsLayout({ children }) {
     const pathname = usePathname();
     const optionModal = useAppSelector(state => state.targetFormSlice.option); // hold the value if option for external and internal form is open.
     const internalModal = useAppSelector(state => state.targetFormSlice.internal); // hold the value if external modal is open.
+    const externalModal = useAppSelector(state => state.targetFormSlice.external);
+    
     const dispatch = useAppDispatch();
 
     const onClose = () => {
@@ -24,6 +27,9 @@ export default function TargetTabsLayout({ children }) {
             </AnimatePresence>
             <AnimatePresence>
                 {internalModal && <InternalTargetModal />}
+            </AnimatePresence>
+            <AnimatePresence>
+                {externalModal && <ExternalTargetModal />}
             </AnimatePresence>
             <header className="flex text-gray-400" style={{ fontSize: '12px' }}>
                 <Link href={'/targets/commission-level'} className={`py-2 px-4 relative top-[1px] 

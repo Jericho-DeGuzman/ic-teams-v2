@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import Modal from "./modal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faClose } from "@fortawesome/free-solid-svg-icons";
-import { openInternalForm, openOptionForm } from "@/app/redux/features/targetForms";
+import { openExternalForm, openInternalForm, openOptionForm } from "@/app/redux/features/targetForms";
 import { useAppDispatch } from "@/app/redux/hooks";
 
 export default function OptionModal({ onclose }) {
@@ -11,6 +11,11 @@ export default function OptionModal({ onclose }) {
 
     const setInternalForm = () => {
         dispatch(openInternalForm(true));
+        dispatch(openOptionForm(false));
+    }
+
+    const setExternalForm = () => {
+        dispatch(openExternalForm(true));
         dispatch(openOptionForm(false));
     }
 
@@ -55,7 +60,8 @@ export default function OptionModal({ onclose }) {
                             Internal Target
                         </button>
                         <button className="w-full flex items-center justify-center rounded-md p-2
-                        hover:bg-gray-300 hover:text-blue-500 duration-300" style={{borderWidth: '1px'}}>
+                        hover:bg-gray-300 hover:text-blue-500 duration-300" style={{borderWidth: '1px'}}
+                            onClick={setExternalForm}>
                             External Target
                         </button>
                     </main>

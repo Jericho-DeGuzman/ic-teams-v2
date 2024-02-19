@@ -37,7 +37,7 @@ export default function CommentPage() {
                         <CommentCard />
                         <CommentCard />
                     </div>
-                    <div className="w-full">
+                    <div className="w-full bg-white">
                         <textarea placeholder="Aa" className="w-full p-2 outline-none resize-none"/>
                     </div>
                 </>

@@ -3,8 +3,9 @@ import { useState } from 'react'
 import Select from 'react-select'
 import { motion } from 'framer-motion'
 
-export default function InternalTargetForm({ onCancel }) {
-    const [noEndDate, setNoEndDate] = useState(false)
+export default function ExternalTargetForm({ onCancel }) {
+    const [noEndDate, setNoEndDate] = useState(false);
+    const [tiedToCompany, setTiedToCompany] = useState(false);
 
     return (
         <motion.section
@@ -27,9 +28,21 @@ export default function InternalTargetForm({ onCancel }) {
                     rounded-md focus:border-2 focus:border-blue-500 duration-100 outline-none p-2'
                     placeholder='Target Description' />
             </div>
-            <div className='w-full space-y-1'>
-                <label className='text-black'>Division/Distribution Group</label>
-                <Select placeholder='Select Division/Distribution Group'/>
+            <div className='w-full grid grid-cols-2 gap-2'>
+                <div className='flex flex-col space-y-1'>
+                    <label className='text-black'>Division/Distribution Group</label>
+                    <Select placeholder='Select Division/Distribution Group' />
+                </div>
+                <div className="flex flex-col space-y-1">
+                    <label className='text-black flex gap-2 items-center justify-between'>
+                        <span>Company</span>
+                        <span className='flex items-center gap-1'>
+                            <input type='checkbox' className='h-4 w-4' onChange={(e) => setTiedToCompany(!tiedToCompany)} />
+                            <span className='italic text-gray-400'>Not tied to specific company</span>
+                        </span>
+                    </label>
+                    <Select placeholder='Select Company' isDisabled={tiedToCompany}/>
+                </div>
             </div>
             <div className='w-full grid grid-cols-2 gap-2'>
                 <div className="flex flex-col space-y-1">
