@@ -1,12 +1,30 @@
 'use client'
+import InternalTargetModal from "@/app/components/modal/internalModal";
+import OptionModal from "@/app/components/modal/optionModal";
+import { openOptionForm } from "@/app/redux/features/targetForms";
+import { useAppDispatch, useAppSelector } from "@/app/redux/hooks";
+import { AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 export default function TargetTabsLayout({ children }) {
     const pathname = usePathname();
+    const optionModal = useAppSelector(state => state.targetFormSlice.option); // hold the value if option for external and internal form is open.
+    const internalModal = useAppSelector(state => state.targetFormSlice.internal); // hold the value if external modal is open.
+    const dispatch = useAppDispatch();
+
+    const onClose = () => {
+        dispatch(openOptionForm(false))
+    }
 
     return (
         <section className="w-full min-h-screen">
+            <AnimatePresence>
+                {optionModal && <OptionModal onclose={onClose} />}
+            </AnimatePresence>
+            <AnimatePresence>
+                {internalModal && <InternalTargetModal />}
+            </AnimatePresence>
             <header className="flex text-gray-400" style={{ fontSize: '12px' }}>
                 <Link href={'/targets/commission-level'} className={`py-2 px-4 relative top-[1px] 
                     ${pathname.includes('/commission-level') && 'border-x-[1px] border-t-[1px] border-gray-400 bg-white text-blue-500 font-semibold'}`}>

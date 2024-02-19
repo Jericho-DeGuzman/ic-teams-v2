@@ -8,7 +8,7 @@ const TaskCard = memo(({ uuid, title, due }) => {
 
     return (
         <section className={`w-full p-2 active:animate-pulse
-            active:cursor-grabbing active:duration-70 rounded-md text-[12px] bg-white cursor-grab`}
+            active:cursor-grabbing active:duration-70 rounded-md text-[12px] bg-white cursor-grab text-black`}
             draggable = "true"
             onMouseEnter={() => setVisible(true)} onMouseLeave={() => setVisible(false)}
             onDragStart={() => setDraggingCard(uuid)} onDragEnd={() => setDraggingCard(uuid)}>

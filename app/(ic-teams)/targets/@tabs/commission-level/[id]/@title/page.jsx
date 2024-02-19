@@ -30,7 +30,7 @@ export default function TitlePage({ params }) {
     })
 
     return (
-        <div className="w-full flex items-center gap-2 justify-between" onMouseEnter={() => setMouseEnter(true)}
+        <div className="w-full flex items-center gap-2 justify-between text-black" onMouseEnter={() => setMouseEnter(true)}
             onMouseLeave={() => setMouseEnter(false)}>
             <div className="flex items-center gap-2">
                 <h3 className="text-[24px] font-semibold">{title}</h3>

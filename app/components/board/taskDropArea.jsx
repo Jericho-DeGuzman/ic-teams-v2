@@ -15,8 +15,8 @@ export default function TaskDropArea({ onDrop }) {
     }
 
     return (
-        <div className={`${visible ? 'opacity-100 py-12' : 'opacity-0'}
-            h-2 bg-gray-300 rounded-md border-2 border-dashed duration-300 border-gray-400`}
+        <div className={`${visible ? 'opacity-100 py-12' : 'opacity-0'} flex flex-col
+            h-2 only:h-96 last:h-96 bg-gray-300 rounded-md border-2 border-dashed duration-300 border-gray-400`}
             onDrop={(e) => {
                 onDrop();
                 hideArea();

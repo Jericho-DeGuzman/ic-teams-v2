@@ -20,15 +20,15 @@ export default function CommissionTargetLayout({ children, title, overview, comm
                 </aside>
                 <main className="min-h-screen w-9/12">
                     <header className="w-full text-gray-400 flex">
-                        <button className={`py-2 px-4 ${activeTabs == 'task' && 'border-x-[1px] border-t-[1px] border-gray-400 bg-white top-[1px] relative'}
+                        <button className={`py-2 px-4 ${activeTabs == 'task' && 'text-blue-500 border-x-[1px] border-t-[1px] border-gray-400 bg-white top-[1px] relative'}
                     hover:text-blue-500 duration-300`} onClick={() => setActiveTabs('task')}>
                             Task
                         </button>
-                        <button className={`py-2 px-4 ${activeTabs == 'activity' && 'border-x-[1px] border-t-[1px] border-gray-400 bg-white top-[1px] relative'}
+                        <button className={`py-2 px-4 ${activeTabs == 'activity' && 'text-blue-500 border-x-[1px] border-t-[1px] border-gray-400 bg-white top-[1px] relative'}
                     hover:text-blue-500 duration-300`} onClick={() => setActiveTabs('activity')}>
                             Activity
                         </button>
-                        <button className={`py-2 px-4 ${activeTabs == 'member' && ' border-x-[1px] border-t-[1px] border-gray-400 bg-white top-[1px] relative'}
+                        <button className={`py-2 px-4 ${activeTabs == 'member' && 'text-blue-500 border-x-[1px] border-t-[1px] border-gray-400 bg-white top-[1px] relative'}
                     hover:text-blue-500 duration-300`} onClick={() => setActiveTabs('member')}>
                             Member
                         </button>

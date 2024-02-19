@@ -10,7 +10,7 @@ const TaskBoard = memo(({ title, id, cards, onDrop }) => {
                 <span>{title}</span>
                 <span>{`(${cards.length})`}</span>
             </header>
-            <main className='w-full p-2 bg-gray-100 min-h-screen rounded-b-md'>
+            <main className='w-full p-2 bg-gray-200 min-h-screen rounded-b-md' style={{borderWidth: '1px'}}>
                 <TaskDropArea onDrop={() => onDrop(id, 0)} />
                 {cards.map((task, index) => (
                     <React.Fragment key={task.uuid}>

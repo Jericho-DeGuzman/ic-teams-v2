@@ -18,8 +18,8 @@ export default async function OverviewPage({params}) {
     const target = await loadTarget(params.id);
 
     return (
-        <section className="text-[12px] border-[1px] border-gray-400">
-            <div className="w-full space-y-1 p-2">
+        <section className="text-[12px] border-[1px] border-gray-400 text-black">
+            <div className="w-full space-y-1 p-2 ">
                 <label className="font-semibold gap-1 flex items-center">
                     <FontAwesomeIcon icon={faFileAlt} className="w-3 h-3" />
                     Description
