@@ -11,11 +11,10 @@ import { baseUrl } from '@/app/constant/url'
 
 // list on kanban board.
 const boards = [
-    { id: 'pending', title: 'Pending' },
-    { id: 'doing', title: 'Doing' },
+    { id: 'todo', title: 'To Do' },
+    { id: 'inprogress', title: 'In Progress' },
     { id: 'review', title: 'For Review' },
     { id: 'done', title: 'Done' },
-    { id: 'revise', title: 'For Revise' }
 ]
 
 export default function TaskPage({ params }) {
@@ -84,10 +83,6 @@ export default function TaskPage({ params }) {
 
     return (
         <section className="w-full min-h-screen p-4 overflow-hidden space-y-4">
-            <header className="w-full flex items-center gap-2 text-[12px]">
-                <span className='text-gray-400'>Filter:</span>
-                <Select className='w-4/12' placeholder='Status' />
-            </header>
             <main className='min-h-screen w-full flex gap-2' >
                 {boards.map((board) => (
                     <TaskBoard key={board.id} id={board.id} title={board.title} onDrop={onDrop}

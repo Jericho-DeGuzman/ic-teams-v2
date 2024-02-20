@@ -37,22 +37,23 @@ export default function TitlePage({ params }) {
                 {mouseEnter && (
                     <div className="flex gap-1">
                         <WatchlistButton />
-                        <div className="p-[5px] text-gray-400 hover:bg-gray-200 rounded-md flex items-center cursor-pointer duration-200">
+                        <div className="p-[5px] text-gray-400 hover:bg-gray-200 rounded-md flex items-center cursor-pointer duration-200 tooltip"
+                            data-tip="make a banner">
                             <FontAwesomeIcon icon={faFlag} className="w-4 h-4" />
                         </div>
-                        <div className="p-[5px] text-gray-400 hover:bg-gray-200 rounded-md flex items-center cursor-pointer duration-200">
+                        <div className="p-[5px] text-gray-400 hover:bg-gray-200 rounded-md flex items-center cursor-pointer duration-200 tooltip
+                            hover:text-blue-500"
+                            data-tip="edit">
                             <FontAwesomeIcon icon={faPen} className="w-4 h-4" />
                         </div>
-                        <div className="p-[5px] text-gray-400 hover:bg-gray-200 rounded-md flex items-center cursor-pointer duration-200">
+                        <div className="p-[5px] text-gray-400 hover:bg-gray-200 rounded-md flex items-center cursor-pointer duration-200 tooltip
+                            hover:text-blue-500"
+                            data-tip="delete">
                             <FontAwesomeIcon icon={faTrashAlt} className="w-4 h-4" />
                         </div>
                     </div>
                 )}
             </div>
-            <button className="p-2 bg-blue-500 rounded-md text-white font-semibold flex items-center gap-1 hover:bg-blue-600 duration-200">
-                <FontAwesomeIcon icon={faPlus} className="h-4 w-4" />
-                Add Task
-            </button>
         </div>
     )
 }

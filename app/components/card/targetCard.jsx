@@ -7,16 +7,16 @@ import TargetStatusLabel from "../label/targetStatus";
 import formatDate from "@/utils/formatDate";
 import formatDateTime from "@/utils/formatDateTime";
 import Link from "next/link";
+import WatchlistButton from "../button/watchlist";
 
-export default function TargetCard({ uuid, title, type, category, description, status, start_date, end_date, update_at, progress }) {
+export default function TargetCard({ uuid, title, type, category, description, status, start_date, end_date, update_at, progress,
+    functional_group }) {
     return (
-        <section className='w-full border-[1px] rounded-md
+        <section className='w-full border-[1px] rounded-md text-black
             hover:border-blue-500 hover:scale-[1.03] duration-300 cursor-pointer'>
             <header className='flex p-2 items-center justify-between border-b-[1px]'>
                 <div className='flex items-center gap-1'>
-                    <span className='cursor-pointer flex text-gray-400'>
-                        <FontAwesomeIcon icon={faBookmark} className='h-4 w-4' />
-                    </span>
+                    <WatchlistButton />
                     <TargetTypeLabel type={type} />
                 </div>
                 <button className='p-1 flex items-center text-gray-400
@@ -45,7 +45,10 @@ export default function TargetCard({ uuid, title, type, category, description, s
                                 <span className='font-semibold'>Category: </span>
                                 <span className=''>{category}</span>
                             </div>
-
+                            <div className="w-full flex gap-1">
+                                <span className="font-semibold">Function Group: </span>
+                                <span className="">{functional_group}</span>
+                            </div>
                             <div className='w-full flex gap-1'>
                                 <span className='font-semibold'>Start Date:</span>
                                 <span className=''>{formatDate(start_date)}</span>

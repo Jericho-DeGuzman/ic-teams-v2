@@ -11,7 +11,7 @@ async function loadTarget(uuid) {
     })
     const result = await response.json();
 
-    if (result?.status) return result?.data;
+    if (result?.status == 200) return result?.data;
 }
 
 export default async function OverviewPage({params}) {

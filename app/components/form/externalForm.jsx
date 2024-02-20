@@ -35,10 +35,10 @@ export default function ExternalTargetForm({ onCancel }) {
                 </div>
                 <div className="flex flex-col space-y-1">
                     <label className='text-black flex gap-2 items-center justify-between'>
-                        <span>Company</span>
+                        <span>Entity</span>
                         <span className='flex items-center gap-1'>
                             <input type='checkbox' className='h-4 w-4' onChange={(e) => setTiedToCompany(!tiedToCompany)} />
-                            <span className='italic text-gray-400'>Not tied to specific company</span>
+                            <span className='italic text-gray-400'>Not tied to specific entity</span>
                         </span>
                     </label>
                     <Select placeholder='Select Company' isDisabled={tiedToCompany}/>

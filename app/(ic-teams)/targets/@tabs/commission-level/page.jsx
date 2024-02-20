@@ -3,10 +3,8 @@ import { faMagnifyingGlass, faPlus } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Select from 'react-select'
 import TargetCard from '@/app/components/card/targetCard'
-import style from './target.module.css'
 import { baseUrl } from '@/app/constant/url'
 import AddTargetButton from '@/app/components/button/targetButton'
-
 
 async function loadTargets() {
     const response = await fetch(`${baseUrl}/api/targets?level=commission`, {
@@ -14,12 +12,15 @@ async function loadTargets() {
     })
 
     const result = await response.json();
-    return result?.data;
+    
+    if(result?.status == 200) return result?.data;
 }
 
 export default async function CommissionLevel() {
     // TODO: make separate component for search.
     const targets = await loadTargets();
+
+    if(!targets) return <>No item found.</>
 
     return (
         <section className="w-full min-h-screen p-6 text-[12px]">
@@ -41,7 +42,7 @@ export default async function CommissionLevel() {
                         <TargetCard key={target.uuid} uuid={target.uuid} type={target.type} title={target.title}
                             description={target.description} category={target.category}
                             status={target.status} start_date={target.start_date} end_date={target.end_date}
-                            update_at={target.last_update} progress={target.progress}
+                            update_at={target.last_update} progress={target.progress} functional_group={target.functional_group}
                         />
                     ))}
                 </div>

@@ -6,10 +6,11 @@ import { useState } from "react";
 
 export default function CommentPage() {
     const [showComments, setShowComment] = useState(false);
+
     return (
         <section className="w-full border-[1px] border-gray-400 text-[12px] mt-2">
-            <header className="flex justify-between items-center p-2">
-                <div className="flex w-fullitems-center gap-1 font-semibold">
+            <header className="flex justify-between items-center p-2" onClick={() => setShowComment(!showComments)}>
+                <div className="flex w-fullitems-center gap-1 font-semibold text-black">
                     <FontAwesomeIcon icon={faComment} className="w-4 h-4" />
                     <p>Comments</p>
                 </div>
@@ -37,8 +38,8 @@ export default function CommentPage() {
                         <CommentCard />
                         <CommentCard />
                     </div>
-                    <div className="w-full bg-white">
-                        <textarea placeholder="Aa" className="w-full p-2 outline-none resize-none"/>
+                    <div className="w-full">
+                        <textarea placeholder="Aa" className="w-full p-2 outline-none resize-none bg-white"/>
                     </div>
                 </>
             )}

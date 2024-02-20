@@ -1,19 +1,19 @@
 export default function TasksDummy() {
     return [
         {
-            uuid: '1dahfscyz',
+            uuid: '1dsf23r2',
             tasks: [
                 {
                     uuid: 'ascnpuvn8qncx',
                     title: 'Prototype',
-                    status: 'pending',
+                    status: 'todo',
                     due: '12/29/2023',
                     subtask: []
                 },
                 {
                     uuid: 'qwdbacnapqwfd',
                     title: 'Documentation',
-                    status: 'doing',
+                    status: 'inprogress',
                     due: '12/29/2023',
                     subtask: [] 
                 },
@@ -34,7 +34,7 @@ export default function TasksDummy() {
                 {
                     uuid: 'asdsacasacaswwgba',
                     title: 'Lorem ipsum dolor sit amet, consectetur incididunt ut labore et dolore magna aliqua.',
-                    status: 'revise',
+                    status: 'todo',
                     due: '01/29/2024',
                     subtask: []
                 },
