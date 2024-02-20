@@ -8,14 +8,6 @@
   --background-end-rgb: 255, 255, 255;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
-}
-
 body{
   background-color: #fffffe;
   font-size: 14px;
@@ -89,8 +81,8 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 }
 
 .tooltip {
-  --tooltip-color : #e5e7eb;
-  --tooltip-color-text: #374151; 
+  --tooltip-color : #d1d5db;
+  --tooltip-text-color: #6b7280; 
 }
 
 .tooltip:before {

@@ -1,40 +1,50 @@
-'use client'
-import { faMagnifyingGlass, faPlus } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import Select from 'react-select'
 import TargetCard from '@/app/components/card/targetCard'
 import { baseUrl } from '@/app/constant/url'
 import AddTargetButton from '@/app/components/button/targetButton'
+import { EmptyFolder } from '@/utils/imageUtils'
+import Image from 'next/image'
+import SearchInput from '@/app/components/input/searchInput'
+import SelectInput from '@/app/components/input/selectInput'
 
 async function loadTargets() {
     const response = await fetch(`${baseUrl}/api/targets?level=commission`, {
         method: 'GET',
     })
-
     const result = await response.json();
-    
-    if(result?.status == 200) return result?.data;
+    if (result?.status == 200) return result?.data;
 }
 
 export default async function CommissionLevel() {
     // TODO: make separate component for search.
     const targets = await loadTargets();
 
-    if(!targets) return <>No item found.</>
+    if (!targets.length) {
+        return (
+            <div className='w-full min-h-screen flex items-center justify-center text-gray-400
+            flex-col space-y-2'>
+                <AddTargetButton />
+                <Image src={EmptyFolder} height={72} width={72} alt='icon' />
+                <p>
+                    No available target.
+                </p>
+            </div>
+        )
+    }
 
     return (
         <section className="w-full min-h-screen p-6 text-[12px]">
             <AddTargetButton />
             <header className='flex w-full gap-2 items-center text-gray-400'>
                 <span className='text-[14px]'>Filter:</span>
-                <div className='w-3/12 flex border-[1px] border-gray-300 p-1 rounded-md gap-1 
-                    focus-within:border-blue-500 duration-200 focus-within:border-2'>
-                    <FontAwesomeIcon icon={faMagnifyingGlass} className='p-2 h-3 w-3' />
-                    <input type='text' className='bg-transparent w-10/12 outline-none border-l-[1px] border-gray-300 p-1 text-black'
-                        placeholder='Search' />
+                <div className='w-3/12'>
+                    <SearchInput placeholder={'Search target'}/>
                 </div>
-                <Select placeholder={'Target Category'} className='w-3/12' />
-                <Select placeholder={'Target Status'} className='w-3/12' />
+                <div className='w-3/12'>
+                    <SelectInput placeholder={'Target Catergory'}/>
+                </div>
+                <div className='w-3/12'>
+                    <SelectInput placeholder={"Target Status"} />
+                </div>
             </header>
             <main className='min-h-screen w-full my-4 border-gray-400'>
                 <div className={`w-full target-container`}>
