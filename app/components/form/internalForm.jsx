@@ -18,14 +18,14 @@ export default function InternalTargetForm({ onCancel }) {
                     <label className='text-black'>Title</label>
                     <input type='text' className='p-[9px] rounded-md bg-transparent border-[1px] border-gray-300
                     outline-none focus:border-blue-500 focus:border-2 duration-100'
-                        placeholder='Target Title' />
+                        placeholder='Add title' />
                 </div>
             </div>
             <div className='w-full space-y-1'>
                 <label className='text-black'>Description</label>
                 <textarea className='w-full min-h-32 max-h-32 resize-none bg-transparent border-[1px] border-gray-300
                     rounded-md focus:border-2 focus:border-blue-500 duration-100 outline-none p-2'
-                    placeholder='Target Description' />
+                    placeholder='Add description' />
             </div>
             <div className='w-full space-y-1'>
                 <label className='text-black'>Division/Distribution Group</label>

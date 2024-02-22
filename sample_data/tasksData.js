@@ -13,7 +13,7 @@ export default function TasksDummy() {
                 {
                     uuid: 'qwdbacnapqwfd',
                     title: 'Documentation',
-                    status: 'inprogress',
+                    status: 'todo',
                     due: '12/29/2023',
                     subtask: [] 
                 },

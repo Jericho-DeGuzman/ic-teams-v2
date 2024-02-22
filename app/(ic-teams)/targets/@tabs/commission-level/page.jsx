@@ -1,5 +1,4 @@
 import TargetCard from '@/app/components/card/targetCard'
-import { baseUrl } from '@/app/constant/url'
 import AddTargetButton from '@/app/components/button/targetButton'
 import { EmptyFolder } from '@/utils/imageUtils'
 import Image from 'next/image'
@@ -7,7 +6,7 @@ import SearchInput from '@/app/components/input/searchInput'
 import SelectInput from '@/app/components/input/selectInput'
 
 async function loadTargets() {
-    const response = await fetch(`${baseUrl}/api/targets?level=commission`, {
+    const response = await fetch(`${process.env.BASE_URL}/api/targets?level=commission`, {
         method: 'GET',
     })
     const result = await response.json();

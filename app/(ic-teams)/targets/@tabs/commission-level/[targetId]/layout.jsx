@@ -1,7 +1,7 @@
 'use client'
 import { useState } from "react"
 
-export default function CommissionTargetLayout({ children, title, overview, comments, task, activity, member }) {
+export default function CommissionTargetLayout({ children, title, overview, comments, task, activity, member, modal }) {
     const [activeTabs, setActiveTabs] = useState('task')
 
     return (
@@ -40,6 +40,7 @@ export default function CommissionTargetLayout({ children, title, overview, comm
                     </main>
                 </main>
             </div>
+            {modal}
         </section>
     )
 }

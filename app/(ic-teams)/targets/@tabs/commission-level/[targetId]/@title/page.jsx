@@ -1,9 +1,8 @@
-import { baseUrl } from "@/app/constant/url";
 import TargetTitleHeader from "@/app/components/header/targetTitleHeader";
 
-async function loadTitle(id) {
+async function loadTitle(uuid) {
     try {
-        const response = await fetch(`${baseUrl}/api/targets?id=${id}`, {
+        const response = await fetch(`${process.env.BASE_URL}/api/targets?id=${uuid}`, {
             method: 'get',
         })
 
@@ -12,7 +11,7 @@ async function loadTitle(id) {
 
         //TODO: handle it properly
         if (status !== 200) console.log(result)
-        
+
         return data;
 
     } catch (error) {
@@ -21,10 +20,10 @@ async function loadTitle(id) {
 }
 
 export default async function TitlePage({ params }) {
-    const {id} = params;
-    const target = await loadTitle(id);
+    const { targetId } = params;
+    const target = await loadTitle(targetId);
 
     return (
-        <TargetTitleHeader key={id} uuid={id} title={target?.title}/>
+        <TargetTitleHeader key={targetId} uuid={targetId} title={target?.title} />
     )
 }

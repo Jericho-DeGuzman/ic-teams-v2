@@ -6,7 +6,7 @@ import { baseUrl } from "@/app/constant/url";
 
 //TODO: Create a better data fetching and connect to IC microservice.
 async function loadTarget(uuid) {
-    const response = await fetch(`${baseUrl}/api/targets?id=${uuid}`, {
+    const response = await fetch(`${process.env.BASE_URL}/api/targets?id=${uuid}`, {
         method: 'get'
     })
     const result = await response.json();
@@ -15,7 +15,7 @@ async function loadTarget(uuid) {
 }
 
 export default async function OverviewPage({params}) {
-    const target = await loadTarget(params.id);
+    const target = await loadTarget(params.targetId);
 
     return (
         <section className="text-[12px] border-[1px] border-gray-400 text-black">
