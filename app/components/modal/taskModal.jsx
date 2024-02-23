@@ -29,7 +29,7 @@ export default function TargetTaskModal() {
                             duration: 0.15,
                         },
                     }}
-                    className="modal-box w-full max-w-2xl bg-white">
+                    className="p-4 rounded-md w-full max-w-2xl bg-white">
                     <header className="py-2">
                         <h1 className="font-semibold text-blue-500">Create Task</h1>
                     </header>

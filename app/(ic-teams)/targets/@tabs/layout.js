@@ -8,7 +8,7 @@ import { AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-export default function TargetTabsLayout({ children }) {
+export default function TargetTabsLayout({ children, modal }) {
     const pathname = usePathname();
     const optionModal = useAppSelector(state => state.targetFormSlice.option); // hold the value if option for external and internal form is open.
     const internalModal = useAppSelector(state => state.targetFormSlice.internal); // hold the value if external modal is open.
@@ -50,6 +50,7 @@ export default function TargetTabsLayout({ children }) {
                 </Link>
             </header>
             <main className="w-full min-h-screen border-gray-400" style={{ borderWidth: '1px' }}>
+                {modal}
                 {children}
             </main>
         </section>

@@ -21,7 +21,7 @@ export default async function CommissionLevel() {
         return (
             <div className='w-full min-h-screen flex items-center justify-center text-gray-400
             flex-col space-y-2'>
-                <AddTargetButton />
+                <AddTargetButton key={'add-button'}/>
                 <Image src={EmptyFolder} height={72} width={72} alt='icon' />
                 <p>
                     No available target.
@@ -32,17 +32,17 @@ export default async function CommissionLevel() {
 
     return (
         <section className="w-full min-h-screen p-6 text-[12px]">
-            <AddTargetButton />
+            <AddTargetButton key={'add-button'} />
             <header className='flex w-full gap-2 items-center text-gray-400'>
                 <span className='text-[14px]'>Filter:</span>
                 <div className='w-3/12'>
-                    <SearchInput placeholder={'Search target'}/>
+                    <SearchInput key={'filter_search'} placeholder={'Search target'}/>
                 </div>
                 <div className='w-3/12'>
-                    <SelectInput placeholder={'Target Catergory'}/>
+                    <SelectInput key={'filter_catergory'} placeholder={'Target Catergory'}/>
                 </div>
                 <div className='w-3/12'>
-                    <SelectInput placeholder={"Target Status"} />
+                    <SelectInput key={'filter_status'} placeholder={"Target Status"} />
                 </div>
             </header>
             <main className='min-h-screen w-full my-4 border-gray-400'>

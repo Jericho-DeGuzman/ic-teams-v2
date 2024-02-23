@@ -44,7 +44,7 @@ export default function OptionModal({ onclose }) {
                             duration: 0.01,
                         },
                     }}
-                    className="modal-box bg-white w-4/12 max-w-sm space-y-2">
+                    className="p-4 rounded-md bg-white w-4/12 max-w-sm space-y-2">
                     <header className="text-[14px] font-semibold flex justify-between w-full items-center">
                         <div className="text-blue-500">Create Target</div>
                         <div className="w-4 h-4 p-3 flex items-center justify-center rounded-full

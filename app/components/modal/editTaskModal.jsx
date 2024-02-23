@@ -1,0 +1,121 @@
+'use client'
+import TargetStatusLabel from "@/app/components/label/targetStatus";
+import Modal from "@/app/components/modal/modal";
+import { DefaultPhoto, ICLogo } from "@/utils/imageUtils";
+import { faCalendar, faClose } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { motion } from "framer-motion";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import SubtaskTab from "../tab/SubtaskTab";
+import AttachmentTab from "../tab/attachmentTab";
+
+//TODO: Create a client side component for modal.
+//TODO: Re-create the ui for status, assigne to and due date.
+
+export default function EditTaskModal() {
+    const router = useRouter();
+    const [visibleTab, setVisibleTab] = useState('subtask')
+
+    return (
+        <Modal>
+            <motion.div className="modal modal-open">
+                <motion.div
+                    initial={{
+                        opacity: 0,
+                        scale: 0.75
+                    }}
+                    animate={{
+                        scale: 1,
+                        opacity: 1,
+                        rotate: 0,
+                        transition: {
+                            ease: 'easeOut',
+                            duration: 0.15
+                        }
+                    }}
+                    exit={{
+                        opacity: 0,
+                        scale: 0.75,
+                        transition: {
+                            ease: "easeIn",
+                            duration: 0.15,
+                        },
+                    }}
+                    className="bg-white rounded-md w-full max-w-5xl">
+                    <header className="w-full px-4 py-2 flex items-center justify-between border-b-[1px] border-gray-300 text-[12px]">
+                        <div className="flex items-center justify-center text-black p-1 gap-2">
+                            <Image src={ICLogo} height={24} width={24} alt="logo" />
+                        </div>
+                        <button onClick={() => router.back()}
+                            className="flex p-1 items-center justify-center rounded-full hover:bg-gray-200 hover:text-blue-500 duration-200">
+                            <FontAwesomeIcon icon={faClose} className="w-5 h-5" />
+                        </button>
+                    </header>
+                    <section className="w-full grid grid-cols-4 text-black text-[12px]">
+                        <main className="col-span-3 p-4 space-y-2">
+                            <div className="space-y-4">
+                                <input type="text" value={'Documentation'}
+                                    className="w-full outline-none bg-transparent text-[24px] font-bold" />
+                                <div className="grid grid-cols-3 gap-2">
+                                    <div className="cols-span-1">
+                                        <div className="flex flex-col">
+                                            <label>Status</label>
+                                            <div className="bg-yellow-400 w-6/12 p-[3px] flex items-center justify-center text-white rounded-sm gap-1">
+                                                <FontAwesomeIcon icon={faCalendar} className="w-3 h-3" />
+                                                <span className="flex items-center justify-center">
+                                                    To-Do
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="cols-span-1">
+                                        <div className="flex flex-col">
+                                            <label>Assigned to</label>
+                                            <div className='flex items-baseline avatar-group -space-x-[8px] rtl:space-x-reverse'>
+                                                <div className='rounded-full h-6 w-6 flex items-center justify-center border-white border-[1px]'>
+                                                    <Image src={DefaultPhoto} width={24} height={24} alt='profile'
+                                                        className="tooltip tooltip-bottom" data-tip="Jericho De Guzman" />
+                                                </div>
+                                                <div className='rounded-full h-6 w-6 flex items-center justify-center border-white border-[1px]
+                                                tooltip tooltip-bottom'>
+                                                    <Image src={DefaultPhoto} width={24} height={24} alt='profile' />
+                                                </div>
+                                                <div className='rounded-full h-6 w-6 flex items-center justify-center border-white border-[1px]
+                                                tooltip tooltip-bottom'>
+                                                    <Image src={DefaultPhoto} width={24} height={24} alt='profile' />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="cols-span-1">
+                                        <div className="flex flex-col">
+                                            <label>Due Date</label>
+                                            <span className="flex items-center">March 03 2024</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <textarea value={'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'}
+                                    className="bg-transparent outline-none w-full resize-none rounded-md border-[1px] border-gray-300 p-2" />
+                            </div>
+                            <div className="w-full">
+                                <div className="w-full flex gap-2 text-gray-400 border-gray-300 font-semibold text-[14px]">
+                                    <button className={`p-2 ${visibleTab == 'subtask' && 'text-blue-500 border-blue-500 border-b-[1px] transition-[border] duration-200'} cursor-pointer`}
+                                        onClick={() => setVisibleTab('subtask')}>Subtask</button>
+                                    <button className={`p-2 ${visibleTab == 'attachment' && 'text-blue-500 border-blue-500 border-b-[1px] transition-[border] duration-200'} cursor-pointer`}
+                                        onClick={() => setVisibleTab('attachment')}>Attachment</button>
+                                </div>
+                                {visibleTab == 'subtask' && <SubtaskTab key={'subtask'} />}
+                                {visibleTab == 'attachment' && <AttachmentTab key={'attachment'} />}
+                            </div>
+                        </main>
+                        <aside className="col-span-1 p-4 border-l-[1px] border-gray-300">
+                            aside
+                        </aside>
+                    </section>
+                </motion.div>
+            </motion.div>
+        </Modal>
+    )
+}

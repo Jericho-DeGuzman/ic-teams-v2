@@ -39,7 +39,7 @@ export default function InternalTargetModal() {
                             duration: 0.15,
                         },
                     }}
-                    className="modal-box w-full max-w-5xl bg-white">
+                    className="p-4 rounded-md w-full max-w-5xl bg-white">
                     <header className="w-full p-2">
                         <h1 className="text-[14px] font-semibold text-blue-500">Create Internal Target</h1>
                     </header>

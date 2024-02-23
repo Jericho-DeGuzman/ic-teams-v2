@@ -12,7 +12,7 @@ const TaskCard = memo(({ uuid, title, due }) => {
     const [visible, setVisible] = useState(false);
 
     return (
-        <Link href={`/targets/commission-level/t/${uuid}`}>
+        <Link href={`/targets/t/${uuid}`}>
             <section className={`w-full p-2 active:animate-pulse
             active:cursor-grabbing active:duration-70 rounded-md text-[12px] bg-white cursor-grab text-black`}
                 draggable="true"

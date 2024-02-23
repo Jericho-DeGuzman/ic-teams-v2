@@ -28,7 +28,7 @@ export default function TargetTaskForm() {
                                         p-2 rounded-md outline-none"/>
                 </div>
                 <div className="flex flex-col">
-                    <label className="text-black">Member</label>
+                    <label className="text-black">Assignees</label>
                     <Select placeholder="Assign member" />
                 </div>
             </div>
