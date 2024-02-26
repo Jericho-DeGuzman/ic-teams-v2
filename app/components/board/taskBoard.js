@@ -14,7 +14,7 @@ const TaskBoard = memo(({ title, id, cards, onDrop }) => {
     return (
         <section className='w-[25%] min-h-screen z-10'>
             {id == 'todo' ? (
-                <header className={`w-full text-[12px] p-2 rounded-t-md text-center font-semibold text-white bg-blue-500
+                <header key={'todo-header'} className={`w-full text-[12px] p-2 rounded-t-md text-center font-semibold text-white bg-blue-500
                     grid grid-cols-3 gap-1`}>
                     <button className="flex justify-start items-center" onClick={() => dispatch(openTaskForm())}>
                         <div className="flex items-center justify-center tooltip tooltip-right" data-tip="add new task.">
@@ -28,7 +28,7 @@ const TaskBoard = memo(({ title, id, cards, onDrop }) => {
                     </div>
                 </header>
             ) : (
-                <header className={`w-full text-[12px] p-2 rounded-t-md text-center font-semibold text-white bg-blue-500
+                <header key={'taskboard-header'} className={`w-full text-[12px] p-2 rounded-t-md text-center font-semibold text-white bg-blue-500
                     flex items-center justify-center`}>
                     <div className="flex items-center justify-center gap-1 p-1">
                         <span>{title}</span>
@@ -37,7 +37,7 @@ const TaskBoard = memo(({ title, id, cards, onDrop }) => {
                 </header>
             )}
             {cards.length ? (
-                <main className='w-full p-2 bg-gray-200 h-screen rounded-b-md' style={{ borderWidth: '1px' }}>
+                <main key={'main-taskboard'} className='w-full p-2 bg-gray-200 h-screen rounded-b-md' style={{ borderWidth: '1px' }}>
                     {cards.map((task, index) => (
                         <>
                             <TaskDropArea onDrop={() => onDrop(id, 0)} />
@@ -50,7 +50,7 @@ const TaskBoard = memo(({ title, id, cards, onDrop }) => {
                     }
                 </main>
             ) : (
-                <main className="w-full p-2 bg-gray-200 h-screen rounded-b-md flex items-center">
+                <main key={'main-empty'} className="w-full p-2 bg-gray-200 h-screen rounded-b-md flex items-center">
                     <TaskEmptyDropArea onDrop={() => onDrop(id, 0)}/>
                 </main>
             )}

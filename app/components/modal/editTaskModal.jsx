@@ -44,6 +44,7 @@ export default function EditTaskModal() {
                         },
                     }}
                     className="bg-white rounded-md w-full max-w-5xl">
+
                     <header className="w-full px-4 py-2 flex items-center justify-between border-b-[1px] border-gray-300 text-[12px]">
                         <div className="flex items-center justify-center text-black p-1 gap-2">
                             <Image src={ICLogo} height={24} width={24} alt="logo" />
@@ -53,12 +54,14 @@ export default function EditTaskModal() {
                             <FontAwesomeIcon icon={faClose} className="w-5 h-5" />
                         </button>
                     </header>
+
                     <section className="w-full grid grid-cols-4 text-black text-[12px]">
                         <main className="col-span-3 p-4 space-y-2">
                             <div className="space-y-4">
                                 <input type="text" value={'Documentation'}
                                     className="w-full outline-none bg-transparent text-[24px] font-bold" />
                                 <div className="grid grid-cols-3 gap-2">
+
                                     <div className="cols-span-1">
                                         <div className="flex flex-col">
                                             <label>Status</label>
@@ -70,6 +73,7 @@ export default function EditTaskModal() {
                                             </div>
                                         </div>
                                     </div>
+                                    
                                     <div className="cols-span-1">
                                         <div className="flex flex-col">
                                             <label>Assigned to</label>
@@ -79,7 +83,7 @@ export default function EditTaskModal() {
                                                         className="tooltip tooltip-bottom" data-tip="Jericho De Guzman" />
                                                 </div>
                                                 <div className='rounded-full h-6 w-6 flex items-center justify-center border-white border-[1px]
-                                                tooltip tooltip-bottom'>
+                                                tooltip tooltip-bottom' data-tip="Jericho De Guzman">
                                                     <Image src={DefaultPhoto} width={24} height={24} alt='profile' />
                                                 </div>
                                                 <div className='rounded-full h-6 w-6 flex items-center justify-center border-white border-[1px]
@@ -88,18 +92,21 @@ export default function EditTaskModal() {
                                                 </div>
                                             </div>
                                         </div>
+
                                     </div>
+
                                     <div className="cols-span-1">
                                         <div className="flex flex-col">
                                             <label>Due Date</label>
                                             <span className="flex items-center">March 03 2024</span>
                                         </div>
                                     </div>
+
                                 </div>
                                 <textarea value={'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'}
                                     className="bg-transparent outline-none w-full resize-none rounded-md border-[1px] border-gray-300 p-2" />
                             </div>
-                            <div className="w-full">
+                            <div className="w-full space-y-4">
                                 <div className="w-full flex gap-2 text-gray-400 border-gray-300 font-semibold text-[14px]">
                                     <button className={`p-2 ${visibleTab == 'subtask' && 'text-blue-500 border-blue-500 border-b-[1px] transition-[border] duration-200'} cursor-pointer`}
                                         onClick={() => setVisibleTab('subtask')}>Subtask</button>
@@ -111,7 +118,7 @@ export default function EditTaskModal() {
                             </div>
                         </main>
                         <aside className="col-span-1 p-4 border-l-[1px] border-gray-300">
-                            aside
+
                         </aside>
                     </section>
                 </motion.div>
