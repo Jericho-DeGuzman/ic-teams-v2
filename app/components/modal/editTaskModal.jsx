@@ -50,7 +50,7 @@ export default function EditTaskModal() {
                             <Image src={ICLogo} height={24} width={24} alt="logo" />
                         </div>
                         <button onClick={() => router.back()}
-                            className="flex p-1 items-center justify-center rounded-full hover:bg-gray-200 hover:text-blue-500 duration-200">
+                            className="flex p-1 items-center justify-center rounded-full hover:bg-gray-200 hover:text-blue-500 duration-200 tooltip" data-tip="Close">
                             <FontAwesomeIcon icon={faClose} className="w-5 h-5" />
                         </button>
                     </header>
@@ -73,22 +73,21 @@ export default function EditTaskModal() {
                                             </div>
                                         </div>
                                     </div>
-                                    
+
                                     <div className="cols-span-1">
                                         <div className="flex flex-col">
                                             <label>Assigned to</label>
-                                            <div className='flex items-baseline avatar-group -space-x-[8px] rtl:space-x-reverse'>
-                                                <div className='rounded-full h-6 w-6 flex items-center justify-center border-white border-[1px]'>
-                                                    <Image src={DefaultPhoto} width={24} height={24} alt='profile'
-                                                        className="tooltip tooltip-bottom" data-tip="Jericho De Guzman" />
+                                            <div className='flex gap-1'>
+                                                <div className='rounded-full h-6 w-6 flex items-center justify-center border-white border-[1px] cursor-pointer'>
+                                                    <Image src={DefaultPhoto} width={36} height={36} alt='profile' />
                                                 </div>
-                                                <div className='rounded-full h-6 w-6 flex items-center justify-center border-white border-[1px]
+                                                <div className='rounded-full h-6 w-6 flex items-center justify-center border-white border-[1px] cursor-pointer
                                                 tooltip tooltip-bottom' data-tip="Jericho De Guzman">
-                                                    <Image src={DefaultPhoto} width={24} height={24} alt='profile' />
+                                                    <Image src={DefaultPhoto} width={36} height={36} alt='profile' />
                                                 </div>
-                                                <div className='rounded-full h-6 w-6 flex items-center justify-center border-white border-[1px]
+                                                <div className='rounded-full h-6 w-6 flex items-center justify-center border-white border-[1px] cursor-pointer
                                                 tooltip tooltip-bottom'>
-                                                    <Image src={DefaultPhoto} width={24} height={24} alt='profile' />
+                                                    <Image src={DefaultPhoto} width={36} height={36} alt='profile' />
                                                 </div>
                                             </div>
                                         </div>
