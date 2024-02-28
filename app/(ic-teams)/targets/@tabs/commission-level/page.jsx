@@ -17,7 +17,7 @@ export default async function CommissionLevel() {
     // TODO: make separate component for search.
     const targets = await loadTargets();
 
-    if (!targets.length) {
+    if (!targets || !targets.length) {
         return (
             <div className='w-full min-h-screen flex items-center justify-center text-gray-400
             flex-col space-y-2'>

@@ -12,7 +12,6 @@ const initialNewSubtask = {
 }
 
 export default function SubtaskTab() {
-    const [saveVisible, setSaveVisible] = useState(false);
     const [subtasks, setSubtasks] = useState([]);
 
     const [newSubtask, setNewSubtask] = useState(initialNewSubtask)
@@ -51,8 +50,7 @@ export default function SubtaskTab() {
                 )}
             </div>
             <div className="grid grid-cols-12 gap-1 p-2 border-t-[1px] border-gray-300">
-                <div className="col-span-11 flex items-center gap-1"
-                    onFocus={() => setSaveVisible(true)} onBlur={() => setSaveVisible(false)}>
+                <div className="col-span-11 flex items-center gap-1">
                     <div className="w-4 h-4 flex items-center justify-center">
                         <FontAwesomeIcon icon={faPlus} className="w-3 h-3 text-gray-400" />
                     </div>
@@ -60,8 +58,8 @@ export default function SubtaskTab() {
                         value={newSubtask.title} onChange={onChangeHandler} />
                 </div>
                 <div className="col-span-1 flex items-cente justify-end">
-                    <button className={`bg-blue-500 text-white py-1 px-2 rounded-sm ${!saveVisible && 'invisible'} duration-300 ${newSubtask.title == '' && 'bg-gray-300'}`}
-                        onClick={onSaveHandler} disabled={newSubtask.title == ''}>
+                    <button className={`bg-blue-500 text-white py-1 px-2 rounded-sm ${newSubtask.title == '' && 'invisible'} duration-300`}
+                        onClick={onSaveHandler}>
                         Save
                     </button>
                 </div>

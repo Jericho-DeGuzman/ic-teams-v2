@@ -1,5 +1,5 @@
 export const metadata = {
-    title: 'Target'
+    title: 'Targets'
 }
 
 export default function TargetLayout({ children, tabs,  }) {

@@ -10,6 +10,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import SubtaskTab from "../tab/SubtaskTab";
 import AttachmentTab from "../tab/attachmentTab";
+import TaskCommentSection from "../section/taskCommentSection";
 
 //TODO: Create a client side component for modal.
 //TODO: Re-create the ui for status, assigne to and due date.
@@ -64,28 +65,30 @@ export default function EditTaskModal() {
 
                                     <div className="cols-span-1">
                                         <div className="flex flex-col">
-                                            <label>Status</label>
-                                            <div className="bg-yellow-400 w-6/12 p-[3px] flex items-center justify-center text-white rounded-sm gap-1">
-                                                <FontAwesomeIcon icon={faCalendar} className="w-3 h-3" />
-                                                <span className="flex items-center justify-center">
-                                                    To-Do
-                                                </span>
+                                            <label className="p-1">Status</label>
+                                            <div className="w-full p-1 rounded-md">
+                                                <div className="bg-yellow-400 w-6/12 p-[3px] flex items-center justify-center text-white rounded-sm gap-1">
+                                                    <FontAwesomeIcon icon={faCalendar} className="w-3 h-3" />
+                                                    <span className="flex items-center justify-center">
+                                                        To-Do
+                                                    </span>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
 
                                     <div className="cols-span-1">
                                         <div className="flex flex-col">
-                                            <label>Assigned to</label>
-                                            <div className='flex gap-1'>
-                                                <div className='rounded-full h-6 w-6 flex items-center justify-center border-white border-[1px] cursor-pointer'>
+                                            <label className="p-1">Assigned to</label>
+                                            <div className='flex gap-1 p-1 rounded-md items-center hover:bg-gray-200 duration-300'>
+                                                <div className='rounded-full h-7 w-7 flex items-center justify-center border-white border-[1px] cursor-pointer'>
                                                     <Image src={DefaultPhoto} width={36} height={36} alt='profile' />
                                                 </div>
-                                                <div className='rounded-full h-6 w-6 flex items-center justify-center border-white border-[1px] cursor-pointer
+                                                <div className='rounded-full h-7 w-7 flex items-center justify-center border-white border-[1px] cursor-pointer
                                                 tooltip tooltip-bottom' data-tip="Jericho De Guzman">
                                                     <Image src={DefaultPhoto} width={36} height={36} alt='profile' />
                                                 </div>
-                                                <div className='rounded-full h-6 w-6 flex items-center justify-center border-white border-[1px] cursor-pointer
+                                                <div className='rounded-full h-7 w-7 flex items-center justify-center border-white border-[1px] cursor-pointer
                                                 tooltip tooltip-bottom'>
                                                     <Image src={DefaultPhoto} width={36} height={36} alt='profile' />
                                                 </div>
@@ -96,8 +99,10 @@ export default function EditTaskModal() {
 
                                     <div className="cols-span-1">
                                         <div className="flex flex-col">
-                                            <label>Due Date</label>
-                                            <span className="flex items-center">March 03 2024</span>
+                                            <label className="p-1">Due Date</label>
+                                            <div className="w-full p-1 flex items-center">
+                                                <input type="date" className="py-1 bg-transparent outline-none cursor-pointer" />
+                                            </div>
                                         </div>
                                     </div>
 
@@ -116,8 +121,9 @@ export default function EditTaskModal() {
                                 {visibleTab == 'attachment' && <AttachmentTab key={'attachment'} />}
                             </div>
                         </main>
-                        <aside className="col-span-1 p-4 border-l-[1px] border-gray-300">
 
+                        <aside className="col-span-1 p-2 border-l-[1px] border-gray-300 flex flex-col">
+                            <TaskCommentSection />
                         </aside>
                     </section>
                 </motion.div>
