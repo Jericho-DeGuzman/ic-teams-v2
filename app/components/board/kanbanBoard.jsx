@@ -1,10 +1,7 @@
 'use client'
-
 import { useEffect, useState } from "react"
 import TaskBoard from "./taskBoard";
 import { useKanbanStore } from "@/app/zustand/kanban-store";
-import Image from "next/image";
-import { EmptyFolder } from "@/utils/imageUtils";
 import { moveCardTask } from "@/utils/moveCardTaks";
 import { useAppSelector } from "@/app/redux/hooks";
 import TargetTaskModal from "../modal/taskModal";

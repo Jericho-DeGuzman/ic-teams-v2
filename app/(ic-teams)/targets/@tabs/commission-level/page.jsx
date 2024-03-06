@@ -47,8 +47,8 @@ export default async function CommissionLevel() {
             </header>
             <main className='min-h-screen w-full my-4 border-gray-400'>
                 <div className={`w-full target-container`}>
-                    {targets.map((target) => (
-                        <TargetCard key={target.uuid} uuid={target.uuid} type={target.type} title={target.title}
+                    {targets.map((target, index) => (
+                        <TargetCard key={index} uuid={target.uuid} type={target.type} title={target.title}
                             description={target.description} category={target.category}
                             status={target.status} start_date={target.start_date} end_date={target.end_date}
                             update_at={target.last_update} progress={target.progress} functional_group={target.functional_group}

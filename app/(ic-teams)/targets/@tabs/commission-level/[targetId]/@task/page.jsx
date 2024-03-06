@@ -22,6 +22,7 @@ async function loadTask(uuid) {
         tasks.tasks.map((task) => {
             sorted[task.status].push(task);
         })
+
     } catch (error) {
         console.log(error);
     } finally {
@@ -32,7 +33,6 @@ async function loadTask(uuid) {
 export default async function TaskPage({ params }) {
     const { targetId } = params;
     const tasks = await loadTask(targetId);
-
     // check if cards or tasks is empty.
     // if (!tasks) {
     //     return (
