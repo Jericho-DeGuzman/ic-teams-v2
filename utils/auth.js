@@ -18,6 +18,6 @@ export default function authenticate() {
 
     // check if user device has the same ip with token.
     if (userIp !== ip) return false;
-
+    
     return true;
 }

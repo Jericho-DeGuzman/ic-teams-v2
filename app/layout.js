@@ -4,6 +4,7 @@ import Siderbar from "./components/navigation/sidebar";
 import ReduxProvider from "./redux/ReduxProvider";
 import Navbar from "./components/navigation/navbar";
 import authenticate from "@/utils/auth";
+import { permanentRedirect } from "next/navigation";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -12,18 +13,6 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
-  const isAuth = authenticate();
-
-  if (!isAuth) {
-    return (
-      <div className="w-full flex min-h-screen items-center justify-center">
-        <h1 className="font-semibold">
-          Unauthorized Access
-        </h1>
-      </div>
-    )
-  };
-
   return (
     <html lang="en">
       <body className={inter.className}>
