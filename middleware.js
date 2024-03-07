@@ -20,10 +20,10 @@ export async function middleware(request) {
         return response;
     }       
 
-    if (pathname === '/') { return NextResponse.redirect(new URL('/dashboard', request.url)) };
+    if (pathname === '/' || pathname === '') { return NextResponse.redirect(new URL('/dashboard', request.url)) };
     if (pathname === '/targets') { return NextResponse.redirect(new URL('/targets/commission-level', request.url)) }
 }
 
 export const config = {
-    matcher: ['/', '/dashboard', '/targets', '/api/users']
+    matcher: ['/', '/dashboard', '/targets']
 }

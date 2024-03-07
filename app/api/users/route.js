@@ -20,7 +20,7 @@ export async function GET() {
         const decryptedToken = decryptToken(encryptedToken);
 
         const { token } = decryptedToken;
-        console.log(token)
+        
         const microservice = microserviceCaller(token);
         //fetch to ic microservice
         const response = await microservice.get(`/core-v3/users?app_id=${process.env.APP_ID}`);
