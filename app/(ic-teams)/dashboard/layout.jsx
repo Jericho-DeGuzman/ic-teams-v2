@@ -15,10 +15,7 @@ export default function DashboardLayout({ children, welcome, targetSummary }) {
     return (
         <section className="w-full min-h-screen text-black">
             <header className="w-full p-4 grid lg:grid-cols-3 gap-2">
-                <div className="w-full flex gap-2 items-center col-span-1">
-                    <div className="w-[48px] h-[48px] rounded-full flex items-center justify-center">
-                        <Image src={DefaultPhoto} height={48} width={48} alt="profile" className="rounded-full" />
-                    </div>
+                <div className="w-full flex gap-4 items-center col-span-1">
                     {welcome}
                 </div>
                 <div className="col-span-2">

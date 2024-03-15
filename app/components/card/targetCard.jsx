@@ -10,13 +10,13 @@ import Link from "next/link";
 import WatchlistButton from "../button/watchlist";
 
 export default function TargetCard({ uuid, title, type, category, description, status, start_date, end_date, update_at, progress,
-    functional_group }) {
+    functional_group, watchlist }) {
     return (
         <section className='w-full border-[1px] rounded-md text-black
             hover:border-blue-500 hover:scale-[1.03] duration-300 cursor-pointer'>
             <header className='flex p-2 items-center justify-between border-b-[1px]'>
                 <div className='flex items-center gap-1'>
-                    <WatchlistButton key={'watchlist-button'} />
+                    <WatchlistButton key={'watchlist-button'} visible={watchlist} />
                     <TargetTypeLabel key={type} type={type} />
                 </div>
                 <button className='p-1 flex items-center text-gray-400
@@ -34,19 +34,19 @@ export default function TargetCard({ uuid, title, type, category, description, s
                     </p>
                     <div className='w-full flex gap-2 text-[12px]'>
                         <div className='p-2 border-[1px] rounded-md w-4/12 flex justify-center items-center'>
-                            <RadialProgress key={progress} status={status} progress={progress} />
+                            <RadialProgress key={progress} status={status.color} progress={progress} />
                         </div>
                         <div className='flex-1 space-y-1 p-2'>
                             <div className="w-full flex gap-1">
                                 <span className="font-semibold">Status:</span>
-                                <TargetStatusLabel key={status} status={status} />
+                                <TargetStatusLabel key={status.id} status={status} />
                             </div>
                             <div className='w-full flex gap-1'>
                                 <span className='font-semibold'>Category: </span>
                                 <span className=''>{category}</span>
                             </div>
                             <div className="w-full flex gap-1">
-                                <span className="font-semibold">Function Group: </span>
+                                <span className="font-semibold">Functional Group: </span>
                                 <span className="">{functional_group}</span>
                             </div>
                             <div className='w-full flex gap-1'>

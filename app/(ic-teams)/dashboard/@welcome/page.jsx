@@ -1,15 +1,13 @@
 import { decryptToken } from "@/utils/cryptoJs";
-import { redirect } from "next/dist/server/api-utils";
 import { cookies } from "next/headers";
 import { permanentRedirect } from "next/navigation";
 import microserviceCaller from "../../lib/ApiCaller/microserviceCaller";
+import AvatarLg from "@/app/components/avatar/avatarLg";
+import { Suspense } from "react";
 
 // get user information.
 async function loadUser() {
     const at = cookies().get('at').value;
-
-    if (!at) permanentRedirect('/unauthorized');
-
     try {
         // decrypt token
         const decryptedToken = decryptToken(at);
@@ -17,15 +15,16 @@ async function loadUser() {
 
         const microservice = microserviceCaller(token);
 
-        const response = await microservice.get(`/core-v3/users?app_id=${process.env.APP_ID}`);
+        const response = await microservice.get(`/core-v3/users`, {
+            params: { 'app_id': process.env.APP_ID }
+        });
 
-        const { first_name, last_name } = response.data;
+        const { first_name, last_name, profile_pic_id } = response.data;
 
-        return { first_name, last_name };
+        return { first_name, last_name, profile_pic_id };
 
     } catch (error) {
-        if (error?.response?.status == 401) return 'unauthorized';
-        throw new Error ('something went wrong!') //TODO: handle this error properly.
+        throw new Error(error?.response?.data) //TODO: handle this error properly.
     }
 }
 
@@ -35,13 +34,18 @@ export default async function WelcomePage() {
 
     if (loadedUser == 'unauthorized') permanentRedirect('/unauthorized')
 
-    const { first_name, last_name } = loadedUser || {};
+    const { first_name, last_name, profile_pic_id } = loadedUser || {};
     const username = `${first_name || ''} ${last_name || ''}`;
 
     return (
-        <div>
-            <h1 className="text-[24px] font-bold">Hi, {username} 👋 </h1>
-            <p className="text-gray-400 text-[12px]">Let&apos;s track you Daily Tasks & Targets.</p>
-        </div>
+        <>
+            <Suspense fallback={<div className="w-[72px] h-[72px] bg-gray-300 animate-pulse duration-300 rounded-full" />}>
+                <AvatarLg key={0} id={profile_pic_id} />
+            </Suspense>
+            <div>
+                <h1 className="text-[24px] font-bold">Hi, {username} 👋 </h1>
+                <p className="text-gray-400 text-[12px]">Let&apos;s track you Daily Tasks & Targets.</p>
+            </div>
+        </>
     )
 }

@@ -2,7 +2,8 @@ import { configureStore } from '@reduxjs/toolkit';
 import sidebarSlice from './features/sidebar';
 import draggingCardSlice from './features/draggingCard';
 import targetFormSlice from './features/targetForms';
-import taskFormSlice from './features/taskForm'
+import taskFormSlice from './features/taskForm';
+import selectionDataSlice from './features/selectionData';
 
 export const store = configureStore({
     reducer: {
@@ -10,5 +11,6 @@ export const store = configureStore({
         draggingCardSlice,
         targetFormSlice,
         taskFormSlice,
+        selectionDataSlice,
     }
 })

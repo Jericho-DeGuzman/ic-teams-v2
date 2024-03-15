@@ -6,7 +6,7 @@ export default function formatDate(inputString) {
     const formattedDate = new Intl.DateTimeFormat('en-US', {
         month: 'long',
         day: 'numeric',
-        year: 'numeric'
+        year: 'numeric',
     }).format(inputDate);
 
     // Return the formatted date and time

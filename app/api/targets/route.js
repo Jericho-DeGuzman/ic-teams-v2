@@ -33,4 +33,8 @@ export function GET(req) {
     }
 
     return Response.json({ status: 200, data: data });
-}   
+}
+
+export function POST() {
+     
+}
