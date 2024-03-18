@@ -1,10 +1,12 @@
-'use server'
+import microserviceCaller from "@/app/(ic-teams)/lib/ApiCaller/microserviceCaller";
 import { decryptToken } from "@/utils/cryptoJs";
 import { cookies } from "next/headers";
-import microserviceCaller from "../microserviceCaller";
+import { NextResponse } from "next/server";
 
-export default async function loadCategories() {
+export async function GET() {
     const at = cookies().get('at').value;
+
+    if(!at) return NextResponse.json({status: 401, message: 'Unauthorized'});
 
     const decryptedToken = decryptToken(at);
     const { token } = decryptedToken;
@@ -14,13 +16,12 @@ export default async function loadCategories() {
     const response = await microservice.get('/ic-teams/categories');
 
     const { data } = response;
-    
-    const selection = [];
 
+    const categories = [];
+    
     data.map((val) => {
-        selection.push({id: val.id, label: val.name})
+        categories.push({value: val.id, label: val.name});
     })
 
-    return selection;
-
+    return NextResponse.json({status: 200, data: categories})
 }

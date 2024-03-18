@@ -1,40 +1,36 @@
-// TODO I'm just a dummy data, please replace me later.
-import TargetsDummy from '@/sample_data/targetData';
+import microserviceCaller from "@/app/(ic-teams)/lib/ApiCaller/microserviceCaller";
+import { decryptToken } from "@/utils/cryptoJs";
+import { cookies } from "next/headers";
+import { NextResponse } from "next/server";
 
-// TODO connect IC Microservice later.
-// this endpoint is for testing only.
-// api should be in IC microservices.
-const data = TargetsDummy()
-function retrieveById(id) {
-    const targets = data.find(item => item.uuid == id)
-    return targets;
-}
+export async function POST(req) {
+    const at = cookies().get('at').value;
+    const newTarget = await req.json();
 
-function retrieveByLevel(level) {
-    const targets = data.filter(item => item.level == level )
-    return targets;
-}
+    const { title, level_uuid, type, category_uuid, description, distribution, start_date, end_date } = newTarget;
+    const distribution_groups_array = [];
 
-export function GET(req) {
-    const { searchParams } = new URL(req.url);
-    const id = searchParams.get('id');
-    const level = searchParams.get('level');
+    distribution.map((val) => {
+        distribution_groups_array.push({ id: val.value })
+    })
 
-    if (id) {
-        const targets = retrieveById(id);
-        if (!targets) return Response.json({ status: 200, error: 'Item not found.' });
-        return Response.json({ status: 200, message: 'Item found.', data: targets });
+    const distribution_groups = JSON.stringify(distribution_groups_array);
+
+    const target = { title, level_uuid, type, category_uuid, distribution_groups, description, start_date, end_date }
+
+    const decryptedToken = decryptToken(at);
+    const { token } = decryptedToken;
+
+    const microservice = microserviceCaller(token);
+
+    try {
+
+        const response = await microservice.post('/ic-teams/targets', target);
+        const { data } = response;
+        return NextResponse.json({status: 200, data: data});
+
+    } catch (error) {
+        return NextResponse.json({ status: error?.response?.status, message: error?.response?.data });
     }
 
-    if (level) {
-        const targets = retrieveByLevel(level);
-        if (!targets) return Response.json({ status: 200, error: 'Item not found.' });
-        return Response.json({ status: 200, message: 'Item found.', data: targets });
-    }
-
-    return Response.json({ status: 200, data: data });
-}
-
-export function POST() {
-     
 }

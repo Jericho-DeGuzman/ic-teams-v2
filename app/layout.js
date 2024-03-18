@@ -5,6 +5,7 @@ import ReduxProvider from "./redux/ReduxProvider";
 import Navbar from "./components/navigation/navbar";
 import authenticate from "@/utils/auth";
 import { permanentRedirect } from "next/navigation";
+import { Toaster } from "react-hot-toast";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -17,6 +18,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className={inter.className}>
         <ReduxProvider>
+          <Toaster />
           <div className="w-full min-h-screen flex">
             <aside style={{ maxWidth: "20%" }}>
               <Siderbar />

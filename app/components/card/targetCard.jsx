@@ -39,7 +39,7 @@ export default function TargetCard({ uuid, title, type, category, description, s
                         <div className='flex-1 space-y-1 p-2'>
                             <div className="w-full flex gap-1">
                                 <span className="font-semibold">Status:</span>
-                                <TargetStatusLabel key={status.id} status={status} />
+                                <TargetStatusLabel key={status.uuid} status={status} />
                             </div>
                             <div className='w-full flex gap-1'>
                                 <span className='font-semibold'>Category: </span>
