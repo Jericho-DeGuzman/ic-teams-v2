@@ -19,7 +19,7 @@ export default function RootLayout({ children }) {
       <body className={inter.className}>
         <ReduxProvider>
           <Toaster />
-          <div className="w-full min-h-screen flex">
+          <main className="w-full min-h-screen flex">
             <aside style={{ maxWidth: "20%" }}>
               <Siderbar />
             </aside>
@@ -31,7 +31,7 @@ export default function RootLayout({ children }) {
                 {children}
               </main>
             </setion>
-          </div>
+          </main>
         </ReduxProvider>
       </body>
     </html>

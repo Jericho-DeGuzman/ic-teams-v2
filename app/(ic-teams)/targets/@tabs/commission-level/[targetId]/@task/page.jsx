@@ -33,22 +33,10 @@ async function loadTask(uuid) {
 export default async function TaskPage({ params }) {
     const { targetId } = params;
     const tasks = await loadTask(targetId);
-    // check if cards or tasks is empty.
-    // if (!tasks) {
-    //     return (
-    //         <div className='w-full min-h-screen flex items-center justify-center text-gray-400
-    //             flex-col space-y-2'>
-    //             <Image src={EmptyFolder} height={72} width={72} alt='icon' />
-    //             <p>
-    //                 No available task.
-    //             </p>
-    //         </div>
-    //     )
-    // }
 
     return (
         <section className="w-full min-h-screen p-4 overflow-hidden space-y-4">
-            <KanbanBoard key={'kanban'} tasks={tasks} />
+            <KanbanBoard key={'kanban'} tasks={tasks} uuid={targetId}/>
         </section>
     )
 }

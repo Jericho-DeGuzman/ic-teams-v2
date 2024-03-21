@@ -1,5 +1,6 @@
 import microserviceCaller from "@/app/(ic-teams)/lib/ApiCaller/microserviceCaller";
 import { decryptToken } from "@/utils/cryptoJs";
+import sanitizeInput from "@/utils/sanitizeInput";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
@@ -16,7 +17,14 @@ export async function POST(req) {
 
     const distribution_groups = JSON.stringify(distribution_groups_array);
 
-    const target = { title, level_uuid, type, category_uuid, distribution_groups, description, start_date, end_date }
+    const target = { title, level_uuid, type, category_uuid, distribution_groups, description, start_date, end_date };
+
+    for (const key in target) {
+        if (key !== 'distribution_groups') {
+            const val = target[key]
+            target[key] = sanitizeInput(val);
+        }
+    }
 
     const decryptedToken = decryptToken(at);
     const { token } = decryptedToken;
@@ -26,11 +34,36 @@ export async function POST(req) {
     try {
 
         const response = await microservice.post('/ic-teams/targets', target);
-        const { data } = response;
-        return NextResponse.json({status: 200, data: data});
+        const { data: {uuid} } = response;
+
+        const addedTarget = await microservice.get(`/ic-teams/targets/${uuid}`);
+
+        return NextResponse.json({status: 200, data: addedTarget.data});
 
     } catch (error) {
+        console.log(error);
         return NextResponse.json({ status: error?.response?.status, message: error?.response?.data });
+    }
+}
+
+export async function DELETE(req) {
+    const at = cookies().get('at').value;
+    const { searchParams } = new URL(req.url);
+    const uuid = searchParams.get('uuid');
+
+    try {
+        const decryptedToken = decryptToken(at);
+        const { token } = decryptedToken;
+
+        const microservice = microserviceCaller(token);
+
+        const response = await microservice.delete(`/ic-teams/targets/${uuid}`);
+
+        return NextResponse.json({ status: 200, message: 'Target deleted' })
+
+    } catch (error) {
+        console.log(error);
+        return NextResponse.json({ status: error?.response.status, message: error?.response.statusText })
     }
 
 }

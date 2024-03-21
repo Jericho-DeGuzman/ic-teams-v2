@@ -1,22 +1,45 @@
-// TODO: this is just temporary api, replace with IC microservice.
+// // TODO: this is just temporary api, replace with IC microservice.
 
-import TasksDummy from "@/sample_data/tasksData";
+import microserviceCaller from "@/app/(ic-teams)/lib/ApiCaller/microserviceCaller";
+import { decryptToken } from "@/utils/cryptoJs";
+import { cookies } from "next/headers";
 
-const data = TasksDummy();
+// import TasksDummy from "@/sample_data/tasksData";
 
-function retrieveById(id) {
-    const tasks = data.find(item => item.uuid == id);
-    return tasks;
-}
+// const data = TasksDummy();
 
-export function GET(req) {
-    const {searchParams} = new URL(req.url);
-    const id = searchParams.get('id');
+// function retrieveById(id) {
+//     const tasks = data.find(item => item.uuid == id);
+//     return tasks;
+// }
 
-    if(!id) {
-        return Response.json({status: 404, error: 'No item found.'})
+// export function GET(req) {
+//     const {searchParams} = new URL(req.url);
+//     const id = searchParams.get('id');
+
+//     if(!id) {
+//         return Response.json({status: 404, error: 'No item found.'})
+//     }
+
+//     const tasks = retrieveById(id);
+//     return Response.json({status: 200, message: 'Items found', tasks: tasks})
+// }
+
+export async function POST(req) {
+    const newTask = await req.json();
+    const at = cookies().get('at').value;
+
+    const decryptedToken = decryptToken(at);
+    const { token } = decryptedToken;
+
+    const microservice = microserviceCaller(token);
+    console.log(newTask)
+    try {
+        const response = await microservice.post('/ic-teams/tasks', newTask);
+
+        console.log(response)
+    } catch(error) {
+        console.log(error);
     }
 
-    const tasks = retrieveById(id);
-    return Response.json({status: 200, message: 'Items found', tasks: tasks})
 }

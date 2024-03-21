@@ -1,9 +1,65 @@
+'use client'
 import Modal from "./modal";
 import { motion } from "framer-motion";
 import Select from 'react-select';
 import TargetTaskForm from "../form/taskForm";
+import { useEffect, useState } from "react";
+import { useAppDispatch } from "@/app/redux/hooks";
+import { closeTaskForm } from "@/app/redux/features/taskForm";
 
-export default function TargetTaskModal() {
+const initialState = {
+    target_uuid: '',
+    title: '',
+    description: '',
+    due_date: '',
+    assigned_members: []
+}
+
+export default function TargetTaskModal({ uuid }) {
+    const [newTask, setNewTask] = useState(initialState);
+    const dispatch = useAppDispatch();
+
+    useEffect(() => {
+        setNewTask((prev) => ({
+            ...prev,
+            target_uuid: uuid
+        }))
+    },[])
+
+    const inputChangeHandler = (ev) => {
+        const { name, value } = ev.target;
+
+        setNewTask((prev) => ({
+            ...prev,
+            [name]: value
+        }))
+    }
+
+    const onCancelHandler = () => {
+        dispatch(closeTaskForm());
+        setNewTask(initialState)
+    }
+
+    const onSubmitHandler = async (ev) => {
+        ev.preventDefault();
+
+        try {
+            const response = await fetch('/api/tasks', {
+                method: 'post',
+                body: JSON.stringify(newTask)
+            })
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    const onAssigneesHandler = async (ev) => {
+        setNewTask((prev) => ({
+            ...prev,
+            assigned_members: ev
+        }))
+    }
+
     return (
         <Modal>
             <div className="modal modal-open">
@@ -29,12 +85,12 @@ export default function TargetTaskModal() {
                             duration: 0.15,
                         },
                     }}
-                    className="p-4 rounded-md w-full max-w-2xl bg-white">
+                    className="p-4 rounded-md w-full max-w-4xl bg-white">
                     <header className="py-2">
                         <h1 className="font-semibold text-blue-500">Create Task</h1>
                     </header>
                     <main className="w-full space-y-2 text-[12px]">
-                        <TargetTaskForm />
+                        <TargetTaskForm selection={uuid} inputchange={inputChangeHandler} assigneesChange={onAssigneesHandler} newTask={newTask} oncancel={onCancelHandler} onsubmit={onSubmitHandler}/>
                     </main>
                 </motion.div>
             </div>

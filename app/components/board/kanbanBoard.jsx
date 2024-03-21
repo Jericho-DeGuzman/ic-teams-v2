@@ -14,7 +14,7 @@ const boards = [
     { id: 'done', title: 'Done' },
 ]
 
-export default function KanbanBoard({ tasks }) {
+export default function KanbanBoard({ tasks, uuid }) {
     const draggingCard = useKanbanStore((state) => state.draggingCard) // active dragging card.
     const taskForm = useAppSelector((state) => state.taskFormSlice.value);
     const [cards, setCards] = useState(tasks);
@@ -34,7 +34,7 @@ export default function KanbanBoard({ tasks }) {
 
     return (
         <>
-            {taskForm && <TargetTaskModal />}
+            {taskForm && <TargetTaskModal uuid={uuid} />}
             <main className='min-h-screen w-full flex gap-2' >
                 {boards.map((board) => (
                     <TaskBoard key={board.id} id={board.id} title={board.title} onDrop={onDrop}

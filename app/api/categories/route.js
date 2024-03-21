@@ -3,10 +3,8 @@ import { decryptToken } from "@/utils/cryptoJs";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
-export async function GET() {
+export async function GET(req) {
     const at = cookies().get('at').value;
-
-    if(!at) return NextResponse.json({status: 401, message: 'Unauthorized'});
 
     const decryptedToken = decryptToken(at);
     const { token } = decryptedToken;
@@ -18,10 +16,10 @@ export async function GET() {
     const { data } = response;
 
     const categories = [];
-    
+
     data.map((val) => {
-        categories.push({value: val.id, label: val.name});
+        categories.push({ value: val.uuid, label: val.name });
     })
 
-    return NextResponse.json({status: 200, data: categories})
+    return NextResponse.json({ status: 200, data: categories })
 }

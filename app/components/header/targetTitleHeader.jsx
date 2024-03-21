@@ -12,7 +12,7 @@ export default function TargetTitleHeader({title, uuid}) {
         <div className="w-full flex items-center gap-2 justify-between text-black" onMouseEnter={() => setMouseEnter(true)}
             onMouseLeave={() => setMouseEnter(false)}>
             <div className="flex items-center gap-2">
-                <h3 className="text-[24px] font-semibold">{title}</h3>
+                <h3 className="text-[24px] font-semibold" dangerouslySetInnerHTML={{__html: title}}/>
                 {mouseEnter && (
                     <div className="flex gap-1">
                         <WatchlistButton />

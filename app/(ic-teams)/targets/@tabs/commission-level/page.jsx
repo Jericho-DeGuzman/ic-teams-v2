@@ -5,9 +5,9 @@ import Image from 'next/image'
 import SearchInput from '@/app/components/input/searchInput'
 import SelectInput from '@/app/components/input/distributionSelectInput'
 import { cookies } from 'next/headers'
-import { permanentRedirect } from 'next/navigation'
 import { decryptToken } from '@/utils/cryptoJs'
 import microserviceCaller from '@/app/(ic-teams)/lib/ApiCaller/microserviceCaller'
+import Targets from './targets'
 
 // TODO: missing category & Distribution Group.
 // TODO: handle error properly
@@ -15,20 +15,18 @@ import microserviceCaller from '@/app/(ic-teams)/lib/ApiCaller/microserviceCalle
 async function loadTargets() {
     const at = cookies().get('at').value;
 
-    if (!at) return permanentRedirect('/unauthorized');
-
     try {
         const decryptedToken = decryptToken(at);
         const { token } = decryptedToken;
 
         const microservice = microserviceCaller(token);
 
-        const response = await microservice.get('/ic-teams/targets')
+        const response = await microservice.get('/ic-teams/targets',)
 
         return response.data.data;
 
     } catch (error) {
-        console.log(error)
+        throw new Error(error?.response?.data)
     }
 }
 
@@ -49,7 +47,7 @@ async function loadUserPermission() {
 
         return role_persmissions;
     } catch (error) {
-
+        
     }
 }
 
@@ -60,19 +58,6 @@ export default async function CommissionLevel() {
 
     const [targets, userPermission] = await Promise.all([targetsData, userPermissionData]);
     const { role_permissions } = userPermission;
-
-    if (!targets || !targets.length) {
-        return (
-            <div className='w-full min-h-screen flex items-center justify-center text-gray-400
-            flex-col space-y-2'>
-                <AddTargetButton key={'add-button'} />
-                <Image src={EmptyFolder} height={72} width={72} alt='icon' />
-                <p>
-                    No available target.
-                </p>
-            </div>
-        )
-    }
 
     return (
         <section className="w-full min-h-screen p-6 text-[12px]">
@@ -89,17 +74,9 @@ export default async function CommissionLevel() {
                     <SelectInput key={'filter_status'} placeholder={"Target Status"} />
                 </div>
             </header>
-            <main className='min-h-screen w-full my-4 border-gray-400'>
-                <div className={`w-full target-container`}>
-                    {targets.map((target, index) => (
-                        <TargetCard key={index} uuid={target.uuid} type={target.type} title={target.title} watchlist={role_permissions.includes('watchlist.create')}
-                            description={target.description} category={target.category}
-                            status={target.status} start_date={target.start_date} end_date={target.end_date}
-                            update_at={target.last_update} progress={target.progress} functional_group={target.functional_group}
-                        />
-                    ))}
-                </div>
-            </main>
+            <section className='min-h-screen w-full my-4 border-gray-400'>
+                <Targets data={targets} role_permissions={role_permissions} />
+            </section>
             <hr className='border-[1px] my-2' />
             <footer className='w-full flex justify-center'>
                 <div className='join grid grid-cols-2 w-4/12 text-gray-400'>

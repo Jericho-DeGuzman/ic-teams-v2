@@ -1,5 +1,4 @@
-import { faBookmark } from "@fortawesome/free-regular-svg-icons";
-import { faClockRotateLeft, faEllipsis, faRunning } from "@fortawesome/free-solid-svg-icons";
+import { faClockRotateLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import RadialProgress from "../progress/radialProgress";
 import TargetTypeLabel from "../label/targetType";
@@ -8,9 +7,18 @@ import formatDate from "@/utils/formatDate";
 import formatDateTime from "@/utils/formatDateTime";
 import Link from "next/link";
 import WatchlistButton from "../button/watchlist";
+import MoreButton from "../button/moreButton";
+import { memo } from "react";
 
-export default function TargetCard({ uuid, title, type, category, description, status, start_date, end_date, update_at, progress,
-    functional_group, watchlist }) {
+const TargetCard = memo(({ uuid, title, type, category, description, status, start_date, end_date, update_at, progress,
+    functional_group, watchlist, ondelete, moreVisibility }) => {
+        
+    const functional = [];
+
+    functional_group.map((group) => {
+        if (functional.indexOf(group.parent?.short_name) == -1) functional.push(group.parent?.short_name);
+    })
+
     return (
         <section className='w-full border-[1px] rounded-md text-black
             hover:border-blue-500 hover:scale-[1.03] duration-300 cursor-pointer'>
@@ -19,35 +27,32 @@ export default function TargetCard({ uuid, title, type, category, description, s
                     <WatchlistButton key={'watchlist-button'} visible={watchlist} />
                     <TargetTypeLabel key={type} type={type} />
                 </div>
-                <button className='p-1 flex items-center text-gray-400
-               hover:bg-gray-200 hover:text-blue-400 cursor-pointer rounded-md duration-300'>
-                    <FontAwesomeIcon icon={faEllipsis} className='w-4 h-4' />
-                </button>
+                <MoreButton uuid={uuid} ondelete={ondelete} visible={moreVisibility} />
             </header>
             <Link href={`/targets/commission-level/${uuid}`}>
-                <main className='p-2 space-y-1'>
-                    <span className='line-clamp-1 text-[14px] font-semibold w-full'>
-                        {title}
-                    </span>
-                    <p className='text-gray-400 line-clamp-2 w-full'>
-                        {description}
-                    </p>
+                <main className='p-2 space-y-1'>    
+                    <span className='line-clamp-1 text-[14px] font-semibold w-full' dangerouslySetInnerHTML={{ __html: title }} />
+                    <p className='text-gray-400 line-clamp-2 w-full' dangerouslySetInnerHTML={{ __html: description }} />
                     <div className='w-full flex gap-2 text-[12px]'>
                         <div className='p-2 border-[1px] rounded-md w-4/12 flex justify-center items-center'>
-                            <RadialProgress key={progress} status={status.color} progress={progress} />
+                            <RadialProgress key={progress} status={status?.color || '#bab6b3'} progress={progress} />
                         </div>
                         <div className='flex-1 space-y-1 p-2'>
                             <div className="w-full flex gap-1">
                                 <span className="font-semibold">Status:</span>
-                                <TargetStatusLabel key={status.uuid} status={status} />
+                                <TargetStatusLabel key={status?.uuid || ''} status={status} />
                             </div>
                             <div className='w-full flex gap-1'>
                                 <span className='font-semibold'>Category: </span>
-                                <span className=''>{category}</span>
+                                <span className=''>{category?.name}</span>
                             </div>
                             <div className="w-full flex gap-1">
                                 <span className="font-semibold">Functional Group: </span>
-                                <span className="">{functional_group}</span>
+                                <div className="flex gap-1">
+                                    {functional.map((group, index) => (
+                                        <span key={index} className="">{group}</span>
+                                    ))}
+                                </div>
                             </div>
                             <div className='w-full flex gap-1'>
                                 <span className='font-semibold'>Start Date:</span>
@@ -67,4 +72,7 @@ export default function TargetCard({ uuid, title, type, category, description, s
             </Link>
         </section>
     );
-}
+})
+
+TargetCard.displayName = 'TargetCard';
+export default TargetCard;

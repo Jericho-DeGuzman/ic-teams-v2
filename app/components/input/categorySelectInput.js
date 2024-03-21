@@ -24,6 +24,7 @@ export default function SelectCategories({ placeholder, label, onchange, disable
                     }
 
                     const { data } = result;
+                    
                     dispatch(setCategoriesData(data));
                 }
             } catch (error) {
