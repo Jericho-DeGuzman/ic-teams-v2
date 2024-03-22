@@ -28,7 +28,7 @@ const TaskBoard = memo(({ title, id, cards, onDrop }) => {
                     </div>
                 </header>
             ) : (
-                <header key={'taskboard-header'} className={`w-full text-[12px] p-2 rounded-t-md text-center font-semibold text-white bg-blue-500
+                <header key={id} className={`w-full text-[12px] p-2 rounded-t-md text-center font-semibold text-white bg-blue-500
                     flex items-center justify-center`}>
                     <div className="flex items-center justify-center gap-1 p-1">
                         <span>{title}</span>
@@ -37,7 +37,7 @@ const TaskBoard = memo(({ title, id, cards, onDrop }) => {
                 </header>
             )}
             {cards.length ? (
-                <main key={'main-taskboard'} className='w-full p-2 bg-gray-200 h-screen rounded-b-md' style={{ borderWidth: '1px' }}>
+                <div key={id} className='w-full p-2 bg-gray-200 h-screen rounded-b-md' style={{ borderWidth: '1px' }}>
                     {cards.map((task, index) => (
                         <>
                             <TaskDropArea onDrop={() => onDrop(id, 0)} />
@@ -48,11 +48,11 @@ const TaskBoard = memo(({ title, id, cards, onDrop }) => {
                         </>
                     ))
                     }
-                </main>
+                </div>
             ) : (
-                <main key={'main-empty'} className="w-full p-2 bg-gray-200 h-screen rounded-b-md flex items-center">
+                <div key={0} className="w-full p-2 bg-gray-200 h-screen rounded-b-md flex items-center">
                     <TaskEmptyDropArea onDrop={() => onDrop(id, 0)}/>
-                </main>
+                </div>
             )}
         </section>
     )

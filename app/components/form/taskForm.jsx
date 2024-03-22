@@ -22,7 +22,7 @@ export default function TargetTaskForm({ selection, inputchange, newTask, oncanc
             <div className="w-full grid grid-cols-2 gap-2">
                 <div className="flex flex-col">
                     <label className="text-black">Due Date</label>
-                    <input name='date' type="date"
+                    <input name='due_date' type="date"
                         className="w-full bg-transparent border-[1px] border-gray-400 focus:border-[2px] focus:border-blue-500
                                         p-2 rounded-md outline-none" value={date} onChange={inputchange}/>
                 </div>

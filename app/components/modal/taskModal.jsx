@@ -6,59 +6,67 @@ import TargetTaskForm from "../form/taskForm";
 import { useEffect, useState } from "react";
 import { useAppDispatch } from "@/app/redux/hooks";
 import { closeTaskForm } from "@/app/redux/features/taskForm";
+import toast from "react-hot-toast";
 
-const initialState = {
-    target_uuid: '',
-    title: '',
-    description: '',
-    due_date: '',
-    assigned_members: []
-}
+// const initialState = {
+//     target_uuid: '',
+//     title: '',
+//     description: '',
+//     due_date: '',
+//     assigned_members: []
+// }
 
-export default function TargetTaskModal({ uuid }) {
-    const [newTask, setNewTask] = useState(initialState);
-    const dispatch = useAppDispatch();
+export default function TargetTaskModal({ uuid, onsubmit, inputchange, onassigneeschange, oncancel, newTask }) {
+    // const [newTask, setNewTask] = useState(initialState);
+    // const dispatch = useAppDispatch();
 
-    useEffect(() => {
-        setNewTask((prev) => ({
-            ...prev,
-            target_uuid: uuid
-        }))
-    },[])
+    // useEffect(() => {
+    //     setNewTask((prev) => ({
+    //         ...prev,
+    //         target_uuid: uuid
+    //     }))
+    // },[])
 
-    const inputChangeHandler = (ev) => {
-        const { name, value } = ev.target;
+    // const inputChangeHandler = (ev) => {
+    //     const { name, value } = ev.target;
 
-        setNewTask((prev) => ({
-            ...prev,
-            [name]: value
-        }))
-    }
+    //     setNewTask((prev) => ({
+    //         ...prev,
+    //         [name]: value
+    //     }))
+    // }
 
-    const onCancelHandler = () => {
-        dispatch(closeTaskForm());
-        setNewTask(initialState)
-    }
+    // const onCancelHandler = () => {
+    //     dispatch(closeTaskForm());
+    //     setNewTask(initialState)
+    // }
 
-    const onSubmitHandler = async (ev) => {
-        ev.preventDefault();
+    // const onSubmitHandler = async (ev) => {
+    //     ev.preventDefault();
 
-        try {
-            const response = await fetch('/api/tasks', {
-                method: 'post',
-                body: JSON.stringify(newTask)
-            })
-        } catch (error) {
-            console.log(error);
-        }
-    }
+    //     try {
+    //         const response = await fetch('/api/tasks', {
+    //             method: 'post',
+    //             body: JSON.stringify(newTask)
+    //         })
 
-    const onAssigneesHandler = async (ev) => {
-        setNewTask((prev) => ({
-            ...prev,
-            assigned_members: ev
-        }))
-    }
+    //         const result = await response.json();
+
+    //         if(response !== 200) throw new Error(result?.message);
+
+
+
+    //     } catch (error) {
+    //         toast.error(error?.message);
+    //     }
+    // }
+
+    // const onAssigneesHandler = async (ev) => {
+    //     setNewTask((prev) => ({
+    //         ...prev,
+    //         assigned_members: ev
+    //     }))
+    // }
 
     return (
         <Modal>
@@ -90,7 +98,7 @@ export default function TargetTaskModal({ uuid }) {
                         <h1 className="font-semibold text-blue-500">Create Task</h1>
                     </header>
                     <main className="w-full space-y-2 text-[12px]">
-                        <TargetTaskForm selection={uuid} inputchange={inputChangeHandler} assigneesChange={onAssigneesHandler} newTask={newTask} oncancel={onCancelHandler} onsubmit={onSubmitHandler}/>
+                        <TargetTaskForm selection={uuid} inputchange={inputchange} assigneesChange={onassigneeschange} newTask={newTask} oncancel={oncancel} onsubmit={onsubmit}/>
                     </main>
                 </motion.div>
             </div>

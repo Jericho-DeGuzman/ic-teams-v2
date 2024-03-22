@@ -5,7 +5,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import InternalTargetForm from "../form/internalForm";
 import { useAppDispatch, useAppSelector } from "@/app/redux/hooks";
 import { openInternalForm } from "@/app/redux/features/targetForms";
-import validateFormInput from "@/utils/validateFormInput";
+import { validateTargetForm } from "@/utils/validateFormInput";
 import toast from "react-hot-toast";
 import { addNewTarget, setTargetData } from "@/app/redux/features/targets";
 
@@ -39,7 +39,7 @@ export default function InternalTargetModal() {
 
         try {
             setSaving(true);
-            await validateFormInput({ ...newTarget, ['no_end_date']: noEndDate, ['target_type']: 'internal' });
+            await validateTargetForm({ ...newTarget, ['no_end_date']: noEndDate, ['target_type']: 'internal' });
 
             const response = await fetch('/api/targets', {
                 method: 'POST',
