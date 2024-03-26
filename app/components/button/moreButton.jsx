@@ -1,5 +1,7 @@
 'use client'
 import { setDeletingTarget } from "@/app/redux/features/deleteTarget";
+import { setEditingCard } from "@/app/redux/features/editingTarget";
+import { openEditForm } from "@/app/redux/features/targetForms";
 import { useAppDispatch } from "@/app/redux/hooks";
 import { faArrowsRotate, faEllipsis, faPen, faTrash, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -17,6 +19,11 @@ export default function MoreButton({ uuid, ondelete, visible }) {
         }
     }
 
+    const editTarget = () => {
+        dispatch(setEditingCard(uuid))
+        dispatch(openEditForm(true));
+    }
+
     return (
         <>
             {visible && (
@@ -32,12 +39,12 @@ export default function MoreButton({ uuid, ondelete, visible }) {
                             </button>
                         </li>
                         <li>
-                            <button className="px-2 py-1 hover:bg-gray-200 hover:text-blue-500 flex items-center">
+                            <button className="px-2 py-1 hover:bg-gray-200 hover:text-blue-500 flex items-center" >
                                 <FontAwesomeIcon icon={faArrowsRotate} className="w-3 h-3" />Update Status
                             </button>
                         </li>
                         <li>
-                            <button className="px-2 py-1 hover:bg-gray-200 hover:text-blue-500 flex items-center">
+                            <button className="px-2 py-1 hover:bg-gray-200 hover:text-blue-500 flex items-center" onClick={editTarget}>
                                 <FontAwesomeIcon icon={faPen} className="w-3 h-3" />Edit Target
                             </button>
                         </li>

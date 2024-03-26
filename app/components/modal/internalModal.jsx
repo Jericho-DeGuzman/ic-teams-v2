@@ -52,7 +52,7 @@ export default function InternalTargetModal() {
             if (result?.status !== 200) throw new Error(result?.message);
             const { data } = result;
             
-            if (targets.length < 10) dispatch(addNewTarget(data));
+            if (targets.length < 12) dispatch(addNewTarget(data));
             toast.success('Target Successfully created.');
 
             setNewTarget(initialState);
@@ -140,7 +140,7 @@ export default function InternalTargetModal() {
                         <div className="w-full">
                             {activeTab == 'new' ? (
                                 <AnimatePresence>
-                                    <InternalTargetForm onCancel={onCancel} newTarget={newTarget} handleCategoryChange={handleCategoryChange} openEndedTarget={openEndedTarget}
+                                    <InternalTargetForm onCancel={onCancel} target={newTarget} handleCategoryChange={handleCategoryChange} openEndedTarget={openEndedTarget}
                                         handleInputChange={handleInputChange} handleDistributionChange={handleDistributionChange} handleSubmit={handleSubmit} saving={saving} />
                                 </AnimatePresence>
                             ) : (

@@ -11,7 +11,7 @@ import MoreButton from "../button/moreButton";
 import { memo } from "react";
 
 const TargetCard = memo(({ uuid, title, type, category, description, status, start_date, end_date, update_at, progress,
-    functional_group, watchlist, ondelete, moreVisibility }) => {
+    functional_group, watchlist, ondelete, moreVisibility, level }) => {
         
     const functional = [];
 
@@ -29,13 +29,13 @@ const TargetCard = memo(({ uuid, title, type, category, description, status, sta
                 </div>
                 <MoreButton uuid={uuid} ondelete={ondelete} visible={moreVisibility} />
             </header>
-            <Link href={`/targets/commission-level/${uuid}`}>
+            <Link href={`/targets/${level}/${uuid}`}>
                 <main className='p-2 space-y-1'>    
                     <span className='line-clamp-1 text-[14px] font-semibold w-full' dangerouslySetInnerHTML={{ __html: title }} />
                     <p className='text-gray-400 line-clamp-2 w-full' dangerouslySetInnerHTML={{ __html: description }} />
                     <div className='w-full flex gap-2 text-[12px]'>
                         <div className='p-2 border-[1px] rounded-md w-4/12 flex justify-center items-center'>
-                            <RadialProgress key={progress} status={status?.color || '#bab6b3'} progress={progress} />
+                            <RadialProgress key={progress} status={status?.color || '#bab6b3'} progress={Math.floor(progress)} />
                         </div>
                         <div className='flex-1 space-y-1 p-2'>
                             <div className="w-full flex gap-1">

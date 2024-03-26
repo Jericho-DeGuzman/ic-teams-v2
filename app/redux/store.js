@@ -6,6 +6,7 @@ import taskFormSlice from './features/taskForm';
 import selectionDataSlice from './features/selectionData';
 import deletingTargetSlice from './features/deleteTarget';
 import targetDataSlice from './features/targets'
+import editingTargetSlice from './features/editingTarget'
 
 export const store = configureStore({
     reducer: {
@@ -15,6 +16,7 @@ export const store = configureStore({
         taskFormSlice,
         selectionDataSlice,
         deletingTargetSlice,
-        targetDataSlice
+        targetDataSlice,
+        editingTargetSlice,
     }
 })

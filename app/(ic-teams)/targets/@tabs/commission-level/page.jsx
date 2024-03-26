@@ -1,63 +1,81 @@
-import TargetCard from '@/app/components/card/targetCard'
+'use client'
 import AddTargetButton from '@/app/components/button/targetButton'
-import { EmptyFolder } from '@/utils/imageUtils'
-import Image from 'next/image'
 import SearchInput from '@/app/components/input/searchInput'
 import SelectInput from '@/app/components/input/distributionSelectInput'
-import { cookies } from 'next/headers'
-import { decryptToken } from '@/utils/cryptoJs'
-import microserviceCaller from '@/app/(ic-teams)/lib/ApiCaller/microserviceCaller'
-import Targets from './targets'
+import PaginationButton from '@/app/components/button/paginationButton'
+import { useEffect, useState } from 'react'
+import Cookies from 'js-cookie'
+import Loading from './loading'
+import { useSearchParams } from 'next/navigation'
+import Targets from '@/app/components/targets/targets'
 
-// TODO: missing category & Distribution Group.
-// TODO: handle error properly
-
-async function loadTargets() {
-    const at = cookies().get('at').value;
-
+async function loadTargets(page) {
+    const at = Cookies.get('at');
     try {
-        const decryptedToken = decryptToken(at);
-        const { token } = decryptedToken;
+        const response = await fetch(`http://192.168.100.62:3000/api/targets?page=${page || 1}`, {
+            method: 'get',
+            headers: { 'at': at },
+            cache: 'no-cache'
+        })
 
-        const microservice = microserviceCaller(token);
+        const result = await response.json();
+        if (result?.status !== 200) throw new Error('something went wrong');
 
-        const response = await microservice.get('/ic-teams/targets',)
-
-        return response.data.data;
-
+        return result?.data?.data;
     } catch (error) {
-        throw new Error(error?.response?.data)
+        throw new Error (error);
     }
 }
 
 async function loadUserPermission() {
-    const at = cookies().get('at').value;
+    const at = Cookies.get('at');
 
     try {
-        const decryptedToken = decryptToken(at);
-        const { token } = decryptedToken;
-
-        const microservice = microserviceCaller(token);
-
-        const response = await microservice.get('/core-v3/users', {
-            params: { 'app_id': process.env.APP_ID }
+        const response = await fetch(`http://192.168.100.62:3000/api/permissions`, {
+            method: 'get',
+            headers: { 'at': at },
         })
 
-        const { roles: [role_persmissions] } = response.data
+        const result = await response.json();
+        if (result?.status !== 200) throw new Error('something went wrong');
 
-        return role_persmissions;
+        return result?.data;
     } catch (error) {
-        
+        console.log(error);
     }
 }
 
-export default async function CommissionLevel() {
-    // TODO: make separate component for search.
-    const targetsData = loadTargets() || [];
-    const userPermissionData = loadUserPermission();
+export default function CommissionLevel() {
+    const searchParams = useSearchParams();
+    const [targets, setTargets] = useState([]);
+    const [role_permissions, setRolePermission] = useState([]);
+    const [loading, setLoading] = useState(true);
 
-    const [targets, userPermission] = await Promise.all([targetsData, userPermissionData]);
-    const { role_permissions } = userPermission;
+    useEffect(() => {
+        setLoading(true);
+        const fetchData = async () => {
+            try {
+                const page = searchParams.get('page') ?? '1';
+ 
+                const [targets, userPermission] = await Promise.all([loadTargets(page), loadUserPermission()]);
+                const { role_permissions } = userPermission;
+
+                setTargets(targets);
+                setRolePermission(role_permissions);
+            } catch(error) {
+                throw new Error(error)
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        fetchData();
+    }, [searchParams])
+
+
+    if(loading) {
+        return <Loading />  
+    }
 
     return (
         <section className="w-full min-h-screen p-6 text-[12px]">
@@ -75,20 +93,11 @@ export default async function CommissionLevel() {
                 </div>
             </header>
             <section className='min-h-screen w-full my-4 border-gray-400'>
-                <Targets data={targets} role_permissions={role_permissions} />
+                <Targets data={targets.filter((target) => target.level.name === 'Commission')} role_permissions={role_permissions} level={'commission-level'}/>
             </section>
             <hr className='border-[1px] my-2' />
             <footer className='w-full flex justify-center'>
-                <div className='join grid grid-cols-2 w-4/12 text-gray-400'>
-                    <button className='join-item p-2 border-[1px] rounded-l-md 
-                    border-gray-400 hover:bg-blue-500 hover:border-blue-500 duration-300
-                        hover:text-white'>
-                        Previous page</button>
-                    <button className='join-item p-2 border-[1px] rounded-r-md 
-                    border-gray-400 hover:bg-blue-500 hover:border-blue-500 duration-300
-                        hover:text-white'>
-                        Next page</button>
-                </div>
+                <PaginationButton />
             </footer>
         </section>
     )

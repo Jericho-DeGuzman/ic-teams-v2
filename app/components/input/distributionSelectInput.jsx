@@ -4,7 +4,7 @@ import { useAppDispatch, useAppSelector } from '@/app/redux/hooks';
 import { useEffect, useState } from 'react'
 import Select from 'react-select'
 
-export default function SelectDistributionGroup({ placeholder, label, name, onchange, disabled }) {
+export default function SelectDistributionGroup({ placeholder, label, name, onchange, disabled, defaultValue }) {
     const selection = useAppSelector((state) => state.selectionDataSlice.data.distributionGroups);
     const dispatch = useAppDispatch();
     const [loading, setLoading] = useState(true);
@@ -40,7 +40,7 @@ export default function SelectDistributionGroup({ placeholder, label, name, onch
         <div className='w-full space-y-1'>
             <label className='text-black'>{label}</label>
             <Select name={name} placeholder={placeholder} isLoading={loading} options={selection} isDisabled={disabled}
-                isSearchable={true} onChange={onchange} isMulti={true} />
+                isSearchable={true} onChange={onchange} isMulti={true} value={defaultValue} />
         </div>
     )
 }

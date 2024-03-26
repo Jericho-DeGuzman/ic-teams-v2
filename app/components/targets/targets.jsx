@@ -9,7 +9,7 @@ import Image from "next/image";
 import { useEffect, useState } from "react"
 import toast from "react-hot-toast";
 
-export default function Targets({ data, role_permissions }) {
+export default function Targets({ data, role_permissions, level }) {
     const targets = useAppSelector((state) => state.targetDataSlice.targets);
     const deletingTarget = useAppSelector((state) => state.deletingTargetSlice.uuid);
     const dispatch = useAppDispatch();
@@ -61,7 +61,8 @@ export default function Targets({ data, role_permissions }) {
                 <TargetCard key={index} uuid={target.uuid} type={target.type} title={target.title} watchlist={role_permissions.includes('watchlist.create')}
                     description={target.description} category={target.category}
                     status={target.status} start_date={target.start_date} end_date={target.end_date}
-                    update_at={target.last_update} progress={target.progress} functional_group={target.distribution_groups} ondelete={handleDelete} moreVisibility={role_permissions.includes('targets.delete')}
+                    update_at={target.last_update} progress={target.progress} functional_group={target.distribution_groups} ondelete={handleDelete} 
+                    moreVisibility={role_permissions.includes('targets.delete')} level={level}
                 />
             ))}
         </main>

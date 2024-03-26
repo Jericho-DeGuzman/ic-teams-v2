@@ -4,6 +4,7 @@ const initialState = {
     option: false, 
     internal: false,
     external: false,
+    edit: false,
 }
 
 export const targetFormSlice = createSlice({
@@ -18,9 +19,12 @@ export const targetFormSlice = createSlice({
         },
         openExternalForm: (state, action) => {
             state.external = action.payload;
+        },
+        openEditForm: (state, action) => {
+            state.edit = action.payload;
         }
     }
 })
 
-export const {openOptionForm, openInternalForm, openExternalForm} = targetFormSlice.actions;
+export const {openOptionForm, openInternalForm, openExternalForm, openEditForm} = targetFormSlice.actions;
 export default targetFormSlice.reducer;

@@ -16,9 +16,14 @@ export const targetsDataSlice = createSlice({
         },
         addNewTarget: (state, actions) => {
             state.targets = [...state.targets, actions.payload]
+        },
+        updateTarget: (state, actions) => {
+            state.targets.map((target, index) => {
+                if(target.uuid == actions.payload.uuid) state.targets[index] = actions.payload
+            })
         }
     }
 })
 
-export const { setTargetData, removeTarget, addNewTarget } = targetsDataSlice.actions;
+export const { setTargetData, removeTarget, addNewTarget, updateTarget } = targetsDataSlice.actions;
 export default targetsDataSlice.reducer;

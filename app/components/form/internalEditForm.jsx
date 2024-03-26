@@ -3,14 +3,14 @@ import { motion } from 'framer-motion'
 import SelectDistributionGroup from '../input/distributionSelectInput'
 import SelectCategories from '../input/categorySelectInput'
 
-export default function InternalTargetForm({ onCancel, target, noEndDate, saving, handleCategoryChange,
+export default function InternalEditForm({ onCancel, target, noEndDate, saving, handleCategoryChange,
     handleInputChange, handleSubmit, openEndedTarget, handleDistributionChange }) {
 
     return (
         <motion.section
             className="w-full text-[12px] space-y-2 text-black">
             <div className="w-full grid grid-cols-2 gap-2">
-                <SelectCategories placeholder={'Selection Category'} label={'Categories'} onchange={handleCategoryChange} disabled={saving} defaultValue={target.category_uuid}/>
+                <SelectCategories placeholder={'Selection Category'} label={'Categories'} onchange={handleCategoryChange} disabled={saving} defaultValue={target.category_uuid} />
                 <div className="flex flex-col space-y-1">
                     <label className='text-black'>Title</label>
                     <input type='text' name='title' className='p-[9px] rounded-md bg-transparent border-[1px] border-gray-300
@@ -25,7 +25,7 @@ export default function InternalTargetForm({ onCancel, target, noEndDate, saving
                     placeholder='Add description' value={target.description} disabled={saving} />
             </div>
             <SelectDistributionGroup name='distribution_group_id' placeholder={'Select Division/Distribution Group'} label={'Division/Distribution Group'}
-                onchange={handleDistributionChange} disabled={saving} />
+                onchange={handleDistributionChange} disabled={saving} defaultValue={target.distribution}/>
             <div className='w-full grid grid-cols-2 gap-2'>
                 <div className="flex flex-col space-y-1">
                     <label className='text-black'>Start Date</label>

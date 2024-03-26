@@ -37,10 +37,10 @@ export const moveCardTask = ({ cards, cardId, board, index }) => {
         ),
         [board]: [
             ...cards[board].slice(0, index),
-            {...card, status: board},
+            { ...card, status: board },
             ...cards[board].slice(index)
         ]
     };
-    
-    return newCards;
+
+    return newCards; 
 };

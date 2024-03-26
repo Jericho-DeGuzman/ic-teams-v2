@@ -37,7 +37,7 @@ const TaskBoard = memo(({ title, id, cards, onDrop }) => {
                 </header>
             )}
             {cards.length ? (
-                <div key={id} className='w-full p-2 bg-gray-200 h-screen rounded-b-md' style={{ borderWidth: '1px' }}>
+                <div key={'main-board'} className='w-full p-2 bg-gray-200 h-screen rounded-b-md' style={{ borderWidth: '1px' }}>
                     {cards.map((task, index) => (
                         <>
                             <TaskDropArea onDrop={() => onDrop(id, 0)} />

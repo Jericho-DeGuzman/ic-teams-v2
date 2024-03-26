@@ -31,19 +31,34 @@ export default function KanbanBoard({ tasks, uuid }) {
     const [cards, setCards] = useState(tasks);
 
     const [newTask, setNewTask] = useState(initialState);
+    const [loading, setLoading] = useState(false);
     const dispatch = useAppDispatch();
 
-    // function when cards is drop and move.
-    // TODO: add a function that also update the task on microservice.
-    const onDrop = (board, index) => {
+    const onDrop = async (board, index) => {
         if (!draggingCard) return;
-        const newCards = moveCardTask({
-            cards,
-            cardId: draggingCard,
-            board,
-            index
-        })
-        setCards(newCards);
+        const prevCards = cards;
+
+        try {
+            const newCards = moveCardTask({
+                cards,
+                cardId: draggingCard,
+                board,
+                index
+            })
+            setCards(newCards);
+            const response = await fetch(`/api/task-statuses?uuid=${draggingCard}`, {
+                method: 'put',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(board)
+            })
+
+            const result = await response.json();
+
+            if (result?.status !== 200) throw new Error(result?.message);
+
+        } catch (error) {
+            setCards(prevCards);
+        } 
     }
 
     const inputChangeHandler = (ev) => {
@@ -61,10 +76,10 @@ export default function KanbanBoard({ tasks, uuid }) {
     }
     const onSubmitHandler = async (ev) => {
         ev.preventDefault();
-
+        setLoading(true);
         try {
             await validateTaskForm(newTask);
-            
+
             const response = await fetch('/api/tasks', {
                 method: 'post',
                 body: JSON.stringify(newTask)
@@ -86,6 +101,8 @@ export default function KanbanBoard({ tasks, uuid }) {
             toast.success('Task added');
         } catch (error) {
             toast.error(error?.message);
+        } finally {
+            setLoading(false);
         }
     }
 
@@ -100,7 +117,7 @@ export default function KanbanBoard({ tasks, uuid }) {
     return (
         <>
             {taskForm && <TargetTaskModal key={0} uuid={uuid} onsubmit={onSubmitHandler} inputchange={inputChangeHandler}
-                oncancel={onCancelHandler} onassigneeschange={onAssigneesHandler} newTask={newTask} />}
+                oncancel={onCancelHandler} onassigneeschange={onAssigneesHandler} newTask={newTask} disabled={loading}/>}
             <main className='min-h-screen w-full flex gap-2' >
                 {boards.map((board, index) => (
                     <TaskBoard key={index} id={board.id} title={board.title} onDrop={onDrop}
