@@ -87,7 +87,7 @@ export default function KanbanBoard({ tasks, uuid }) {
 
             const result = await response.json();
 
-            if (response.status !== 200) throw new Error(result?.message);
+            if (result.status !== 200) throw new Error(result?.message);
 
             const { data } = result;
 

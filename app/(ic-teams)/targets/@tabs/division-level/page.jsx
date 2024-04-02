@@ -8,6 +8,8 @@ import Cookies from 'js-cookie'
 import Loading from './loading'
 import { useSearchParams } from 'next/navigation'
 import Targets from '@/app/components/targets/targets'
+import CustomError from '@/app/components/errors/error'
+import SelectCategories from '@/app/components/input/categorySelectInput'
 
 async function loadTargets(page) {
     const at = Cookies.get('at');
@@ -19,7 +21,7 @@ async function loadTargets(page) {
         })
 
         const result = await response.json();
-        if (result?.status !== 200) throw new Error('something went wrong');
+        if (result?.status !== 200) throw new Error(result?.status);
 
         return result?.data?.data;
     } catch (error) {
@@ -37,7 +39,7 @@ async function loadUserPermission() {
         })
 
         const result = await response.json();
-        if (result?.status !== 200) throw new Error('something went wrong');
+        if (result?.status !== 200) throw new Error(500);
 
         return result?.data;
     } catch (error) {
@@ -50,6 +52,7 @@ export default function DivisionLevel() {
     const [targets, setTargets] = useState([]);
     const [role_permissions, setRolePermission] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
         setLoading(true);
@@ -63,7 +66,7 @@ export default function DivisionLevel() {
                 setTargets(targets);
                 setRolePermission(role_permissions);
             } catch(error) {
-                throw new Error(error)
+                setError(error?.message);
             } finally {
                 setLoading(false);
             }
@@ -71,10 +74,14 @@ export default function DivisionLevel() {
 
         fetchData();
     }, [searchParams])
-
+    
 
     if(loading) {
         return <Loading />  
+    }
+
+    if(error) {
+        return <CustomError status={error}/>
     }
 
     return (
@@ -86,7 +93,7 @@ export default function DivisionLevel() {
                     <SearchInput key={'filter_search'} placeholder={'Search target'} />
                 </div>
                 <div className='w-3/12'>
-                    <SelectInput key={'filter_catergory'} placeholder={'Target Catergory'} />
+                    <SelectCategories key={'filter_catergory'} placeholder={'Target Catergory'} />
                 </div>
                 <div className='w-3/12'>
                     <SelectInput key={'filter_status'} placeholder={"Target Status"} />

@@ -73,7 +73,11 @@ export default function TaskModalLayout({ params }) {
                 body: JSON.stringify(task)
             })
             
+            const result = await response.json();
 
+            if (result?.status !== 200) throw new Error(result?.message);
+
+            toast.success('Successfully saved')
         } catch (error) {
             toast.error(error?.message)
         } finally {
@@ -182,7 +186,7 @@ export default function TaskModalLayout({ params }) {
                                         <button className={`p-2 ${visibleTab == 'attachment' && 'text-blue-500 border-blue-500 border-b-[1px] transition-[border] duration-200'} cursor-pointer`}
                                             onClick={() => setVisibleTab('attachment')}>Attachment</button>
                                     </div>
-                                    {visibleTab == 'subtask' && <SubtaskTab key={'subtask'} />}
+                                    {visibleTab == 'subtask' && <SubtaskTab key={'subtask'} uuid={uuid} />}
                                     {visibleTab == 'attachment' && <AttachmentTab key={'attachment'} />}
                                 </div>
                             </main>

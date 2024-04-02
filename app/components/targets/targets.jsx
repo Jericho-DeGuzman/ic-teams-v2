@@ -8,39 +8,39 @@ import { EmptyFolder } from "@/utils/imageUtils";
 import Image from "next/image";
 import { useEffect, useState } from "react"
 import toast from "react-hot-toast";
+import CustomError from "../errors/error";
 
 export default function Targets({ data, role_permissions, level }) {
     const targets = useAppSelector((state) => state.targetDataSlice.targets);
-    const deletingTarget = useAppSelector((state) => state.deletingTargetSlice.uuid);
     const dispatch = useAppDispatch();
+    const [error, setError] = useState(null)
 
     useEffect(() => {
         dispatch(setTargetData(data));
     }, [])
 
-    const handleDelete = async () => {
-        if (!deletingTarget) return;
+    const handleDelete = async (uuid) => {
 
         try {
-            const response = await fetch(`/api/targets?uuid=${deletingTarget}`, {
+            const response = await fetch(`/api/targets?uuid=${uuid}`, {
                 method: 'DELETE',
                 headers: { 'Content-Type': 'application/json' },
             })
 
             const result = await response.json();
 
-            if (result?.status !== 200) throw new Error(result?.message);
+            if (result?.status !== 200) throw new Error(result?.status);
 
-            dispatch(removeTarget(deletingTarget));
+            dispatch(removeTarget(uuid));
 
             toast.success('Target deleted');
-
         } catch (error) {
             console.log(error)
-        } finally {
-            dispatch(setDeletingTarget(null));
-        }
+            setError(error?.status);
+        } 
     }
+
+    if (error) return <CustomError status={error} />
 
     if (!targets.length) {
         return (
@@ -54,14 +54,14 @@ export default function Targets({ data, role_permissions, level }) {
             </div>
         )
     }
-    
+
     return (
         <main className={`w-full target-container`}>
             {targets.map((target, index) => (
                 <TargetCard key={index} uuid={target.uuid} type={target.type} title={target.title} watchlist={role_permissions.includes('watchlist.create')}
                     description={target.description} category={target.category}
                     status={target.status} start_date={target.start_date} end_date={target.end_date}
-                    update_at={target.last_update} progress={target.progress} functional_group={target.distribution_groups} ondelete={handleDelete} 
+                    update_at={target.last_update} progress={target.progress} functional_group={target.distribution_groups} ondelete={handleDelete}
                     moreVisibility={role_permissions.includes('targets.delete')} level={level}
                 />
             ))}

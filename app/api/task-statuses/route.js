@@ -33,6 +33,7 @@ export async function PUT(req) {
 
         return NextResponse.json({ status: 200 })
     } catch (error) {
+        console.log(error);
         return NextResponse.json({ status: error?.response.status, message: error?.response.data })
     }
 }
