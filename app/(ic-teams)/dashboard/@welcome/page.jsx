@@ -4,6 +4,7 @@ import { permanentRedirect } from "next/navigation";
 import microserviceCaller from "../../lib/ApiCaller/microserviceCaller";
 import AvatarLg from "@/app/components/avatar/avatarLg";
 import { Suspense } from "react";
+import styles from '../target.module.css'
 
 // get user information.
 async function loadUser() {
@@ -43,8 +44,8 @@ export default async function WelcomePage() {
                 <AvatarLg key={0} id={profile_pic_id} />
             </Suspense>
             <div>
-                <h1 className="text-[24px] font-bold">Hi, {username} 👋 </h1>
-                <p className="text-gray-400 text-[12px]">Let&apos;s track you Daily Tasks & Targets.</p>
+                <h1 className={`${styles.welcome} font-bold`}>Hi, {username} 👋 </h1>
+                <p className="text-gray-400 text-[12px]">Track your Daily Tasks & Targets.</p>
             </div>
         </>
     )

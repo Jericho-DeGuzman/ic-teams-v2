@@ -6,10 +6,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import UpdateTargetStatusButton from "./updateTargetStatus";
 import ConfirmationDialog from "../dialog/Confirmation";
 import { useState } from "react";
+import { useAppDispatch } from "@/app/redux/hooks";
 
-export default function MoreButton({ uuid, ondelete, visible }) {
+export default function MoreButton({ uuid, ondelete, visible, status }) {
     const [onConfirm, setConfirm] = useState(false);
     const [isLoading, setLoading] = useState(false);
+    const dispatch = useAppDispatch()
 
     const handleDelete = async () => {
         setLoading(true);
@@ -34,7 +36,8 @@ export default function MoreButton({ uuid, ondelete, visible }) {
 
     return (
         <>
-            {onConfirm && <ConfirmationDialog oncancel={handleCancel} onconfirm={handleDelete} loading={isLoading} />}
+            {onConfirm && <ConfirmationDialog title={'Delete Target'} description={'Are you sure you want to delete this target?'} cancelName={'Cancel'} confirmName={'Delete'}
+                oncancel={handleCancel} onconfirm={handleDelete} loading={isLoading} />}
             {visible && (
                 <div className="dropdown dropdown-end">
                     <button className='p-1 flex items-center text-gray-400
@@ -47,7 +50,7 @@ export default function MoreButton({ uuid, ondelete, visible }) {
                                 <FontAwesomeIcon icon={faTrash} className="w-3 h-3" />Delete
                             </button>
                         </li>
-                        <UpdateTargetStatusButton />
+                        <UpdateTargetStatusButton uuid={uuid} status={status}/>
                         <li>
                             <button className="px-2 py-1 hover:bg-gray-200 hover:text-blue-500 flex items-center" onClick={editTarget}>
                                 <FontAwesomeIcon icon={faPen} className="w-3 h-3" />Edit Target

@@ -27,7 +27,7 @@ const TargetCard = memo(({ uuid, title, type, category, description, status, sta
                     <WatchlistButton key={'watchlist-button'} visible={watchlist} />
                     <TargetTypeLabel key={type} type={type} />
                 </div>
-                <MoreButton uuid={uuid} ondelete={ondelete} visible={moreVisibility} />
+                <MoreButton uuid={uuid} ondelete={ondelete} visible={moreVisibility} status={status?.machine_name} />
             </header>
             <Link href={`/targets/${level}/${uuid}`}>
                 <main className='p-2 space-y-1'>    

@@ -1,7 +1,6 @@
 'use client'
 import AddTargetButton from "@/app/components/button/targetButton";
 import TargetCard from "@/app/components/card/targetCard";
-import { setDeletingTarget } from "@/app/redux/features/deleteTarget";
 import { removeTarget, setTargetData } from "@/app/redux/features/targets";
 import { useAppDispatch, useAppSelector } from "@/app/redux/hooks";
 import { EmptyFolder } from "@/utils/imageUtils";
@@ -20,7 +19,6 @@ export default function Targets({ data, role_permissions, level }) {
     }, [])
 
     const handleDelete = async (uuid) => {
-
         try {
             const response = await fetch(`/api/targets?uuid=${uuid}`, {
                 method: 'DELETE',

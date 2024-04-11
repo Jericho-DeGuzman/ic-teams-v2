@@ -8,13 +8,14 @@ import TargetTaskModal from "../modal/taskModal";
 import toast from "react-hot-toast";
 import { closeTaskForm } from "@/app/redux/features/taskForm";
 import { validateTaskForm } from "@/utils/validateFormInput";
+import CustomError from "../errors/error";
 
 // list on kanban board.
 const boards = [
-    { id: 'todo', title: 'To Do' },
-    { id: 'inprogress', title: 'In Progress' },
-    { id: 'review', title: 'For Review' },
-    { id: 'done', title: 'Done' },
+    { id: 'todo', title: 'To Do', color: "bg-yellow-500" },
+    { id: 'inprogress', title: 'In Progress', color: "bg-blue-500" },
+    { id: 'review', title: 'For Review', color: "bg-red-500" },
+    { id: 'done', title: 'Done', color: "bg-green-500" },
 ]
 
 export default function KanbanBoard({ tasks, uuid }) {
@@ -29,6 +30,8 @@ export default function KanbanBoard({ tasks, uuid }) {
     const draggingCard = useKanbanStore((state) => state.draggingCard) // active dragging card.
     const taskForm = useAppSelector((state) => state.taskFormSlice.value);
     const [cards, setCards] = useState(tasks);
+
+    const [error, setError] = useState(null);
 
     const [newTask, setNewTask] = useState(initialState);
     const [loading, setLoading] = useState(false);
@@ -58,7 +61,7 @@ export default function KanbanBoard({ tasks, uuid }) {
 
         } catch (error) {
             setCards(prevCards);
-        } 
+        }
     }
 
     const inputChangeHandler = (ev) => {
@@ -113,15 +116,41 @@ export default function KanbanBoard({ tasks, uuid }) {
         }))
     }
 
+    const onDeleteTask = async (uuid, board) => {
+        try {
+            const response = await fetch(`/api/tasks?uuid=${uuid}`, {
+                method: 'delete',
+                headers: { 'Content-Type': 'application/json' }
+            })
+
+            const result = await response.json();
+
+            if (result?.status !== 200) {
+                console.log(result?.message);
+                throw new Error(result?.status)
+            };
+
+            setCards((prev) => ({
+                ...prev,
+                [board]: cards[board].filter(task => task.uuid !== result?.data.uuid)
+            }))
+
+        } catch (error) {
+            console.log(error);
+            setError(error?.message);
+        }
+    }
+
+    if (error) return <CustomError status={error} /> 
 
     return (
         <>
             {taskForm && <TargetTaskModal key={0} uuid={uuid} onsubmit={onSubmitHandler} inputchange={inputChangeHandler}
-                oncancel={onCancelHandler} onassigneeschange={onAssigneesHandler} newTask={newTask} disabled={loading}/>}
+                oncancel={onCancelHandler} onassigneeschange={onAssigneesHandler} newTask={newTask} disabled={loading} />}
             <main className='min-h-screen w-full flex gap-2' >
                 {boards.map((board, index) => (
                     <TaskBoard key={index} id={board.id} title={board.title} onDrop={onDrop}
-                        cards={cards[board.id]} />))}
+                        cards={cards[board.id]} color={board.color} ondelete={onDeleteTask} />))}
             </main>
         </>
     )

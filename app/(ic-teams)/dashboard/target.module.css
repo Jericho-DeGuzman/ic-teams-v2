@@ -1,0 +1,9 @@
+.welcome {
+    font-size: 24px;
+}
+
+@media screen and (min-width: 80%) {
+    .welcome {
+        font-size: 18px;
+    }
+}

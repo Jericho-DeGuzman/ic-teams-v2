@@ -8,17 +8,17 @@ import TaskEmptyDropArea from "./taskEmptyDropArea";
 import { useAppDispatch } from "@/app/redux/hooks";
 import { openTaskForm } from "@/app/redux/features/taskForm";
 
-const TaskBoard = memo(({ title, id, cards, onDrop }) => {
+const TaskBoard = memo(({ title, id, cards, onDrop, color, ondelete }) => {
     const dispatch = useAppDispatch();
 
     return (
         <section className='w-[25%] min-h-screen z-10'>
             {id == 'todo' ? (
-                <header key={'todo-header'} className={`w-full text-[12px] p-2 rounded-t-md text-center font-semibold text-white bg-blue-500
+                <header key={'todo-header'} className={`w-full text-[12px] p-2 rounded-t-md text-center font-semibold text-white ${color}
                     grid grid-cols-3 gap-1`}>
                     <button className="flex justify-start items-center" onClick={() => dispatch(openTaskForm())}>
-                        <div className="flex items-center justify-center tooltip tooltip-right" data-tip="add new task.">
-                            <FontAwesomeIcon icon={faPlus} className="w-4 h-4 p-1 cursor-pointer rounded-full hover:bg-blue-600 duration-200" />
+                        <div className="flex items-center justify-center tooltip tooltip-right w-4 h-4" data-tip="add new task.">
+                            <FontAwesomeIcon icon={faPlus} className="w-4 h-4 p-1 cursor-pointer rounded-full hover:bg-yellow-700 duration-200" />
                         </div>
                     </button>
 
@@ -28,7 +28,7 @@ const TaskBoard = memo(({ title, id, cards, onDrop }) => {
                     </div>
                 </header>
             ) : (
-                <header key={id} className={`w-full text-[12px] p-2 rounded-t-md text-center font-semibold text-white bg-blue-500
+                <header key={id} className={`w-full text-[12px] p-2 rounded-t-md text-center font-semibold text-white ${color}
                     flex items-center justify-center`}>
                     <div className="flex items-center justify-center gap-1 p-1">
                         <span>{title}</span>
@@ -42,7 +42,7 @@ const TaskBoard = memo(({ title, id, cards, onDrop }) => {
                         <>
                             <TaskDropArea onDrop={() => onDrop(id, 0)} />
                             <React.Fragment key={task.uuid}>
-                                <TaskCard {...task} />
+                                <TaskCard uuid={task.uuid} title={task.title} ondelete={ondelete} status={task.status.machine_name} />
                                 <TaskDropArea onDrop={() => onDrop(id, index + 1)} />
                             </React.Fragment>
                         </>

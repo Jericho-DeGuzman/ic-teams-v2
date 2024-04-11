@@ -30,10 +30,18 @@ export async function POST(req) {
     const microservice = microserviceCaller(token);
 
     try {
-        const response = await microservice.post('/ic-teams/tasks', newTask);
+        const response = await microservice.post('/ic-teams/tasks', task);
         const { data: { uuid } } = response;
 
+        if (assignees.length > 0) {
+            const assignees_response = await microservice.post(`/ic-teams/task-assignees`, { 
+                task_uuid: uuid,
+                task_assignees: assignees 
+            });
+        }
+
         const addedTask = await microservice.get(`/ic-teams/tasks/${uuid}`);
+
         return NextResponse.json({ status: 200, data: addedTask.data });
     } catch (error) {
         return NextResponse.json({ status: error?.response.status, message: error?.response.data });
@@ -86,5 +94,24 @@ export async function GET(req) {
 
     } catch (error) {
         return NextResponse.json({ status: error?.response.status, message: error?.response.data })
+    }
+}
+
+export async function DELETE(req) {
+    const at = cookies().get('at').value;
+    const { searchParams } = new URL(req.url);
+    const uuid = searchParams.get('uuid');
+
+    const decryptedToken = decryptToken(at);
+    const { token } = decryptedToken;
+
+    const microservice = microserviceCaller(token);
+
+    try {
+        const response = await microservice.delete(`/ic-teams/tasks/${uuid}`);
+
+        return NextResponse.json({ status: 200, data: response?.data });
+    } catch (error) {
+        return NextResponse.json({ status: error?.response.status, message: error?.response?.data });
     }
 }

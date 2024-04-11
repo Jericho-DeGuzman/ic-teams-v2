@@ -32,7 +32,6 @@ export default function SubtaskTab({ uuid }) {
                 const result = await response.json();
 
                 if (result?.status !== 200) throw new Error(result?.status);
-                console.log(result);
                 setSubtasks(result?.data);
             } catch (error) {
                 setError(error?.message)
@@ -81,6 +80,22 @@ export default function SubtaskTab({ uuid }) {
         }));
     }
 
+    const onDeleteHandler = async (uuid) => {
+        try {
+            const response = await fetch(`/api/sub-tasks?uuid=${uuid}`, {
+                method: 'delete',
+                headers: {'Content-Type' : 'application/json'}
+            })
+
+            const result = await response.json();
+            if(result?.status !== 200) throw new Error(result?.status)
+            setSubtasks(subtasks.filter((subtask => subtask.uuid !== uuid)));
+
+        } catch(error) {
+            setError(error)
+        }
+    }
+
     if (error) return <CustomError status={error} />
 
     return (
@@ -93,7 +108,7 @@ export default function SubtaskTab({ uuid }) {
                 {loading ? <SubtaskLoading /> :
                     subtasks.length ? (
                         subtasks.map((subtask, index) => (
-                            <SubtaskCard key={index} title={subtask.title} is_done={subtask.is_done} />
+                            <SubtaskCard key={index} uuid={subtask.uuid} task_uuid={subtask.task.uuid} title={subtask.title} is_done={subtask.is_done} ondelete={onDeleteHandler}/>
                         ))
                     ) : (
                         <div className="w-full flex items-center justify-center italic text-gray-400" style={{ minHeight: '154px' }}>

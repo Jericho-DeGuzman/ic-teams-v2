@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import AttachmentTab from "@/app/components/tab/attachmentTab";
 import SubtaskTab from "@/app/components/tab/subtaskTab";
 import TaskCommentSection from "@/app/components/section/taskCommentSection";
@@ -17,6 +17,8 @@ import formatNumberDate from "@/utils/formatNumberDate";
 import ViewTaskLoading from "@/app/components/loading/viedTaskLoading";
 import { validateTaskForm } from "@/utils/validateFormInput";
 import toast from "react-hot-toast";
+import TaskStatusLabel from "@/app/components/label/taskStatus";
+import AssigneesAvatar from "@/app/components/avatar/assigneesAvatar";
 
 //TODO: Create a client side component for modal.
 //TODO: Re-create the ui for status, assigne to and due date.
@@ -27,6 +29,8 @@ export default function TaskModalLayout({ params }) {
     const uuid = params.taskId;
     const [loading, setLoading] = useState(true);
     const [task, setTask] = useState([]);
+    const [currentTask, setCurrentTask] = useState([]);
+    const [hasChanges, setHasChanges] = useState(false);
     const [saving, setSaving] = useState(false);
 
     useEffect(() => {
@@ -40,8 +44,8 @@ export default function TaskModalLayout({ params }) {
 
                 const result = await response.json();
                 if (result?.status !== 200) throw new Error(result?.message);
-
                 setTask(result?.data);
+                setCurrentTask(result?.data);
             } catch (error) {
                 throw new Error(error)
             } finally {
@@ -59,6 +63,8 @@ export default function TaskModalLayout({ params }) {
             ...prev,
             [name]: value
         }))
+
+        setHasChanges(value !== currentTask[name])
     }
 
     const handleSubmit = async (ev) => {
@@ -69,10 +75,10 @@ export default function TaskModalLayout({ params }) {
 
             const response = await fetch(`/api/tasks?uuid=${uuid}`, {
                 method: 'put',
-                header: {'Content-Type': 'application/json'},
+                header: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(task)
             })
-            
+
             const result = await response.json();
 
             if (result?.status !== 200) throw new Error(result?.message);
@@ -132,49 +138,25 @@ export default function TaskModalLayout({ params }) {
                                         className="w-full outline-none bg-transparent text-[24px] font-bold" />
                                     <div className="grid grid-cols-3 gap-2">
                                         <div className="cols-span-1">
-                                            <div className="flex flex-col">
-                                                <label className="p-1">Status</label>
-                                                <div className="w-full p-1 rounded-md">
-                                                    <div className="bg-yellow-400 w-6/12 p-[3px] flex items-center justify-center text-white rounded-sm gap-1">
-                                                        <FontAwesomeIcon icon={faCalendar} className="w-3 h-3" />
-                                                        <span className="flex items-center justify-center">
-                                                            {task.status.name}
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                            <TaskStatusLabel status={task.status} />
                                         </div>
 
                                         <div className="cols-span-1">
                                             <div className="flex flex-col">
                                                 <label className="p-1">Assigned to</label>
-                                                <div className='flex gap-1 p-1 rounded-md items-center hover:bg-gray-200 duration-300'>
-                                                    <div className='rounded-full h-7 w-7 flex items-center justify-center border-white border-[1px] cursor-pointer'>
-                                                        <Image src={DefaultPhoto} width={36} height={36} alt='profile' />
-                                                    </div>
-                                                    <div className='rounded-full h-7 w-7 flex items-center justify-center border-white border-[1px] cursor-pointer
-                                                tooltip tooltip-bottom' data-tip="Jericho De Guzman">
-                                                        <Image src={DefaultPhoto} width={36} height={36} alt='profile' />
-                                                    </div>
-                                                    <div className='rounded-full h-7 w-7 flex items-center justify-center border-white border-[1px] cursor-pointer
-                                                tooltip tooltip-bottom'>
-                                                        <Image src={DefaultPhoto} width={36} height={36} alt='profile' />
-                                                    </div>
-                                                </div>
+                                                <AssigneesAvatar uuid={uuid} target_uuid={task.target.uuid}/>
                                             </div>
-
                                         </div>
 
                                         <div className="cols-span-1">
                                             <div className="flex flex-col">
                                                 <label className="p-1">Due Date</label>
-                                                <div className="w-full p-1 flex items-center">
+                                                <div className="w-full p-1 flex items-center hover:bg-gray-200 duration-200 rounded-md">
                                                     <input name="due_date" type="date" className="py-1 bg-transparent outline-none cursor-pointer"
                                                         value={formatNumberDate(task.due_date)} onChange={handleInputChange} />
                                                 </div>
                                             </div>
                                         </div>
-
                                     </div>
                                     <textarea value={decodeHTMLText(task.description)} name="description" onChange={handleInputChange}
                                         className="bg-transparent outline-none w-full resize-none rounded-md border-[1px] border-gray-300 p-2" />
@@ -196,7 +178,7 @@ export default function TaskModalLayout({ params }) {
                             </aside>
                         </section>
                     )}
-                    {!loading && (
+                    {hasChanges && (
                         <form onSubmit={handleSubmit} className="w-full flex justify-end py-2 px-4">
                             <button className={`p-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 duration-100 ${saving && 'px-6 py-2 flex items-center justify-center'}`}
                                 type='submit' disabled={saving}>

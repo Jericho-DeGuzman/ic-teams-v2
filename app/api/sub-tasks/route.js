@@ -39,9 +39,55 @@ export async function POST(req) {
 
     try {
         const response = await microservice.post(`/ic-teams/sub-tasks?task_uuid=${task_uuid}`, subtask);
-        return NextResponse.json({status: 200, data: response?.data})
+        return NextResponse.json({ status: 200, data: response?.data })
+    } catch (error) {
+        return NextResponse.json({ status: error?.response.status, message: error?.response.data });
+    }
+}
+
+export async function PUT(req) {
+    const at = cookies().get('at').value;
+    const body = await req.json();
+    const { searchParams } = new URL(req.url);
+
+    const uuid = searchParams.get('uuid')
+
+    const { title, is_done, task_uuid } = body;
+    const subtask = { task_uuid, title, is_done };
+
+    subtask['title'] = sanitizeInput(subtask['title']);
+
+    const decryptedToken = decryptToken(at);
+    const { token } = decryptedToken;
+
+    const microservice = microserviceCaller(token);
+
+    try {
+        const response = await microservice.put(`/ic-teams/sub-tasks/${uuid}`, subtask);
+        return NextResponse.json({ status: 200 })
     } catch (error) {
         console.log(error)
         return NextResponse.json({ status: error?.response.status, message: error?.response.data });
+    }
+
+
+}
+
+export async function DELETE(req) {
+    const at = cookies().get('at').value;
+    const { searchParams } = new URL(req.url);
+    const uuid = searchParams.get('uuid');
+
+    const decryptedToken = decryptToken(at);
+    const { token } = decryptedToken;
+
+    const microservice = microserviceCaller(token);
+
+    try {
+        const response = await microservice.delete(`/ic-teams/sub-tasks/${uuid}`);
+        return NextResponse.json({status: 200, message: response.data});
+    } catch (error) {
+        console.log(error);
+        return NextResponse.json({status: error?.response.status, message: error?.response.data})
     }
 }

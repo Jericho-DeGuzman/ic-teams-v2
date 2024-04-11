@@ -3,12 +3,32 @@ import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 
-export default function SubtaskCard({ title, is_done }) {
+export default function SubtaskCard({ title, is_done, uuid, task_uuid, ondelete }) {
     const [isDone, setIsDone] = useState(is_done)
     const [mouseEnter, setMouseEnter] = useState(false);
 
-    const onChangeHandler = (ev) => {
-        setIsDone(!isDone)
+    const onChangeHandler = async (ev) => {
+        const prevStatus = isDone;
+        setIsDone(ev.target.checked ? 1 : 0);
+
+        try {
+            const response = await fetch(`/api/sub-tasks?uuid=${uuid}`, {
+                method: 'put',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    task_uuid: task_uuid,
+                    title: title,
+                    is_done: ev.target.checked ? 1 : 0
+                })
+            })
+
+            const result = await response.json();
+            console.log(result);
+
+        } catch (error) {
+            setIsDone(prevStatus);
+        }
+
     }
 
     return (
@@ -17,16 +37,14 @@ export default function SubtaskCard({ title, is_done }) {
                 <input type="checkbox" defaultChecked={isDone} onChange={onChangeHandler}
                     className="checkbox appearance-none rounded-full border-gray-400 checked:border-blue-500 
                     [--chkbg:theme(colors.blue.500)] [--chkfg:white] h-4 w-4" />
-                <div className={`${isDone && 'line-through text-gray-400'}`}>
-                    {title}
-                </div>
+                <p className={`${isDone == 1 && 'line-through text-gray-400'}`} dangerouslySetInnerHTML={{__html: title}} />
             </div>
             <div className="col-span-2 flex justify-end">
                 {mouseEnter && (
-                    <div className="flex items-center text-gray-400  justify-center p-1 rounded-md
-                    cursor-pointer hover:text-blue-500 duration-300">
+                    <button className="flex items-center text-gray-400  justify-center p-1 rounded-md
+                    cursor-pointer hover:text-blue-500 duration-300" onClick={() => ondelete(uuid)}>
                         <FontAwesomeIcon icon={faTrashAlt} className="h-4 w-4" />
-                    </div>
+                    </button>
                 )}
             </div>
         </div>
