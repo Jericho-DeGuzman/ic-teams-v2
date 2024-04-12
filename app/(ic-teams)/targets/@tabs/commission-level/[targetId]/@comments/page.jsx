@@ -2,9 +2,9 @@
 import CommentCard from "@/app/components/card/commentCard";
 import { faChevronDown, faChevronUp, faComment } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-export default function CommentPage() {
+export default function CommentPage({ params }) {
     const [showComments, setShowComment] = useState(false);
 
     return (
@@ -29,17 +29,10 @@ export default function CommentPage() {
             {showComments && (
                 <>
                     <div className="border-y-[1px] p-2 border-gray-400 space-y-2 max-h-[300px] overflow-y-scroll">
-                        <CommentCard />
-                        <CommentCard />
-                        <CommentCard />
-                        <CommentCard />
-                        <CommentCard />
-                        <CommentCard />
-                        <CommentCard />
-                        <CommentCard />
+                        <CommentCard username={'Jericho De Guzman'} date={'2024-04-11T03:28:48.000000Z'} comment={"the quick brown fox"} />
                     </div>
                     <div className="w-full">
-                        <textarea placeholder="Aa" className="w-full p-2 outline-none resize-none bg-white"/>
+                        <textarea placeholder="Aa" className="w-full p-2 outline-none resize-none bg-white text-black" />
                     </div>
                 </>
             )}

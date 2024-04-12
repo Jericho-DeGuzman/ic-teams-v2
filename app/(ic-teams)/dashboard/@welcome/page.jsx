@@ -33,8 +33,6 @@ async function loadUser() {
 export default async function WelcomePage() {
     const loadedUser = await loadUser();
 
-    if (loadedUser == 'unauthorized') permanentRedirect('/unauthorized')
-
     const { first_name, last_name, profile_pic_id } = loadedUser || {};
     const username = `${first_name || ''} ${last_name || ''}`;
 

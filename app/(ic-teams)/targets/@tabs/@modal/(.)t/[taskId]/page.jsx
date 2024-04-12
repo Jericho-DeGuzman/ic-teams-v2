@@ -174,7 +174,7 @@ export default function TaskModalLayout({ params }) {
                             </main>
 
                             <aside className="col-span-2 p-2 border-l-[1px] border-gray-300 flex flex-col">
-                                <TaskCommentSection />
+                                <TaskCommentSection uuid={params.taskId}/>
                             </aside>
                         </section>
                     )}

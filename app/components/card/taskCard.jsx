@@ -20,9 +20,9 @@ const TaskCard = memo(({ uuid, title, due, ondelete, status }) => {
     const router = useRouter();
 
     useEffect(() => {
-        const loadSubtaskCount = async () => {
-            const at = Cookies.get('at')
+        const at = Cookies.get('at')
 
+        const loadSubtaskCount = async () => {
             const response = await fetch(`/api/sub-tasks?uuid=${uuid}`, {
                 method: 'get',
                 headers: { 'at': at }
@@ -34,6 +34,18 @@ const TaskCard = memo(({ uuid, title, due, ondelete, status }) => {
 
         }
 
+        const commentCount = async () => {
+            const response = await fetch(`/api/tasks-comments?uuid=${uuid}`, {
+                method: 'get',
+                headers: { 'at': at }
+            })
+
+            const result = await response.json();
+
+            if (result?.status !== 200) throw new Error(result?.message);
+            setCommentCount(result?.data.length)
+        }
+        commentCount();
         loadSubtaskCount();
     }, [visible])
 
