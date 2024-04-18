@@ -2,8 +2,9 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
     data: {
-        distributionGroups : [],
+        distributionGroups: [],
         categories: [],
+        fileRequirements: [],
     }
 }
 
@@ -16,9 +17,12 @@ export const selectionDataSlice = createSlice({
         },
         setCategoriesData: (state, action) => {
             state.data.categories = action.payload;
+        },
+        setFileRequirements: (state, action) => {
+            state.data.fileRequirements = action.payload;
         }
     }
 })
 
-export const {setDistributionGroupsData, setCategoriesData} = selectionDataSlice.actions;
+export const { setDistributionGroupsData, setCategoriesData, setFileRequirements } = selectionDataSlice.actions;
 export default selectionDataSlice.reducer;

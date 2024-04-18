@@ -6,6 +6,7 @@ import Navbar from "./components/navigation/navbar";
 import authenticate from "@/utils/auth";
 import { permanentRedirect } from "next/navigation";
 import { Toaster } from "react-hot-toast";
+import { cookies } from "next/headers";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -13,7 +14,8 @@ export const metadata = {
   title: "IC TEAMS",
 };
 
-export default function RootLayout({ children }) {
+
+export default async function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={inter.className}>

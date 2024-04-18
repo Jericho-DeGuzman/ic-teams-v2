@@ -19,6 +19,8 @@ const TargetCard = memo(({ uuid, title, type, category, description, status, sta
         if (functional.indexOf(group.parent?.short_name) == -1) functional.push(group.parent?.short_name);
     })
 
+    console.log(update_at);
+
     return (
         <section className='w-full border-[1px] rounded-md text-black
             hover:border-blue-500 hover:scale-[1.03] duration-300 cursor-pointer'>

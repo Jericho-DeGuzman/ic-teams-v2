@@ -10,7 +10,7 @@ import { memo, useEffect, useState } from 'react';
 import ConfirmationDialog from '../dialog/Confirmation';
 import { useRouter } from 'next/navigation';
 
-const TaskCard = memo(({ uuid, title, due, ondelete, status }) => {
+const TaskCard = memo(({ uuid, title, due, ondelete, status, permissions }) => {
     const setDraggingCard = useKanbanStore((state) => state.setDraggingCard);
     const [visible, setVisible] = useState(false);
     const [subtaskCount, setSubtaskCount] = useState(0);
@@ -29,7 +29,6 @@ const TaskCard = memo(({ uuid, title, due, ondelete, status }) => {
             })
 
             const result = await response.json();
-
             setSubtaskCount(result?.data?.length)
 
         }
@@ -41,9 +40,7 @@ const TaskCard = memo(({ uuid, title, due, ondelete, status }) => {
             })
 
             const result = await response.json();
-
-            if (result?.status !== 200) throw new Error(result?.message);
-            setCommentCount(result?.data.length)
+            setCommentCount(result?.data?.length)
         }
         commentCount();
         loadSubtaskCount();
@@ -69,9 +66,7 @@ const TaskCard = memo(({ uuid, title, due, ondelete, status }) => {
                 onMouseEnter={() => setVisible(true)} onMouseLeave={() => setVisible(false)}
                 onDragStart={() => setDraggingCard(uuid)} onDragEnd={() => setDraggingCard(uuid)}>
                 <main className='text-[12px] space-y-[8px]' onClick={handleOpenTask}>
-                    <p className='w-full py-1' style={{ lineHeight: 1.1 }}>
-                        {title}
-                    </p>
+                    <p className='w-full py-1' style={{ lineHeight: 1.1 }} dangerouslySetInnerHTML={{ __html: title }} />
                     {visible && (
                         <div className='w-full grid grid-cols-2 gap-1 text-gray-400'>
                             <div className='flex items-center gap-1'>
@@ -88,11 +83,13 @@ const TaskCard = memo(({ uuid, title, due, ondelete, status }) => {
                                     <FontAwesomeIcon icon={faComment} className='w-4 h-4' />
                                     <span>{commentCount}</span>
                                 </div>
-                                <button name="delete" className='p-[5px] gap-1 flex items-center justify-center tooltip tooltip-bottom cursor-pointer 
-                            hover:bg-gray-200 rounded-md duration-100 hover:text-blue-500'
-                                    data-tip="Delete" onClick={(ev) => { ev.stopPropagation(); setShowDialog(true) }}>
-                                    <FontAwesomeIcon icon={faTrash} className='w-4 h-4' />
-                                </button>
+                                {permissions.role_permissions.includes('tasks.delete') && (
+                                    <button name="delete" className='p-[5px] gap-1 flex items-center justify-center tooltip tooltip-bottom cursor-pointer 
+                                    hover:bg-gray-200 rounded-md duration-100 hover:text-blue-500'
+                                        data-tip="Delete" onClick={(ev) => { ev.stopPropagation(); setShowDialog(true) }}>
+                                        <FontAwesomeIcon icon={faTrash} className='w-4 h-4' />
+                                    </button>
+                                )}
                             </div>
                         </div>
                     )}

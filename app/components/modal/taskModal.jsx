@@ -8,7 +8,7 @@ import { useAppDispatch } from "@/app/redux/hooks";
 import { closeTaskForm } from "@/app/redux/features/taskForm";
 import toast from "react-hot-toast";
 
-export default function TargetTaskModal({ uuid, onsubmit, inputchange, onassigneeschange, oncancel, newTask, disabled }) {
+export default function TargetTaskModal({ uuid, onsubmit, inputchange, onassigneeschange, oncancel, newTask, disabled, fileReqChange, fileItems, fileItemChange }) {
     return (
         <Modal>
             <div className="modal modal-open">
@@ -39,7 +39,10 @@ export default function TargetTaskModal({ uuid, onsubmit, inputchange, onassigne
                         <h1 className="font-semibold text-blue-500">Create Task</h1>
                     </header>
                     <main className="w-full space-y-2 text-[12px]">
-                        <TargetTaskForm selection={uuid} inputchange={inputchange} assigneesChange={onassigneeschange} newTask={newTask} oncancel={oncancel} onsubmit={onsubmit} disabled={disabled}/>
+                        <TargetTaskForm selection={uuid} inputchange={inputchange} assigneesChange={onassigneeschange} 
+                            newTask={newTask} oncancel={oncancel} onsubmit={onsubmit} disabled={disabled} fileReqChange={fileReqChange}
+                            fileItems={fileItems} fileItemChange={fileItemChange}
+                            />
                     </main>
                 </motion.div>
             </div>

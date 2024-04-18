@@ -33,7 +33,6 @@ export default function Targets({ data, role_permissions, level }) {
 
             toast.success('Target deleted');
         } catch (error) {
-            console.log(error)
             setError(error?.status);
         } 
     }
@@ -59,8 +58,8 @@ export default function Targets({ data, role_permissions, level }) {
                 <TargetCard key={index} uuid={target.uuid} type={target.type} title={target.title} watchlist={role_permissions.includes('watchlist.create')}
                     description={target.description} category={target.category}
                     status={target.status} start_date={target.start_date} end_date={target.end_date}
-                    update_at={target.last_update} progress={target.progress} functional_group={target.distribution_groups} ondelete={handleDelete}
-                    moreVisibility={role_permissions.includes('targets.delete')} level={level}
+                    update_at={target.updated_at} progress={target.progress} functional_group={target.distribution_groups} ondelete={handleDelete}
+                    moreVisibility={role_permissions.includes('targets.delete')} level={level} 
                 />
             ))}
         </main>

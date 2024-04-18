@@ -1,16 +1,15 @@
-export default function formatDateTime(inputString) {
-    // Convert the input string to a Date object
-    const inputDate = new Date(inputString);
-    // Format the date as "Dec 18, 2023"
-    const formattedDate = new Intl.DateTimeFormat('en-US', {
-        month: 'long',
-        day: 'numeric',
-        year: 'numeric',
-    }).format(inputString);
-
-    // Format the time as HH:MM:SS
-    const formattedTime = inputDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-    // Return the formatted date and time
+export default function formatDateTime(timestamp) {
+    const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    const date = new Date(timestamp);
+    const month = months[date.getMonth()];
+    const day = date.getDate();
+    const year = date.getFullYear();
+    let hours = date.getHours();
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    hours = hours % 12;
+    hours = hours ? hours : 12; // Handle midnight
+    const time = hours + ':' + minutes + ' ' + ampm;
     
-    return `${formattedDate} ${formattedTime}`;
+    return `${month} ${day}, ${year} ${time}`;
 }

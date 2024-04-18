@@ -7,14 +7,13 @@ import Cookies from "js-cookie";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
-//TODO: make the comment appear quickly using lazy loading approach.
-
 export default function CommentPage({ params }) {
     const [showComments, setShowComment] = useState(false);
     const [comments, setComments] = useState([]);
     const [newComment, setNewComment] = useState('');
     const [error, setError] = useState(false);
     const [loading, setLoading] = useState(true);
+    const [sending, setSending] = useState(false);
 
     useEffect(() => {
         setLoading(true);
@@ -47,7 +46,7 @@ export default function CommentPage({ params }) {
 
     const submitNewComment = async (ev) => {
         if (newComment == '') return;
-
+        setSending(true)
         try {
             const response = await fetch('/api/target-comments', {
                 method: "post",
@@ -65,6 +64,7 @@ export default function CommentPage({ params }) {
             setError(true);
         } finally {
             setNewComment('')
+            setSending(false);
         }
     }
 
@@ -128,7 +128,11 @@ export default function CommentPage({ params }) {
                             {newComment != '' && (
                                 <div className="col-span-1 flex items-center justify-center">
                                     <button className="flex items-center justify-center bg-blue-500 rounded-full p-2 hover:bg-blue-600" onClick={submitNewComment}>
+                                    {sending ? (
+                                        <span class="loading loading-spinner loading-xs bg-white"></span>
+                                    ) : (
                                         <FontAwesomeIcon icon={faPaperPlane} className="h-4 w-4 text-white" />
+                                    )}
                                     </button>
                                 </div>
                             )}

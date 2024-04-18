@@ -36,13 +36,34 @@ async function loadTask(uuid) {
     }       
 }
 
+async function loadUserPermission() {  
+    const at = cookies().get('at').value;
+
+    try {
+        const response = await fetch(`${process.env.BASE_URL}/api/permissions`, {
+            method: 'get',
+            headers: {'at': at}
+        })
+
+        const result = await response.json();
+
+        if(result?.status !== 200) throw new Error(result?.message);
+
+        return result?.data;
+
+    } catch(error) {
+        throw new Error(error)
+    }
+}
+
 export default async function TaskPage({ params }) {
     const { targetId } = params;
     const tasks = await loadTask(targetId);
+    const permissions = await loadUserPermission();
 
     return (
         <section className="w-full min-h-screen p-4 overflow-hidden space-y-4">
-            <KanbanBoard key={'kanban'} tasks={tasks} uuid={targetId} />
+            <KanbanBoard key={'kanban'} tasks={tasks} uuid={targetId} permissions={permissions}/>
         </section>
     )
 }

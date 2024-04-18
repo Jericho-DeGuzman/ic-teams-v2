@@ -1,5 +1,3 @@
-// TODO: create a function that undo the movement if failed to update in microservice
-
 export const moveCardTask = ({ cards, cardId, board, index }) => {
     const cardData = Object.entries(cards).map(([prevBoard, tasks]) => {
         const card = tasks.find((task) => task.uuid === cardId);

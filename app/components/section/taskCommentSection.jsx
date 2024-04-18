@@ -1,5 +1,6 @@
 'use client'
 import formatDate from "@/utils/formatDate";
+import formatDateTime from "@/utils/formatDateTime";
 import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Cookies from "js-cookie";
@@ -12,11 +13,13 @@ export default function TaskCommentSection({ uuid }) {
     const [newComments, setNewComments] = useState('');
     const [focus, setFocus] = useState(false);
     const [error, setError] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const [sending, setSending] = useState(false);
 
 
     useEffect(() => {
         const at = Cookies.get('at');
-
+        setLoading(true);
         const loadComments = async () => {
             try {
                 const response = await fetch(`/api/tasks-comments?uuid=${uuid}`, {
@@ -29,7 +32,9 @@ export default function TaskCommentSection({ uuid }) {
                 if (result?.status !== 200) throw new Error(result?.message);
                 setComments(result?.data.reverse())
             } catch (error) {
-               setError(true);
+                setError(true);
+            } finally {
+                setLoading(false);
             }
         }
 
@@ -44,6 +49,7 @@ export default function TaskCommentSection({ uuid }) {
     // TODO: integrate IC api and save comment
     const onSendHandler = async () => {
         if (newComments == '') return;
+        setSending(true);
         try {
             const response = await fetch('/api/tasks-comments', {
                 method: "post",
@@ -61,8 +67,17 @@ export default function TaskCommentSection({ uuid }) {
             setError(true);
         } finally {
             setNewComments('')
+            setSending(false);
         }
     }
+
+    if (loading) return (
+        <div className="w-full space-y-2">
+            <div className="bg-gray-200 h-10 rounded-md animate-pulse" />
+            <div className="bg-gray-200 h-10 rounded-md animate-pulse" />
+            <div className="bg-gray-200 h-10 rounded-md animate-pulse" />
+        </div>
+    )
 
     return (
         <>
@@ -76,9 +91,9 @@ export default function TaskCommentSection({ uuid }) {
                         <div className="w-full p-2 bg-gray-200 space-y-1 rounded-md" key={index}>
                             <div className="w-full flex justify-between">
                                 <span className="font-semibold">{`${comment.created_by_person.first_name} ${comment.created_by_person.middle_name} ${comment.created_by_person.last_name}`}</span>
-                                <span className="text-gray-400">{formatDate(comment.created_at)}</span>
+                                <span className="text-gray-400">{formatDateTime(comment.created_at)}</span>
                             </div>
-                            <p dangerouslySetInnerHTML={{__html: comment.comment}}/>
+                            <p dangerouslySetInnerHTML={{ __html: comment.comment }} />
                         </div>
                     ))}
                 </div>
@@ -93,8 +108,12 @@ export default function TaskCommentSection({ uuid }) {
                     </div>
                     {newComments != '' && (
                         <div className="col-span-2 flex items-center justify-center">
-                            <button className="flex items-center justify-center bg-blue-500 rounded-full p-2 hover:bg-blue-600" onClick={onSendHandler}>
-                                <FontAwesomeIcon icon={faPaperPlane} className="h-4 w-4 text-white" />
+                            <button className="flex items-center justify-center bg-blue-500 rounded-full p-2 hover:bg-blue-600" onClick={onSendHandler} disabled={sending}>
+                                {sending ? (
+                                    <span class="loading loading-spinner loading-xs bg-white"></span>
+                                ) : (
+                                    <FontAwesomeIcon icon={faPaperPlane} className="h-4 w-4 text-white" />
+                                )}
                             </button>
                         </div>
                     )}

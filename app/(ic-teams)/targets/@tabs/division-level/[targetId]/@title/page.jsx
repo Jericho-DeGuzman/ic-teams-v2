@@ -19,11 +19,32 @@ async function loadTitle(uuid) {
     }
 }
 
+async function loadUserPermission() {  
+    const at = cookies().get('at').value;
+
+    try {
+        const response = await fetch(`${process.env.BASE_URL}/api/permissions`, {
+            method: 'get',
+            headers: {'at': at}
+        })
+
+        const result = await response.json();
+
+        if(result?.status !== 200) throw new Error(result?.message);
+
+        return result?.data;
+
+    } catch(error) {
+        throw new Error(error)
+    }
+}
+
 export default async function TitlePage({ params }) {
     const { targetId } = params;
     const target = await loadTitle(targetId);
+    const permissions = await loadUserPermission();
     
     return (
-        <TargetTitleHeader key={targetId} uuid={targetId} title={target?.title} />
+        <TargetTitleHeader key={targetId} uuid={targetId} title={target?.title} permissions={permissions}/>
     )
 }

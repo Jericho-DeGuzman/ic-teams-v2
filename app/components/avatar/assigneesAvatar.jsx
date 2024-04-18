@@ -29,7 +29,7 @@ const OutsideClickListener = ({ children, onOutsideClick }) => {
 };
 
 
-export default function AssigneesAvatar({ uuid, target_uuid }) {
+export default function AssigneesAvatar({ uuid, target_uuid, permissions }) {
     const [assignees, setAssignees] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
@@ -146,26 +146,27 @@ export default function AssigneesAvatar({ uuid, target_uuid }) {
         <OutsideClickListener onOutsideClick={handleClickOutside}>
             <div className="dropdown dropdown-bottom  w-full">
                 {assignees.length > 0 ? (
-                    <button className='w-full flex gap-1 p-1 rounded-md items-center hover:bg-gray-200 duration-300 cursor-pointer' onClick={() => setVisible(!visible)}>
+                    <button className='w-full flex gap-1 p-1 rounded-md items-center hover:bg-gray-200 duration-300 cursor-pointer' 
+                        onClick={() => setVisible(!visible)} disabled={!permissions.role_permissions.includes('tasks.assignees.create')}>
                         {assignees.map((member, index) => (
                             <AvatarSm key={index} id={member.value} remove={removeAssignee}
-                                username={member.label} />
+                                username={member.label} indicatorVisible={permissions.role_permissions.includes('tasks.assignees.create')}/>
                         ))}
                     </button>
                 ) : (
-                    <button className='w-full flex gap-1 px-1 py-3 rounded-md items-center hover:bg-gray-200 duration-300' onClick={() => setVisible(!visible)}>
+                    <button className='w-full flex gap-1 px-1 py-3 rounded-md items-center hover:bg-gray-200 duration-300' 
+                        onClick={() => setVisible(!visible)} disabled={!permissions.role_permissions.includes('tasks.assignees.create')}>
                         <div className="text-gray-400 font-semibold cursor-default">Task Unassigned</div>
                     </button>
                 )}
 
                 {visible && (
                     <div className="w-full dropdown-content bg-white z-10">
-                        <Select placeholder={'Assign member'} options={handleMembers()} onChange={addAssignee} />
+                        <Select placeholder={'Assign member'} options={handleMembers()} onChange={addAssignee} isDisabled={!permissions.role_permissions.includes('tasks.assignees.create')}/>
                     </div>
                 )}
             </div>
 
         </OutsideClickListener>
-
     )
 }

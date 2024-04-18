@@ -12,7 +12,7 @@ import Targets from '@/app/components/targets/targets'
 async function loadTargets(page) {
     const at = Cookies.get('at');
     try {
-        const response = await fetch(`http://192.168.100.62:3000/api/targets?page=${page || 1}`, {
+        const response = await fetch(`/api/targets?page=${page || 1}`, {
             method: 'get',
             headers: { 'at': at },
             cache: 'no-cache'
@@ -31,7 +31,7 @@ async function loadUserPermission() {
     const at = Cookies.get('at');
 
     try {
-        const response = await fetch(`http://192.168.100.62:3000/api/permissions`, {
+        const response = await fetch(`/api/permissions`, {
             method: 'get',
             headers: { 'at': at },
         })

@@ -1,18 +1,40 @@
 'use client'
 import Select from 'react-select'
 import SelectAssigneees from '../input/assigneesSelectInput';
+import SelectFileRequirements from '../input/fileRequirementSelectInput';
+import { useEffect, useState } from 'react';
+import { useAppSelector } from '@/app/redux/hooks';
+import FileItem from '../card/fileItems';
 
-export default function TargetTaskForm({ selection, inputchange, newTask, oncancel, onsubmit, assigneesChange, disabled }) {
+export default function TargetTaskForm({ selection, inputchange, newTask, oncancel, onsubmit, assigneesChange, disabled, fileReqChange, fileItems, fileItemChange }) {
     const { title, description, date } = newTask;
 
+
     return (
-        <form onSubmit={onsubmit} className='text-black'>
-            <div className="flex flex-col">
-                <label className="text-black">Title</label>
-                <input name='title' type="text" placeholder="Add title"
-                    className="w-full bg-transparent outline-none border-[1px] border-gray-400 rounded-md p-2 
+        <form onSubmit={onsubmit} className='text-black space-y-1'>
+            <div className='w-full grid grid-cols-2 gap-2'>
+                <div className="flex flex-col">
+                    <label className="text-black">Title</label>
+                    <input name='title' type="text" placeholder="Add title"
+                        className="w-full bg-transparent outline-none border-[1px] border-gray-400 rounded-md p-2 
                                     focus:border-[2px] focus:border-blue-500 duration-100" value={title} onChange={inputchange} disabled={disabled} />
+                </div>
+                <div className="flex flex-col">
+                    <SelectFileRequirements label={'File Requirements'} placeholder={'Select file requirements'} onchange={fileReqChange} />
+                </div>
             </div>
+            {fileItems?.length > 0 && (
+                <div className='flex flex-col'>
+                    <label className="text-black">File Requirement Items</label>
+                    <div className='w-full p-2 border-[2px] border-gray-300 rounded-md space-y-1'>
+                        {
+                            fileItems.map((item, index) => (
+                                <FileItem key={index} uuid={item.value} title={item.label} isChecked={item.isRequired} onchange={fileItemChange} />
+                            ))
+                        }
+                    </div>
+                </div>
+            )}
             <div className="flex flex-col">
                 <label className="text-black">Description</label>
                 <textarea name="description" placeholder="Add description"

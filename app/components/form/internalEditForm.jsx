@@ -51,9 +51,9 @@ export default function InternalEditForm({ onCancel, target, noEndDate, saving, 
                     CANCEL
                 </button>
                 <form onSubmit={handleSubmit}>
-                    <button className={`p-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 duration-100 ${saving && 'px-6 py-2 flex items-center justify-center'}`}
+                    <button className={`p-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 duration-100 px-4 ${saving && 'px-6 py-2 flex items-center justify-center'}`}
                         type='submit' disabled={saving}>
-                        {saving ? <span class="loading loading-spinner loading-xs"></span> : <>CREATE</>}
+                        {saving ? <span class="loading loading-spinner loading-xs"></span> : <>SAVE</>}
                     </button>
                 </form>
             </div>

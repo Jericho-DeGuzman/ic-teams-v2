@@ -20,9 +20,6 @@ import toast from "react-hot-toast";
 import TaskStatusLabel from "@/app/components/label/taskStatus";
 import AssigneesAvatar from "@/app/components/avatar/assigneesAvatar";
 
-//TODO: Create a client side component for modal.
-//TODO: Re-create the ui for status, assigne to and due date.
-
 export default function TaskModalLayout({ params }) {
     const router = useRouter();
     const [visibleTab, setVisibleTab] = useState('subtask')
@@ -32,6 +29,7 @@ export default function TaskModalLayout({ params }) {
     const [currentTask, setCurrentTask] = useState([]);
     const [hasChanges, setHasChanges] = useState(false);
     const [saving, setSaving] = useState(false);
+    const [permissions, setPermission] = useState([]);
 
     useEffect(() => {
         const fetchTask = async () => {
@@ -46,6 +44,16 @@ export default function TaskModalLayout({ params }) {
                 if (result?.status !== 200) throw new Error(result?.message);
                 setTask(result?.data);
                 setCurrentTask(result?.data);
+
+                const permission = await fetch('/api/permissions', {
+                    method: 'get',
+                    headers: { 'at': at }
+                })
+
+                const result_permission = await permission.json();
+                if (result_permission?.status !== 200) throw new Error(result_permission?.message);
+
+                setPermission(result_permission?.data);
             } catch (error) {
                 throw new Error(error)
             } finally {
@@ -134,8 +142,14 @@ export default function TaskModalLayout({ params }) {
                         <section className="w-full grid grid-cols-6 text-black text-[12px] border-b-[1px]">
                             <main className="col-span-4 p-4 space-y-1">
                                 <div className="space-y-2">
-                                    <input name="title" type="text" value={decodeHTMLText(task.title)} onChange={handleInputChange}
-                                        className="w-full outline-none bg-transparent text-[24px] font-bold" />
+                                    {permissions.role_permissions.includes('tasks.update') ? (
+                                        <input name="title" type="text" value={decodeHTMLText(task.title)} onChange={handleInputChange}
+                                            disabled={!permissions.role_permissions.includes('tasks.update')}
+                                            className="w-full outline-none bg-transparent text-[24px] font-bold" />
+                                    ) : (
+                                        <div name="title" type="text" dangerouslySetInnerHTML={{ __html: task.title }}
+                                            className="w-full outline-none bg-transparent text-[24px] font-bold" />
+                                    )}
                                     <div className="grid grid-cols-3 gap-2">
                                         <div className="cols-span-1">
                                             <TaskStatusLabel status={task.status} />
@@ -144,7 +158,7 @@ export default function TaskModalLayout({ params }) {
                                         <div className="cols-span-1">
                                             <div className="flex flex-col">
                                                 <label className="p-1">Assigned to</label>
-                                                <AssigneesAvatar uuid={uuid} target_uuid={task.target.uuid}/>
+                                                <AssigneesAvatar uuid={uuid} target_uuid={task.target.uuid} permissions={permissions} />
                                             </div>
                                         </div>
 
@@ -152,14 +166,27 @@ export default function TaskModalLayout({ params }) {
                                             <div className="flex flex-col">
                                                 <label className="p-1">Due Date</label>
                                                 <div className="w-full p-1 flex items-center hover:bg-gray-200 duration-200 rounded-md">
-                                                    <input name="due_date" type="date" className="py-1 bg-transparent outline-none cursor-pointer"
-                                                        value={formatNumberDate(task.due_date)} onChange={handleInputChange} />
+                                                    {permissions.role_permissions.includes('tasks.update') ? (
+                                                        <input name="due_date" type="date" className="py-1 bg-transparent outline-none cursor-pointer"
+                                                            disabled={!permissions.role_permissions.includes('tasks.update')}
+                                                            value={formatNumberDate(task.due_date)} onChange={handleInputChange} />
+                                                    ) : (
+                                                        <div name="due_date" type="date" className="py-1 bg-transparent outline-none cursor-pointer"
+                                                            dangerouslySetInnerHTML={{ __html: task.due_date }} />
+                                                    )}
+
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <textarea value={decodeHTMLText(task.description)} name="description" onChange={handleInputChange}
-                                        className="bg-transparent outline-none w-full resize-none rounded-md border-[1px] border-gray-300 p-2" />
+                                    {permissions.role_permissions.includes('tasks.update') ? (
+                                        <textarea value={decodeHTMLText(task.description)} name="description" onChange={handleInputChange}
+                                            disabled={!permissions.role_permissions.includes('tasks.update')}
+                                            className="bg-transparent outline-none w-full resize-none rounded-md border-[1px] border-gray-300 p-2" />
+                                    ) : (
+                                        <div dangerouslySetInnerHTML={{__html: task.description}} name="description"
+                                            className="bg-transparent outline-none w-full resize-none rounded-md border-[1px] border-gray-300 p-2" />
+                                    )}
                                 </div>
                                 <div className="w-full space-y-4">
                                     <div className="w-full flex gap-2 text-gray-400 border-gray-300 font-semibold text-[14px]">
@@ -168,23 +195,25 @@ export default function TaskModalLayout({ params }) {
                                         <button className={`p-2 ${visibleTab == 'attachment' && 'text-blue-500 border-blue-500 border-b-[1px] transition-[border] duration-200'} cursor-pointer`}
                                             onClick={() => setVisibleTab('attachment')}>Attachment</button>
                                     </div>
-                                    {visibleTab == 'subtask' && <SubtaskTab key={'subtask'} uuid={uuid} />}
+                                    {visibleTab == 'subtask' && <SubtaskTab key={'subtask'} uuid={uuid} permissions={permissions} />}
                                     {visibleTab == 'attachment' && <AttachmentTab key={'attachment'} />}
                                 </div>
                             </main>
 
                             <aside className="col-span-2 p-2 border-l-[1px] border-gray-300 flex flex-col">
-                                <TaskCommentSection uuid={params.taskId}/>
+                                <TaskCommentSection uuid={params.taskId} />
                             </aside>
                         </section>
                     )}
                     {hasChanges && (
-                        <form onSubmit={handleSubmit} className="w-full flex justify-end py-2 px-4">
-                            <button className={`p-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 duration-100 ${saving && 'px-6 py-2 flex items-center justify-center'}`}
-                                type='submit' disabled={saving}>
-                                {saving ? <span class="loading loading-spinner loading-xs"></span> : <>SAVE</>}
-                            </button>
-                        </form>
+                        permissions.role_permissions.includes('tasks.update') && (
+                            <form onSubmit={handleSubmit} className="w-full flex justify-end py-2 px-4">
+                                <button className={`p-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 duration-100 ${saving && 'px-6 py-2 flex items-center justify-center'}`}
+                                    type='submit' disabled={saving}>
+                                    {saving ? <span class="loading loading-spinner loading-xs"></span> : <>SAVE</>}
+                                </button>
+                            </form>
+                        )
                     )}
                 </motion.div>
             </motion.div>

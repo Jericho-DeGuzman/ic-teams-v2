@@ -11,17 +11,17 @@ export async function POST(req) {
     const decryptedToken = decryptToken(at);
     const { token } = decryptedToken;
 
-    const { target_uuid, title, description, due_date, assigned_members } = newTask;
+    const { target_uuid, title, description, due_date, assigned_members, file_requirement_items } = newTask;
     const assignees = [];
 
     assigned_members.map((member) => {
         assignees.push({ id: member.value });
     })
 
-    const task = { target_uuid, title, description, due_date };
+    const task = { target_uuid, title, description, due_date, file_requirement_items };
 
     for (const key in task) {
-        if (key !== 'members') {
+        if (key !== 'members' || key !== 'file_requirement_items') {
             const val = task[key];
             task[key] = sanitizeInput(val);
         }
@@ -44,6 +44,7 @@ export async function POST(req) {
 
         return NextResponse.json({ status: 200, data: addedTask.data });
     } catch (error) {
+        console.log(error)
         return NextResponse.json({ status: error?.response.status, message: error?.response.data });
     }
 }
@@ -69,7 +70,6 @@ export async function PUT(req) {
         const response = await microservice.put(`/ic-teams/tasks/${task_uuid}`, task);
         return NextResponse.json({ status: 200, data: response?.data })
     } catch (error) {
-        console.log(error);
         return NextResponse.json({ status: error?.response.status, message: error?.response.data })
     }
 }

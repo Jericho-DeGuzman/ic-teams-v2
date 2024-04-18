@@ -9,6 +9,7 @@ import toast from "react-hot-toast";
 import { closeTaskForm } from "@/app/redux/features/taskForm";
 import { validateTaskForm } from "@/utils/validateFormInput";
 import CustomError from "../errors/error";
+import CustomAlertDialog from "../dialog/customAlert";
 
 // list on kanban board.
 const boards = [
@@ -18,13 +19,14 @@ const boards = [
     { id: 'done', title: 'Done', color: "bg-green-500" },
 ]
 
-export default function KanbanBoard({ tasks, uuid }) {
+export default function KanbanBoard({ tasks, uuid, permissions }) {
     const initialState = {
         target_uuid: uuid,
         title: '',
         description: '',
         due_date: '',
-        assigned_members: []
+        assigned_members: [],
+        file_requirement_items: []
     }
 
     const draggingCard = useKanbanStore((state) => state.draggingCard) // active dragging card.
@@ -36,12 +38,23 @@ export default function KanbanBoard({ tasks, uuid }) {
     const [newTask, setNewTask] = useState(initialState);
     const [loading, setLoading] = useState(false);
     const dispatch = useAppDispatch();
+    
+    const [fileReq, setFileReq] = useState(null);
+    const itemSelection = useAppSelector((state) => state.selectionDataSlice.data.fileRequirements);
+    const [fileItems, setFileItems] = useState([]);
+
+    const [showAlert, setShowAlert] = useState({
+        show: false,
+        error: null,
+    });
 
     const onDrop = async (board, index) => {
         if (!draggingCard) return;
         const prevCards = cards;
 
         try {
+            if (board == 'done' && !permissions.role_permissions.includes('tasks.change.status.done')) throw new Error('422'); 
+
             const newCards = moveCardTask({
                 cards,
                 cardId: draggingCard,
@@ -57,9 +70,13 @@ export default function KanbanBoard({ tasks, uuid }) {
 
             const result = await response.json();
 
-            if (result?.status !== 200) throw new Error(result?.message);
+            if (result?.status !== 200) throw new Error(result?.status);
 
         } catch (error) {
+            setShowAlert({
+                show: true,
+                error: error?.message
+            })
             setCards(prevCards);
         }
     }
@@ -76,9 +93,13 @@ export default function KanbanBoard({ tasks, uuid }) {
     const onCancelHandler = () => {
         dispatch(closeTaskForm());
         setNewTask(initialState)
+        setFileItems([]);
+        setFileReq(null);
     }
+
     const onSubmitHandler = async (ev) => {
         ev.preventDefault();
+
         setLoading(true);
         try {
             await validateTaskForm(newTask);
@@ -100,6 +121,8 @@ export default function KanbanBoard({ tasks, uuid }) {
             }))
 
             setNewTask(initialState);
+            setFileItems([]);
+            setFileReq(null);
             dispatch(closeTaskForm());
             toast.success('Task added');
         } catch (error) {
@@ -115,6 +138,7 @@ export default function KanbanBoard({ tasks, uuid }) {
             assigned_members: ev
         }))
     }
+
 
     const onDeleteTask = async (uuid, board) => {
         try {
@@ -141,16 +165,82 @@ export default function KanbanBoard({ tasks, uuid }) {
         }
     }
 
+    const handleConfirmAlertDialog = () => {
+        setShowAlert({
+            show: false,
+            error: null
+        })
+    }
+
+    const onFileReqHandler = (ev) => {
+        setFileReq(ev.value);
+    }
+
+    useEffect(() => {
+        if(newTask.file_requirement_items.length > 0) {
+            setNewTask((prev) => ({
+                ...prev,
+                file_requirement_items: []
+            }))
+        }
+
+        let items = [];
+        const tempItems = [];
+        const itemsToSave = [];
+
+        itemSelection.map((item) => {
+            if (item.uuid === fileReq) items = item.file_requirement_items;
+        })
+
+        items.map((item) => {
+            tempItems.push({ value: item.uuid, label: item.title, isRequired: 0 })
+            itemsToSave.push({
+                file_requirement_item_uuid: item.uuid,
+                is_required: 0
+            })
+            
+        })
+
+        setNewTask((prev) => ({
+            ...prev,
+            file_requirement_items: itemsToSave
+        }))
+
+        setFileItems(tempItems);
+    }, [fileReq]);
+
+    const fileItemChangeHandler = (ev) => {
+        const {name, checked} = ev.target;
+
+        const updated = [];
+
+        newTask.file_requirement_items.map((item) => {
+            if(item.file_requirement_item_uuid == name) {
+                updated.push({file_requirement_item_uuid: item.file_requirement_item_uuid, is_required: checked ? 1 : 0})
+            } else {
+                updated.push(item);
+            }
+        })
+
+        setNewTask((prev) => ({
+            ...prev,
+            file_requirement_items: updated
+        }))
+
+    }
+
     if (error) return <CustomError status={error} /> 
 
     return (
         <>
+            {showAlert.show && <CustomAlertDialog error={showAlert.error} onconfirm={handleConfirmAlertDialog}/>}
             {taskForm && <TargetTaskModal key={0} uuid={uuid} onsubmit={onSubmitHandler} inputchange={inputChangeHandler}
-                oncancel={onCancelHandler} onassigneeschange={onAssigneesHandler} newTask={newTask} disabled={loading} />}
+                oncancel={onCancelHandler} onassigneeschange={onAssigneesHandler} newTask={newTask} disabled={loading} fileReqChange={onFileReqHandler}
+                fileItems={fileItems} fileItemChange={fileItemChangeHandler} />}
             <main className='min-h-screen w-full flex gap-2' >
                 {boards.map((board, index) => (
                     <TaskBoard key={index} id={board.id} title={board.title} onDrop={onDrop}
-                        cards={cards[board.id]} color={board.color} ondelete={onDeleteTask} />))}
+                        cards={cards[board.id]} color={board.color} ondelete={onDeleteTask}  permissions={permissions}/>))}
             </main>
         </>
     )
