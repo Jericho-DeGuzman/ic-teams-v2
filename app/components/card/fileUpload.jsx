@@ -33,7 +33,6 @@ export default function FileUpload({ uuid, title, isRequired, taskId }) {
 
                 if (result?.status !== 200) throw new Error(result?.message);
                 const parsed = JSON.parse(result?.data);
-                console.log(parsed.file)
                 setUploadedFile(parsed.file)
             } catch (error) {
                 setUploadedFile(null)
@@ -43,7 +42,7 @@ export default function FileUpload({ uuid, title, isRequired, taskId }) {
         }
 
         loadFile();
-    }, [uuid])
+    }, [uuid, uploading == false])
 
     const handleFileChange = (ev) => {
         const filename = ev.target.files[0]?.name;
@@ -85,8 +84,7 @@ export default function FileUpload({ uuid, title, isRequired, taskId }) {
 
             const result = await response.json();
 
-            if (result?.response != 200) throw new Error(response?.messsage);
-
+            if (result?.status != 200) throw new Error(response?.messsage);
         } catch (error) {
             return uploadFailed();
         } finally {
