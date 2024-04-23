@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { encryptToken } from './utils/cryptoJs';
-import { headers } from 'next/headers';
+import { cookies, headers } from 'next/headers';
 
 export async function middleware(request) {
     //get user device ip.
@@ -9,18 +9,27 @@ export async function middleware(request) {
 
     const pathname = request.nextUrl.pathname;
 
-    const response = NextResponse.next();
-    
+    // const response = NextResponse.next();
+
     // TODO: Make a function the get the token from redirected link from IC Employees portal.
     // TODO: Make a custom page that show unauthorized if no at.
-    
-    if(!request.cookies.get('at')) {
-        const ciphertext = await encryptToken(process.env.TOKEN, ip);
+
+    // if (!request.cookies.get('at')) {
+    //     const ciphertext = await encryptToken(process.env.TOKEN, ip);
+    //     response.cookies.set('at', ciphertext);
+    //     return response;
+    // }
+
+    if (pathname === '/') {
+        const { searchParams } = new URL(request.url);
+        const at = searchParams.get('at');
+
+        const response = NextResponse.redirect(`${process.env.BASE_URL}/dashboard`);
+        const ciphertext = await encryptToken(at, ip);
         response.cookies.set('at', ciphertext);
         return response;
-    }       
+    };
 
-    if (pathname === '/' || pathname === '') { return NextResponse.redirect(new URL('/dashboard', request.url)) };
     if (pathname === '/targets') { return NextResponse.redirect(new URL('/targets/commission-level', request.url)) }
 }
 
