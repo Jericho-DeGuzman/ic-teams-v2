@@ -26,12 +26,17 @@ export default function TargetTaskForm({ selection, inputchange, newTask, oncanc
             {fileItems?.length > 0 && (
                 <div className='flex flex-col'>
                     <label className="text-black">File Requirement Items</label>
-                    <div className='w-full p-2 border-[2px] border-gray-300 rounded-md space-y-1'>
-                        {
-                            fileItems.map((item, index) => (
-                                <FileItem key={index} uuid={item.value} title={item.label} isChecked={item.isRequired} onchange={fileItemChange} />
-                            ))
-                        }
+                    <div className='w-full border-[2px] border-gray-300 rounded-md space-y-1'>
+                        <div className='border-b-[2px] px-2 py-1 italic text-gray-400'>
+                            Select the requirements needed.
+                        </div>
+                        <div className='p-2'>
+                            {
+                                fileItems.map((item, index) => (
+                                    <FileItem key={index} uuid={item.value} title={item.label} isChecked={item.isRequired} onchange={fileItemChange} />
+                                ))
+                            }
+                        </div>
                     </div>
                 </div>
             )}

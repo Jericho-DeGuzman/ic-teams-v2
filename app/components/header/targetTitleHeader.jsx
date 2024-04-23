@@ -4,6 +4,7 @@ import { faFlag, faPen, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 import WatchlistButton from "../button/watchlist";
+import BannerButton from "../button/bannerButton";
 
 export default function TargetTitleHeader({ title, uuid, permissions }) {
     const [mouseEnter, setMouseEnter] = useState(false);
@@ -16,12 +17,7 @@ export default function TargetTitleHeader({ title, uuid, permissions }) {
                 {mouseEnter && (
                     <div className="flex gap-1">
                         <WatchlistButton visible={permissions.role_permissions.includes('watchlist.create')} />
-                        {permissions.role_permissions.includes('target.banner.create') && (
-                            <div className="p-[5px] text-gray-400 hover:bg-gray-200 rounded-md flex items-center cursor-pointer duration-200 tooltip"
-                                data-tip="make a banner">
-                                <FontAwesomeIcon icon={faFlag} className="w-4 h-4" />
-                            </div>
-                        )}
+                        <BannerButton visible={permissions.role_permissions.includes('target.banner.create')}/>
                         {permissions.role_permissions.includes('targets.update') && (
                             <div className="p-[5px] text-gray-400 hover:bg-gray-200 rounded-md flex items-center cursor-pointer duration-200 tooltip
                             hover:text-blue-500"

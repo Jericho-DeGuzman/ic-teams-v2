@@ -24,7 +24,7 @@ const OutsideClickListener = ({ children, onOutsideClick }) => {
     return <div ref={wrapperRef}>{children}</div>;
 };
 
-export default function UpdateTargetStatusButton({ uuid, status }) {
+export default function UpdateTargetStatusButton({ uuid, status, permissions }) {
     const [visible, setVisible] = useState(false);
     const dispatch = useAppDispatch();
 
@@ -39,19 +39,19 @@ export default function UpdateTargetStatusButton({ uuid, status }) {
         let name = '';
         let color = '';
 
-        switch(new_status) {
-            case 'pending' : name = 'PENDING';  color='#bab6b3';
+        switch (new_status) {
+            case 'pending': name = 'PENDING'; color = '#bab6b3';
                 break;
             case 'ongoing': name = 'ONGOING'; color = '#3b82f6';
                 break;
-            case 'completed': name = 'COMPLETED'; color='#22c55e';
+            case 'completed': name = 'COMPLETED'; color = '#22c55e';
                 break;
-            case 'onhold': name = 'ON HOLD'; color='#edb62b';
+            case 'onhold': name = 'ON HOLD'; color = '#edb62b';
                 break;
         }
 
         try {
-            dispatch(updateTargetStatus({uuid, status: new_status, name, color}))
+            dispatch(updateTargetStatus({ uuid, status: new_status, name, color }))
 
             const response = await fetch(`/api/target-statuses?uuid=${uuid}`, {
                 method: 'put',
@@ -60,15 +60,13 @@ export default function UpdateTargetStatusButton({ uuid, status }) {
             })
 
             const result = await response.json();
-            if(result?.status !== 200) throw new Error(result?.status)
+            if (result?.status !== 200) throw new Error(result?.status)
 
         } catch (error) {
             console.log(error)
-            dispatch(updateTargetStatus({uuid, status: prevStatus}))
+            dispatch(updateTargetStatus({ uuid, status: prevStatus }))
         }
     }
-
-    
 
     return (
         <OutsideClickListener onOutsideClick={handleClickOutside}>
@@ -94,11 +92,13 @@ export default function UpdateTargetStatusButton({ uuid, status }) {
                                 <button className="px-2 py-1" onClick={() => handleUpdateStatus('completed')}>Mark as Completed</button>
                             </li>
                         )}
-                        {status !== 'onhold' && (
-                            <li>
-                                <button className="px-2 py-1" onClick={() => handleUpdateStatus('onhold')}>Mark as On Hold</button>
-                            </li>
-                        )}
+                        {status !== 'onhold' &&
+                            permissions.includes('targets.change.onhold' && (
+                                <li>
+                                    <button className="px-2 py-1" onClick={() => handleUpdateStatus('onhold')}>Mark as On Hold</button>
+                                </li>
+                            ))
+                        }
                     </ul>
                 )}
             </div>

@@ -42,6 +42,7 @@ export default function TaskModalLayout({ params }) {
 
                 const result = await response.json();
                 if (result?.status !== 200) throw new Error(result?.message);
+
                 setTask(result?.data);
                 setCurrentTask(result?.data);
 
@@ -196,7 +197,7 @@ export default function TaskModalLayout({ params }) {
                                             onClick={() => setVisibleTab('attachment')}>Attachment</button>
                                     </div>
                                     {visibleTab == 'subtask' && <SubtaskTab key={'subtask'} uuid={uuid} permissions={permissions} />}
-                                    {visibleTab == 'attachment' && <AttachmentTab key={'attachment'} />}
+                                    {visibleTab == 'attachment' && <AttachmentTab key={'attachment'} fileRequirement={task?.file_requirements} taskId={uuid} />}
                                 </div>
                             </main>
 

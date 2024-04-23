@@ -59,7 +59,7 @@ export default function Targets({ data, role_permissions, level }) {
                     description={target.description} category={target.category}
                     status={target.status} start_date={target.start_date} end_date={target.end_date}
                     update_at={target.updated_at} progress={target.progress} functional_group={target.distribution_groups} ondelete={handleDelete}
-                    moreVisibility={role_permissions.includes('targets.delete')} level={level} 
+                    permissions={role_permissions} level={level} 
                 />
             ))}
         </main>

@@ -65,21 +65,21 @@ const TaskCard = memo(({ uuid, title, due, ondelete, status, permissions }) => {
                 draggable="true"
                 onMouseEnter={() => setVisible(true)} onMouseLeave={() => setVisible(false)}
                 onDragStart={() => setDraggingCard(uuid)} onDragEnd={() => setDraggingCard(uuid)}>
-                <main className='text-[12px] space-y-[8px]' onClick={handleOpenTask}>
+                <main className='text-[12px] space-y-[8px] ' onClick={handleOpenTask}>
                     <p className='w-full py-1' style={{ lineHeight: 1.1 }} dangerouslySetInnerHTML={{ __html: title }} />
                     {visible && (
                         <div className='w-full grid grid-cols-2 gap-1 text-gray-400'>
                             <div className='flex items-center gap-1'>
                                 <div className='p-[5px] gap-1 flex items-center justify-center tooltip tooltip-bottom cursor-pointer 
                             hover:bg-gray-200 rounded-md duration-100 hover:text-blue-500'
-                                    data-tip="subtask">
+                                    data-tip="Subtasks">
                                     <FontAwesomeIcon icon={faDiagramProject} className='w-4 h-4' />
                                     <span>{subtaskCount}</span>
                                 </div>
 
                                 <div className='p-[5px] gap-1 flex items-center justify-center tooltip tooltip-bottom cursor-pointer 
                             hover:bg-gray-200 rounded-md duration-100 hover:text-blue-500'
-                                    data-tip="comment">
+                                    data-tip="Comments">
                                     <FontAwesomeIcon icon={faComment} className='w-4 h-4' />
                                     <span>{commentCount}</span>
                                 </div>

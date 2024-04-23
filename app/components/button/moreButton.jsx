@@ -8,11 +8,11 @@ import ConfirmationDialog from "../dialog/Confirmation";
 import { useState } from "react";
 import { useAppDispatch } from "@/app/redux/hooks";
 
-export default function MoreButton({ uuid, ondelete, visible, status }) {
+export default function MoreButton({ uuid, ondelete, permissions, status }) {
     const [onConfirm, setConfirm] = useState(false);
     const [isLoading, setLoading] = useState(false);
     const dispatch = useAppDispatch()
-
+    
     const handleDelete = async () => {
         setLoading(true);
         try {
@@ -35,30 +35,36 @@ export default function MoreButton({ uuid, ondelete, visible, status }) {
     }
 
     return (
-        <>
-            {onConfirm && <ConfirmationDialog title={'Delete Target'} description={'Are you sure you want to delete this target?'} cancelName={'Cancel'} confirmName={'Delete'}
-                oncancel={handleCancel} onconfirm={handleDelete} loading={isLoading} />}
-            {visible && (
+        permissions.includes('targets.change.status' || 'targets.update') && (
+            <>
+                {onConfirm && <ConfirmationDialog title={'Delete Target'} description={'Are you sure you want to delete this target?'} cancelName={'Cancel'} confirmName={'Delete'}
+                    oncancel={handleCancel} onconfirm={handleDelete} loading={isLoading} />}
                 <div className="dropdown dropdown-end">
                     <button className='p-1 flex items-center text-gray-400
                             hover:bg-gray-200 hover:text-blue-400 cursor-pointer rounded-md duration-300' tabIndex="0" role="button">
                         <FontAwesomeIcon icon={faEllipsis} className='w-4 h-4' />
                     </button>
                     <ul tabIndex="0" className="dropdown-content bg-white z-[1] menu p-2 rounded-md w-44 text-[12px] border-[1px] border-gray-200 text-gray-400">
-                        <li>
-                            <button className="px-2 py-1 hover:bg-gray-200 hover:text-blue-500 flex items-center" onClick={() => setConfirm(true)}>
-                                <FontAwesomeIcon icon={faTrash} className="w-3 h-3" />Delete
-                            </button>
-                        </li>
-                        <UpdateTargetStatusButton uuid={uuid} status={status}/>
-                        <li>
-                            <button className="px-2 py-1 hover:bg-gray-200 hover:text-blue-500 flex items-center" onClick={editTarget}>
-                                <FontAwesomeIcon icon={faPen} className="w-3 h-3" />Edit Target
-                            </button>
-                        </li>
+                        {permissions.includes('targets.delete') && (
+                            <li>
+                                <button className="px-2 py-1 hover:bg-gray-200 hover:text-blue-500 flex items-center" onClick={() => setConfirm(true)}>
+                                    <FontAwesomeIcon icon={faTrash} className="w-3 h-3" />Delete
+                                </button>
+                            </li>
+                        )}
+                        {permissions.includes('targets.change.status') && (
+                            <UpdateTargetStatusButton uuid={uuid} status={status} permissions={permissions} />
+                        )}
+                        {permissions.includes('targets.update') && (
+                            <li>
+                                <button className="px-2 py-1 hover:bg-gray-200 hover:text-blue-500 flex items-center" onClick={editTarget}>
+                                    <FontAwesomeIcon icon={faPen} className="w-3 h-3" />Edit Target
+                                </button>
+                            </li>
+                        )}
                     </ul>
                 </div>
-            )}
-        </>
+            </>
+        )
     )
 }

@@ -92,7 +92,7 @@ export default function DivisionLevel() {
                 <div className='w-3/12'>
                     <SearchInput key={'filter_search'} placeholder={'Search target'} />
                 </div>
-                <div className='w-3/12'>
+                <div className='w-3/12 flex items-center'>
                     <SelectCategories key={'filter_catergory'} placeholder={'Target Catergory'} />
                 </div>
                 <div className='w-3/12'>

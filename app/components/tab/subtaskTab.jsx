@@ -109,7 +109,7 @@ export default function SubtaskTab({ uuid, permissions }) {
                     subtasks.length ? (
                         subtasks.map((subtask, index) => (
                             <SubtaskCard key={index} uuid={subtask.uuid} task_uuid={subtask.task.uuid} title={subtask.title} is_done={subtask.is_done} ondelete={onDeleteHandler}
-                                deleteVisible={permissions.role_permissions.includes('substask.delete')} />
+                                deleteVisible={permissions.role_permissions.includes('subtasks.delete')} />
                         ))
                     ) : (
                         <div className="w-full flex items-center justify-center italic text-gray-400" style={{ minHeight: '154px' }}>

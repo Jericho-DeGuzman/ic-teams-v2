@@ -6,6 +6,7 @@ import { baseUrl } from "@/app/constant/url";
 import { cookies } from "next/headers";
 import { decryptToken } from "@/utils/cryptoJs";
 import microserviceCaller from "@/app/(ic-teams)/lib/ApiCaller/microserviceCaller";
+import LinearProgress from "@/app/components/progress/linearPrgoress";
 
 //TODO: Create a better data fetching and connect to IC microservice.
 async function loadTarget(uuid) {
@@ -33,7 +34,6 @@ export default async function OverviewPage({ params }) {
     target?.distribution_groups.map((group) => {
         if (functional.indexOf(group.distribution_group.parent?.short_name) == -1) functional.push(group.distribution_group.parent?.short_name);
     })
-
     return (
         <section className="text-[12px] border-[1px] border-gray-400 text-black">
             <div className="w-full space-y-1 p-2 ">
@@ -42,6 +42,7 @@ export default async function OverviewPage({ params }) {
                     Description
                 </label>
                 <p className="p-2 bg-gray-200 rounded-md" style={{ lineHeight: 1.2 }} dangerouslySetInnerHTML={{ __html: target.description }} />
+                <LinearProgress status={target?.status.color || '#bab6b3'} progress={target.progress} />
             </div>
             <div className="w-full flex px-2 py-1 border-gray-400 justify-between" style={{ borderWidth: '1px 0 0 0' }}>
                 <label className="font-semibold">Type:</label>
@@ -68,10 +69,10 @@ export default async function OverviewPage({ params }) {
                 </div>
             </div>
             <div className="w-full flex px-2 py-1 border-gray-400 justify-between" style={{ borderWidth: '1px 0 0 0' }}>
-                <label className="font-semibold">Division/Distribution Group:</label>
+                <label className="font-semibold">Division/TWG:</label>
                 <div className="flex gap-1">
                     {target.distribution_groups.map((group, index) => (
-                        <span key={index} className="text-end">{group.distribution_group.short_name} </span> 
+                        <span key={index} className="text-end">{group.distribution_group.short_name} </span>
                     ))}
                 </div>
             </div>

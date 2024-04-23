@@ -8,6 +8,7 @@ import { openInternalForm } from "@/app/redux/features/targetForms";
 import { validateTargetForm } from "@/utils/validateFormInput";
 import toast from "react-hot-toast";
 import { addNewTarget, setTargetData } from "@/app/redux/features/targets";
+import { parseAndGetValue } from "@/utils/parseValue";
 
 const initialState = {
     title: '',
@@ -59,7 +60,7 @@ export default function InternalTargetModal() {
             dispatch(openInternalForm(false));
         } catch (error) {
             console.log(error);
-            toast.error(error?.message);
+            toast.error(parseAndGetValue(error?.message));
         } finally {
             setSaving(false);
         }

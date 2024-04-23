@@ -9,9 +9,10 @@ import Link from "next/link";
 import WatchlistButton from "../button/watchlist";
 import MoreButton from "../button/moreButton";
 import { memo } from "react";
+import BannerButton from "../button/bannerButton";
 
 const TargetCard = memo(({ uuid, title, type, category, description, status, start_date, end_date, update_at, progress,
-    functional_group, watchlist, ondelete, moreVisibility, level }) => {
+    functional_group, watchlist, ondelete, permissions, level }) => {
         
     const functional = [];
 
@@ -19,17 +20,16 @@ const TargetCard = memo(({ uuid, title, type, category, description, status, sta
         if (functional.indexOf(group.parent?.short_name) == -1) functional.push(group.parent?.short_name);
     })
 
-    console.log(update_at);
-
     return (
         <section className='w-full border-[1px] rounded-md text-black
             hover:border-blue-500 hover:scale-[1.03] duration-300 cursor-pointer'>
             <header className='flex p-2 items-center justify-between border-b-[1px]'>
                 <div className='flex items-center gap-1'>
                     <WatchlistButton key={'watchlist-button'} visible={watchlist} />
+                    <BannerButton key={'banner-button'} visible={permissions.includes('target.banner.create')}/>
                     <TargetTypeLabel key={type} type={type} />
                 </div>
-                <MoreButton uuid={uuid} ondelete={ondelete} visible={moreVisibility} status={status?.machine_name} />
+                <MoreButton uuid={uuid} ondelete={ondelete} permissions={permissions} status={status?.machine_name} />
             </header>
             <Link href={`/targets/${level}/${uuid}`}>
                 <main className='p-2 space-y-1'>    

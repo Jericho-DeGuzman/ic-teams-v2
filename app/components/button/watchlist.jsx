@@ -12,7 +12,7 @@ export default function WatchlistButton({visible}) {
         visible && (
             <div className={`p-[5px] text-gray-400 hover:bg-gray-200 rounded-md flex items-center cursor-pointer duration-200 
             hover:text-blue-500 tooltip`}
-            data-tip="add to watchlist." onClick={() => setWatchlisted(!watchlisted)}>
+            data-tip="Add to watchlist." onClick={() => setWatchlisted(!watchlisted)}>
             <FontAwesomeIcon icon={watchlisted ? faBookmarkSolid : faBookmark } className={`w-4 h-4 ${watchlisted && 'text-blue-500'}`}/>
         </div>
         )

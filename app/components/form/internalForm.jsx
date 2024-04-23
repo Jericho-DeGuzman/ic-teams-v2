@@ -24,7 +24,7 @@ export default function InternalTargetForm({ onCancel, target, noEndDate, saving
                     rounded-md focus:border-2 focus:border-blue-500 duration-100 outline-none p-2' onChange={handleInputChange}
                     placeholder='Add description' value={target.description} disabled={saving} />
             </div>
-            <SelectDistributionGroup name='distribution_group_id' placeholder={'Select Division/Distribution Group'} label={'Division/Distribution Group'}
+            <SelectDistributionGroup name='distribution_group_id' placeholder={'Select Division/TWG'} label={'Division/TWG'}
                 onchange={handleDistributionChange} disabled={saving} />
             <div className='w-full grid grid-cols-2 gap-2'>
                 <div className="flex flex-col space-y-1">

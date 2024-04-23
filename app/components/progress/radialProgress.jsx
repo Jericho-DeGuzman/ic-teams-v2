@@ -13,6 +13,6 @@ export default function RadialProgress({ status, progress }) {
     }
 
     return (
-        <div role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style={{ "--value": progress, "--fg": status }} />
+        <div role="progressbar" className="radialProgress" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style={{ "--value": progress, "--fg": status }} />
     )
 }

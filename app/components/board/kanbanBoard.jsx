@@ -10,6 +10,7 @@ import { closeTaskForm } from "@/app/redux/features/taskForm";
 import { validateTaskForm } from "@/utils/validateFormInput";
 import CustomError from "../errors/error";
 import CustomAlertDialog from "../dialog/customAlert";
+import { parseAndGetValue } from "@/utils/parseValue";
 
 // list on kanban board.
 const boards = [
@@ -126,7 +127,7 @@ export default function KanbanBoard({ tasks, uuid, permissions }) {
             dispatch(closeTaskForm());
             toast.success('Task added');
         } catch (error) {
-            toast.error(error?.message);
+            toast.error(parseAndGetValue(error?.message));
         } finally {
             setLoading(false);
         }

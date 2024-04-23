@@ -13,10 +13,9 @@ export async function GET(req) {
 
     try {
         const response = await microservice.get(`/ic-teams/file-requirement-headers`)
-        console.log(response);
         return NextResponse.json({status: 200, data: response.data})
-
     } catch (error) {
+        console.log(error)
         return NextResponse.json({status: error?.reponse?.status, message: error?.response?.data});
     }
 }
