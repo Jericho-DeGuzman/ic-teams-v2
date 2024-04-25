@@ -20,7 +20,7 @@ export async function middleware(request) {
     //     return response;
     // }
 
-    if (pathname === '/' || pathname === '') {
+    if (pathname === '/' || pathname === ' ') {
         const headers = new Headers(request.headers);
         const at = headers.get('at');
 
@@ -41,5 +41,5 @@ export async function middleware(request) {
 }
 
 export const config = {
-    matcher: ['/', '', '/dashboard', '/targets']
+    matcher: ['/', ' ', '/dashboard', '/targets']
 }
