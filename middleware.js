@@ -23,8 +23,8 @@ export async function middleware(request) {
     if (pathname === '/') {
         const { searchParams } = new URL(request.url);
         const at = searchParams.get('at');
-
-        console.log(at);
+        
+        if(at) console.log(at);
 
         const response = NextResponse.redirect(`/dashboard`);
         const ciphertext = await encryptToken(at, ip);
