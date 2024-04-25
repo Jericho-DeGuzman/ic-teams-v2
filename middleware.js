@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { encryptToken } from './utils/cryptoJs';
-import { cookies, headers } from 'next/headers';
+import { cookies, headers, headers } from 'next/headers';
 
 export async function middleware(request) {
     //get user device ip.
@@ -21,16 +21,21 @@ export async function middleware(request) {
     // }
 
     if (pathname === '/') {
-        const { searchParams } = new URL(request.url);
-        const at = searchParams.get('at');
-        
-        if(at) console.log(at);
+        const headers = new Headers(req.headers);
+        const at = headers.get('at');
 
-        const response = NextResponse.redirect(`/dashboard`);
-        const ciphertext = await encryptToken(at, ip);
-        response.cookies.set('at', ciphertext);
-        return response;
-    };
+        if (at) {
+            return NextResponse.redirect(new URL('/dashboard'), request.url)
+        } else {
+            const { searchParams } = new URL(request.url);
+            const at = searchParams.get('at');
+
+            const response = NextResponse.redirect(`/dashboard`);
+            const ciphertext = await encryptToken(at, ip);
+            response.cookies.set('at', ciphertext);
+            return response;
+        }
+    }
 
     if (pathname === '/targets') { return NextResponse.redirect(new URL('/targets/commission-level', request.url)) }
 }
