@@ -24,7 +24,7 @@ export async function middleware(request) {
         const { searchParams } = new URL(request.url);
         const at = searchParams.get('at');
 
-        const response = NextResponse.redirect(`${process.env.BASE_URL}/dashboard`);
+        const response = NextResponse.redirect(`/dashboard`);
         const ciphertext = await encryptToken(at, ip);
         response.cookies.set('at', ciphertext);
         return response;

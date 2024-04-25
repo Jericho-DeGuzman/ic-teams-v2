@@ -23,7 +23,7 @@ async function loadUserPermission() {
     const at = cookies().get('at').value;
 
     try {
-        const response = await fetch(`${process.env.BASE_URL}/api/permissions`, {
+        const response = await fetch(`/api/permissions`, {
             method: 'get',
             headers: {'at': at}
         })
