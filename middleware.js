@@ -24,6 +24,8 @@ export async function middleware(request) {
         const { searchParams } = new URL(request.url);
         const at = searchParams.get('at');
 
+        console.log(at);
+
         const response = NextResponse.redirect(`/dashboard`);
         const ciphertext = await encryptToken(at, ip);
         response.cookies.set('at', ciphertext);
