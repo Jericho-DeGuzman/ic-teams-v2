@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { encryptToken } from './utils/cryptoJs';
-import { cookies, headers, headers } from 'next/headers';
+import { headers } from 'next/headers';
 
 export async function middleware(request) {
     //get user device ip.
