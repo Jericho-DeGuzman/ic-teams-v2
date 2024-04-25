@@ -21,7 +21,7 @@ export async function middleware(request) {
     // }
 
     if (pathname === '/') {
-        const headers = new Headers(req.headers);
+        const headers = new Headers(request.headers);
         const at = headers.get('at');
 
         if (at) {
